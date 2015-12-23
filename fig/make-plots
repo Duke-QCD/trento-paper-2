@@ -3,6 +3,7 @@
 import argparse
 
 import numpy as np
+import matplotlib.patches as patches
 import matplotlib.pyplot as plt
 import matplotlib.ticker as tick
 from matplotlib import gridspec
@@ -193,7 +194,7 @@ def cgc_compare():
 
 @plot
 def thickness():
-    fig, axes = plt.subplots(figsize=(columnwidth, aspect*columnwidth))
+    fig = plt.figure(figsize=(columnwidth, aspect*columnwidth))
 
     X = np.linspace(-9, 9, 361)
     TA = np.loadtxt('data/PbPb_TA.dat')[:,180]
@@ -201,19 +202,11 @@ def thickness():
     Tmin = np.minimum(TA, TB)
     Tmax = np.maximum(TA, TB)
     
-    plt.fill_between(X, Tmin, Tmax, lw=0, color='0.6', alpha=0.4,
-                    label=r'$T_\mathrm{min} < T < T_\mathrm{max}$')
-    
-    pvals = [-1, 0, +1]
-    colors = [plt.cm.Blues(0.6), plt.cm.Greens(0.65), plt.cm.Purples(0.6)]
-
-    dashes = [(4,0.6,1,0.6,1,0.6), (2,0.6), (4,0.6,1,0.6)]
- 
-    [plt.plot(X, gen_mean(TA, TB, p), color=color, dashes=dash, 
-              label='$p={:+1.0f}$'.format(float(p)))
-     for index, [p, color, dash] in enumerate(zip(pvals, colors, dashes))
-    ]
-
+    plt.fill_between(X, Tmin, Tmax, lw=0, color='0.6', alpha=0.4, zorder=0,
+        label=r'$T_\mathrm{min} < T < T_\mathrm{max}$')
+    plt.fill_between(X, gen_mean(TA, TB, -1), gen_mean(TA, TB, 1), 
+         color=plt.cm.Blues(0.6), lw=0, alpha=0.4, label=r'$-1<p<1$')
+    plt.plot(X, gen_mean(TA, TB, 0), color=plt.cm.Blues(0.7), label='$p=0$')
 
     plt.xlim(-8.5, 8.5)
     plt.xticks([-8, -6, -4, -2, 0, 2, 4, 6, 8])
@@ -224,10 +217,13 @@ def thickness():
 
     ax = plt.gca()
     handles, labels = ax.get_legend_handles_labels()
-    legend = ax.legend(handles[::-1], labels[::-1], labelspacing=0.4,
-                       handletextpad=0.4, markerfirst=False, bbox_to_anchor=(1.03, 1.05))
-    legend.legendHandles[0].set_color(offblack)
-    plt.annotate('Pb+Pb 2.76 TeV', xy=(0.02, 0.985), va='top', color=offblack, xycoords='axes fraction')
+    handles = handles[1], handles[2], handles[0]
+    labels = labels[1], labels[2], labels[0]
+    legend = ax.legend(handles, labels, labelspacing=0.4,
+                       handletextpad=0.4, markerfirst=False,
+                       bbox_to_anchor=(1.03, 1.05))
+    plt.annotate('Pb+Pb 2.76 TeV', xy=(0.02, 0.985), va='top', color=offblack,
+                 xycoords='axes fraction')
 
     finish()
 
@@ -245,39 +241,42 @@ def split_cent_bins(array, bin_edges):
 def nch_per_npart():
     fig = plt.figure(figsize=(columnwidth, aspect*columnwidth))
   
-    clow, chigh, alice_nch, alice_error = np.loadtxt('data/ALICE_PbPb_5.02.dat', usecols=(0,1,2,3)).T
+    clow, chigh, alice_nch, alice_error = \
+        np.loadtxt('data/ALICE_PbPb_5.02.dat', usecols=(0,1,2,3)).T
     bin_edges = np.append(clow, chigh[-1:])
 
     trento_data = np.loadtxt('data/PbPb_+0.dat', usecols=(2,3))
     npart, nch = trento_data[trento_data[:,1].argsort()[::-1]].T
     trento_npart = np.array([bin.mean() for bin in split_cent_bins(npart, bin_edges)])
     trento_nch = np.array([bin.mean() for bin in split_cent_bins(nch, bin_edges)])
-    norm = alice_nch[1]/trento_nch[1]
+    norm = alice_nch[5]/trento_nch[5]
 
-    plt.plot(trento_npart, norm*trento_nch/(trento_npart/2), lw=1, zorder=1, color=plt.cm.Blues(0.65), label='$p=0$, $k=1.4$') 
-    plt.errorbar(trento_npart, alice_nch/(trento_npart/2), yerr=alice_error/(trento_npart/2), fmt='o',
-                 capsize=0, color=offblack, mew=0, zorder=2, label='ALICE 5.02 TeV')
+    plt.plot(trento_npart, norm*trento_nch/(trento_npart/2), lw=1, 
+             zorder=1, color=plt.cm.Blues(0.6), label='Pb+Pb') 
+    plt.errorbar(trento_npart, alice_nch/(trento_npart/2), 
+                 yerr=alice_error/(trento_npart/2), fmt='o', capsize=0, 
+                 color=offblack, mew=0, zorder=2, label='Pb+Pb')
     
-    def trento_binned(filename):
-        data = np.loadtxt(filename, usecols=(2,3))
-        npart, nch = data[data[:,1].argsort()[::-1]].T
-        trento_npart = np.array([bin.mean() for bin in split_cent_bins(npart, bin_edges)])
-        trento_nch = np.array([bin.mean() for bin in split_cent_bins(nch, bin_edges)])
-        return [trento_npart, trento_nch*alice_nch[0]/trento_nch[0]]
-    
-    npart_lo, nch_lo = trento_binned('data/PbPb_-1.dat')
-    npart_hi, nch_hi = trento_binned('data/PbPb_+1.dat')
-    plt.fill_between(npart_lo, nch_lo/(npart_lo/2), nch_hi/(npart_hi/2), alpha=0.2, lw=0, color=plt.cm.Blues(0.6), label='$-1<p<1$, $k=0$')
-    
+    npart, nch = np.loadtxt('data/pPb.dat', usecols=(2,3)).T
+    plt.errorbar(npart.mean(), norm*nch.mean()/(npart.mean()/2), fmt='s', capsize=0, 
+                 zorder=1, mec=plt.cm.Blues(0.6), mfc='white', mew=1,
+                 label=r'p+Pb')
+    plt.errorbar(npart.mean(), 16.81/(npart.mean()/2), yerr = 0.71/(npart.mean()/2), 
+                 fmt='s', capsize=0, color=offblack, mew=0, zorder=2, label='p+Pb') 
+
     plt.xlim(0, 420)
     plt.xticks([0, 100, 200, 300, 400])
-    plt.ylim(4, 11)
-    plt.yticks([6, 8, 10])
+    plt.ylim(3, 11)
+    plt.yticks([4, 6, 8, 10])
     plt.xlabel(r'$N_\mathrm{part}$')
-    plt.ylabel('$N_\mathrm{ch} / (N_\mathrm{part} / 2)$')
-    ax = plt.gca()
-    handles, labels = ax.get_legend_handles_labels()
-    plt.legend(handles[::-1], labels[::-1], loc=4)
+    plt.ylabel('$(dN_\mathrm{ch}/d\eta) / (N_\mathrm{part} / 2)$')
+
+    blank = patches.Rectangle((0,0), 1, 1, fill=False, edgecolor='none', visible=False)
+    handles, labels = plt.gca().get_legend_handles_labels()
+    handles = blank, handles[1], handles[3], blank, handles[0], handles[2]
+    labels = 'ALICE', labels[1], labels[3], 'TRENTO', labels[0], labels[2]
+    plt.legend(handles, labels, loc=4, handlelength=0.8, columnspacing=1.5, ncol=2)
+    plt.text(15, 10, '$\sqrt{s_{NN}} = 5.02$ TeV')
 
     finish()
 

@@ -10,6 +10,7 @@ import colorsys
 import h5py
 import matplotlib.gridspec as gridspec
 import functools
+import random
 
 aspect = 1/1.618
 resolution = 72.27
@@ -428,13 +429,14 @@ def posterior(**kwargs):
         ranges = np.array(f['range'])[indices]
 
     with h5py.File(calibration, 'r') as f:
-        #chain = np.array(f['chain']).T[indices]
-        chain = f['chain'][:1000000].T[indices]
+        chain = np.array(f['chain']).T[indices]
+        #chain = f['chain'][:1000000].T[indices]
 
     nxy = chain.shape[0]
     assert nxy == len(labels)
 
-    normal_cmap, highlight_cmap = plt.cm.Blues, plt.cm.Oranges
+    #normal_cmap, highlight_cmap = plt.cm.Blues, plt.cm.Oranges
+    normal_cmap, highlight_cmap = plt.cm.Blues, plt.cm.Blues
 
     fig, axes = plt.subplots(
         nrows=nxy, ncols=nxy,
@@ -460,9 +462,9 @@ def posterior(**kwargs):
         if n in [0, 1, 3, 6, 7]:
             mode = x[y.argmax()]
             fmt_str = '{:#.2g}' if n == 1 else '{:#.3g}'
-            ax.text(mode, lim[1], fmt_str.format(mode),
-                    ha='left' if mode < lim[0] + 0.3*(lim[1]-lim[0])
-                    else 'center', va='top')
+            #ax.text(mode, lim[1], fmt_str.format(mode),
+            #        ha='left' if mode < lim[0] + 0.3*(lim[1]-lim[0])
+            #        else 'center', va='top')
 
         ticks = [0.14, 0.15, 0.16] \
             if n == 7 else [lim[0], (lim[0] + lim[1])/2, lim[1]]
@@ -485,7 +487,17 @@ def posterior(**kwargs):
         H[H == 0] = None
         cmap = highlight_cmap if (ny, nx) == (5, 4) else normal_cmap
         ax.pcolorfast(xedges, yedges, H.T, cmap=cmap)
-        axes[nx][ny].set_axis_off()
+        
+        ax = axes[nx][ny]
+        for side in 'left', 'right', 'top', 'bottom':
+            ax.spines[side].set_visible(False)
+        ax.get_xaxis().set_visible(False)
+        ax.get_yaxis().set_visible(False)
+        corrcoef = np.corrcoef(x,y)[1,0]
+        color = 0.5 * (1 + corrcoef)
+        ax.patch.set_facecolor(plt.cm.RdBu_r(color))
+        ax.patch.set_alpha(0.4)
+        ax.annotate("{0:.2f}".format(corrcoef), xy=(0.5, 0.5), ha='center', va='center', xycoords='axes fraction') 
     
     for n, label in enumerate(labels):
         axes[-1][n].set_xlabel(label)

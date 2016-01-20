@@ -1,12 +1,8 @@
 \documentclass[aps,prc,reprint,amsmath]{revtex4-1}
 
 \usepackage{hyperref}
-\usepackage{lipsum}
 \usepackage{graphicx}
-\usepackage{pullquote}
-\usepackage{floatflt}
-\usepackage{tikz}
-\usetikzlibrary{calc}
+\usepackage{lipsum}
 \graphicspath{{fig/}}
 
 \newcommand{\trento}{T\raisebox{-0.5ex}{R}ENTo}
@@ -35,15 +31,9 @@
 
 \section{Introduction}
 
-\lipsum[1-7]
-
 \begin{figure*}
     \includegraphics{cgc_compare}
 \end{figure*}
-
-\lipsum[3-8]
-\section{Section 2}
-
 
 \begin{figure}[b]
     \includegraphics{thickness}
@@ -52,63 +42,28 @@
 \begin{figure}
     \includegraphics{nch_per_npart}
 \end{figure}
-\lipsum[5-10]
 
 \begin{figure*}
     \includegraphics{observables_plot}
 \end{figure*}
-\lipsum[5-8]
 
 \begin{figure*}
     \includegraphics{mode_observables}
 \end{figure*}
 
-\section{Section 2}
-\lipsum[1-20]
-
-
-\lipsum[3]
-
-
-\lipsum[1-3]
-
-%\begin{figure*}
-\begin{pullquote}
-{%
-    shape=square, objdist=2mm, objvoffset=3, objvalign=bottom,%
-    object=%
-    {%
-        \begin{tikzpicture}
-            %\clip (-8,-8)--(-8,8)--(8,-8)--cycle;
-            \node (0, 0) {\includegraphics[width=\textwidth]{posterior}};
-            \clip (current bounding box.south west)--
-                  (current bounding box.north west)--
-                  ++(3,0)--
-                  ($(current bounding box.south east)+(0,3)$)--
-                  (current bounding box.south east)--
-                  (current bounding box.south west);
-        \end{tikzpicture}%
-    }
-}
-\end{pullquote}
-%\caption{blah blah blah blah asekgf liwulfasgfgla iliwfilwf wf}
-%\end{figure*}
-
-\lipsum[1-20]
-\section{Section 3}
+\begin{figure*}
+    \includegraphics{posterior}
+    \caption{Bayesian posterior}
+\end{figure*}
 
 \begin{figure}
     \centering
     \includegraphics{posterior_p_arrows}
 \end{figure}
 
-\lipsum[3]
-
 \begin{figure}
     \includegraphics{viscosity_samples}
 \end{figure}
-
-\lipsum[3]
 
 \bibliography{trento2}
 

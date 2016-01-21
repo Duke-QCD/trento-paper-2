@@ -429,8 +429,8 @@ def posterior(**kwargs):
         ranges = np.array(f['range'])[indices]
 
     with h5py.File(calibration, 'r') as f:
-        chain = np.array(f['chain']).T[indices]
-        #chain = f['chain'][:1000000].T[indices]
+        #chain = np.array(f['chain']).T[indices]
+        chain = f['chain'][:1000000].T[indices]
 
     nxy = chain.shape[0]
     assert nxy == len(labels)
@@ -495,9 +495,11 @@ def posterior(**kwargs):
         ax.get_yaxis().set_visible(False)
         corrcoef = np.corrcoef(x,y)[1,0]
         color = 0.5 * (1 + corrcoef)
-        ax.patch.set_facecolor(plt.cm.RdBu_r(color))
+        ax.patch.set_facecolor(plt.cm.coolwarm(color))
         ax.patch.set_alpha(0.4)
-        ax.annotate("{0:.2f}".format(corrcoef), xy=(0.5, 0.5), ha='center', va='center', xycoords='axes fraction') 
+        ax.annotate("{0:.2f}".format(corrcoef).replace('-',u'\u2212'), xy=(0.5, 0.5),
+                    ha='center', va='center', xycoords='axes fraction',
+                    fontsize=texnormal) 
     
     for n, label in enumerate(labels):
         axes[-1][n].set_xlabel(label)
@@ -715,6 +717,31 @@ def viscosity_samples():
         set_loc(ax, 'y', minor=2)
 
     finish(h_pad=1)
+
+@plot
+def trento_events():
+    fig, axes = plt.subplots(2, 2, sharex=True, sharey=True, figsize=(columnwidth, columnwidth))
+
+    with h5py.File('data/trento/events.hdf', 'r') as f:
+        events = [np.array(f['event_{}'.format(i)]) for i in [0, 1, 3, 4]]
+    
+    x = np.linspace(-10, 10, 400)
+    lim = (-7.5, 7.5)
+    ticks = np.linspace(-5, 5, 3)
+
+    for ax, event in zip(axes.flat, events):
+        cs = ax.pcolorfast(x, x, event, zorder=-100, cmap=plt.cm.Blues)
+        cs.set_clim(0.0, np.max(event))
+
+        for xy in ['x', 'y']:
+            getattr(ax, 'set_{}lim'.format(xy))(lim)
+            getattr(ax, 'set_{}ticks'.format(xy))(ticks)
+        if ax.is_last_row():
+            ax.set_xlabel('$x$ [fm]')
+        if ax.is_first_col():
+            ax.set_ylabel('$y$ [fm]')
+    
+    finish(w_pad=0.3, h_pad=0.3)
 
 
 def main():

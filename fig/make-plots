@@ -3,12 +3,15 @@
 import argparse
 
 import numpy as np
+from scipy.optimize import curve_fit
 import matplotlib.pyplot as plt
+import matplotlib.cm as cm
 import matplotlib.ticker as tick
 from matplotlib import patches
+from matplotlib.colors import LinearSegmentedColormap
+import matplotlib.gridspec as gridspec
 import colorsys
 import h5py
-import matplotlib.gridspec as gridspec
 import functools
 import random
 
@@ -169,16 +172,28 @@ def cgc_compare():
     )
 
     saturation = [kln, ekrt, lambda x, y: (x + y)/2]
-    pvals = [-0.65, 0, 1]
+    x = np.linspace(0, 5, 100)
+    xdata = np.meshgrid(x, x)
+    
+    pvals, perr = [], []
+    for model, pguess in zip(saturation, [-0.67, 0.1, 1]):
+        def func(T, p, norm):
+            return norm*np.ravel(gen_mean(T[0], T[1], p))
+        def ydata(T):
+            return np.ravel(model(T[0], T[1])) 
+        popt, pcov = curve_fit(func, xdata, ydata(xdata), p0=[pguess, 1])
+        pvals.append(popt)
+        perr.append(np.sqrt(np.diagonal(pcov)))
+    
     labels = ['KLN model', 'EKRT model', 'WN model']
     TB = [1, 3, 5]
 
-    for ax, p, func, label in zip(axes, pvals, saturation, labels):
+    for ax, (p, norm), func, label in zip(axes, pvals, saturation, labels):
         X = np.linspace(0, 5, 1000)
 
-        [ax.plot(X, gen_mean(X, Y, p), lw=0.8,
+        [ax.plot(X, norm*gen_mean(X, Y, p), lw=0.8,
                  color=plt.cm.Blues(0.6),
-                 label='Gen. Mean; $p={}$'.format(p) if Y == 1 else '')
+                 label='Gen. Mean; $p={:.2f}$'.format(p) if Y == 1 else '')
          for Y in TB]
 
         [ax.plot(X, func(X, Y), lw=0.8, dashes=(4, 3),
@@ -199,7 +214,7 @@ def cgc_compare():
         ax.set_xlim(0, 5)
         ax.set_xticks([0, 1, 2, 3, 4])
         ax.set_xlabel(r'$T_A$ [fm$^{-2}$]')
-        ax.set_ylim(0, 5.5)
+        ax.set_ylim(0, 6)
         ax.set_yticks([0, 2, 4])
 
         handles, labels = ax.get_legend_handles_labels()
@@ -351,9 +366,9 @@ def observables_plot():
              for n, c in enumerate(['GnBu', 'Purples', 'Oranges'], start=2)]
 
     plots = [
-        ('dN_dy', 'Yields', r'$dN/dy$', (1, 4e3), id_parts),
-        ('mean_pT', 'Mean $p_T$', r'$p_T$ [GeV]', (0, 1.8), id_parts),
-        ('vn', 'Flow cumulants', r'$v_n\{2\}$', (0, 0.12), flows),
+        ('dN_dy', 'Yields $dN/dy$', r'$dN/dy$', (1, 4e3), id_parts),
+        ('mean_pT', 'Mean $p_T$ [GeV]', r'$p_T$ [GeV]', (0, 1.8), id_parts),
+        ('vn', 'Flow cumulants $v_n\{2\}$', r'$v_n\{2\}$', (0, 0.12), flows),
     ]
 
     prior_data = 'data/bayesian/model/batch-observables.hdf'
@@ -361,7 +376,7 @@ def observables_plot():
     exp_data = 'data/bayesian/exp/data.hdf'
 
     fig, axes = plt.subplots(nrows=2, ncols=3,
-                             figsize=(textwidth, 1.5*aspect*columnwidth))
+                             figsize=(textwidth, 1.6*aspect*columnwidth))
 
     for axes_row, model_data, posterior in zip(
             axes, [prior_data, post_data], [False, True]
@@ -374,7 +389,7 @@ def observables_plot():
 
         for ax, (obs, title, ylabel, ylim, subplots) in zip(axes_row, plots):
             for subobs, label, cmap in subplots:
-                color = desaturate(getattr(plt.cm, cmap)(0.6), 0.8)
+                color = desaturate(getattr(plt.cm, cmap)(0.55), 0.8)
 
                 n = 6 if obs == 'vn' and subobs != '2' else 8
 
@@ -385,7 +400,7 @@ def observables_plot():
                             capsize=0, color=offblack, mfc=offblack,
                             mew=0, zorder=1000)
 
-                ax.text(x[-1] + 3, y[-1], label, ha='left', va='center',
+                ax.text(x[-1] + 2, y[-1], label, ha='left', va='center',
                         color=offblack, size=texnormal)
 
                 kwargs = dict(color=color, lw=0.4)
@@ -399,7 +414,9 @@ def observables_plot():
 
             ax.set_xlim([0, 75])
             ax.set_ylim(ylim)
-            ax.set_ylabel(ylabel, labelpad=0.5 if ax == axes_row[-1] else 2.5)
+            if obs == 'dN_dy':
+                ax.set_ylabel('Posterior samples' if posterior else 'Training data')
+            #ax.set_ylabel(ylabel, position=(0,1), ha='right', va='baseline', labelpad=5)
 
             if posterior:
                 ax.set_xlabel('Centrality %')
@@ -411,9 +428,10 @@ def observables_plot():
                 ax.set_yscale('log')
                 ax.minorticks_off()
             else:
-                set_loc(ax, 'y', nbins=5)
+                set_loc(ax, 'y', nbins=4, steps=[0,2,3,4,5,6,8,9,10],
+                prune='upper')
 
-    finish(h_pad=0, w_pad=0.4)
+    finish(h_pad=0, w_pad=0.3)
 
 
 @plot
@@ -429,13 +447,12 @@ def posterior(**kwargs):
         ranges = np.array(f['range'])[indices]
 
     with h5py.File(calibration, 'r') as f:
-        #chain = np.array(f['chain']).T[indices]
-        chain = f['chain'][:1000000].T[indices]
+        chain = np.array(f['chain']).T[indices]
+        #chain = f['chain'][:1000000].T[indices]
 
     nxy = chain.shape[0]
     assert nxy == len(labels)
 
-    #normal_cmap, highlight_cmap = plt.cm.Blues, plt.cm.Oranges
     normal_cmap, highlight_cmap = plt.cm.Blues, plt.cm.Blues
 
     fig, axes = plt.subplots(
@@ -489,11 +506,11 @@ def posterior(**kwargs):
         ax.pcolorfast(xedges, yedges, H.T, cmap=cmap)
         
         ax = axes[nx][ny]
-        for side in 'left', 'right', 'top', 'bottom':
-            ax.spines[side].set_visible(False)
         ax.get_xaxis().set_visible(False)
         ax.get_yaxis().set_visible(False)
-        corrcoef = np.corrcoef(x,y)[1,0]
+        for side in 'left', 'right', 'top', 'bottom':
+            ax.spines[side].set_visible(False)
+        corrcoef = np.corrcoef(x, y)[1,0]
         color = 0.5 * (1 + corrcoef)
         ax.patch.set_facecolor(plt.cm.coolwarm(color))
         ax.patch.set_alpha(0.4)
@@ -504,7 +521,12 @@ def posterior(**kwargs):
     for n, label in enumerate(labels):
         axes[-1][n].set_xlabel(label)
         axes[n][0].set_ylabel(label)
-
+        
+        axes[0][n].annotate(label, xy=(0.5, 1.01), xycoords='axes fraction',
+                            va='bottom', ha='center')
+        axes[n][-1].annotate(label, xy=(1.01, 0.5), xycoords='axes fraction',
+                            va='center', ha='left', rotation=-90)
+        
         if n != 7:
             for t, justify in zip(axes[-1][n].xaxis.get_major_ticks(),
                                   ['left', 'center', 'right']):
@@ -513,7 +535,7 @@ def posterior(**kwargs):
                                   ['bottom', 'center', 'top']):
                 t.label1.set_verticalalignment(justify)
   
-    finish(h_pad=0.3, w_pad=0.3)
+    finish(h_pad=0.3, w_pad=0.3, rect=[0, 0, 0.98, 0.98])
 
 
 @plot
@@ -522,8 +544,8 @@ def mode_observables(**kwargs):
     exp_data = 'data/bayesian/exp/data.hdf'
     colors = plt.cm.Set1(np.linspace(0,1,6, endpoint=False))
     id_parts = [
-        ('pion',   r'$\pi^{\!\pm}$', 'Greens'),
-        ('kaon',   r'$K^{\!\pm}$', 'Blues'),
+        ('pion',   r'$\pi^{\!\pm}$', 'Blues'),
+        ('kaon',   r'$K^{\!\pm}$', 'Greens'),
         ('proton', r'$p\bar p$', 'Reds')
     ]
 
@@ -537,28 +559,28 @@ def mode_observables(**kwargs):
     ]
 
     plots = [
-        ('dN_dy', 'Yields', r'$dN/dy$', (1, 3e3),
+        ('dN_dy', 'Yields $dN/dy$', r'$dN/dy$', (1, 3e3),
          id_parts, labelinfo[0]),
-        ('mean_pT', 'Mean $p_T$',
+        ('mean_pT', 'Mean $p_T$ [GeV]',
          r'$p_T$ [GeV]', (0, 1.5), id_parts, labelinfo[1]),
-        ('vn', 'Flow cumulants', r'$v_n\{2\}$', (0, 0.11),
+        ('vn', 'Flow cumulants $v_n\{2\}$', r'$v_n\{2\}$', (0, 0.11),
          flows, labelinfo[2]),
     ]
 
     fig = plt.figure(figsize=(textwidth, 1.2*aspect*columnwidth))
-    gs = plt.GridSpec(11, len(plots))
+    gs = plt.GridSpec(12, len(plots))
 
     with \
             h5py.File(batch_obs_mode, 'r') as mode, \
             h5py.File(exp_data, 'r') as exp:
         for n, (obs, title, ylabel,
                 ylim, subplots, labelpos) in enumerate(plots):
-            ax = fig.add_subplot(gs[:7, n])
-            ratio_ax = fig.add_subplot(gs[7:, n])
+            ax = fig.add_subplot(gs[:8, n])
+            ratio_ax = fig.add_subplot(gs[8:, n])
 
             ax.set_xlim(0, 76)
             ax.set_ylim(ylim)
-            ax.set_ylabel(ylabel, labelpad=1.8 if n is 2 else 2.5)
+            #ax.set_ylabel(ylabel, position=(0,1), ha='right', va='baseline', labelpad=5)
             ax.set_title(title)
 
             for (subobs, label, cmap), labelxy in zip(subplots, labelpos):
@@ -588,16 +610,15 @@ def mode_observables(**kwargs):
             ax.get_xaxis().set_ticklabels([])
 
             ratio_ax.axhline(1, color='0.4', lw=0.5, zorder=-100)
-            ratio_ax.axhspan(0.9, 1.1, color=grey, zorder=-200)
+            ratio_ax.axhspan(0.9, 1.1, color=grey, alpha=0.7, zorder=-200)
 
             ratio_ax.set_xlabel('Centrality %')
             ratio_ax.set_ylim(0.8, 1.2)
             ratio_ax.set_yticks([0.8, 1, 1.2])
-            ratio_ax.set_yticks([0.9, 1.1], minor=True)
-            ratio_ax.set_ylabel('Model/Exp')
+            ratio_ax.set_ylabel('Model/Exp' if n is 0 else '', labelpad=4)
             ratio_ax.set_xlim(0, 76)
 
-    finish(h_pad=0, w_pad=0.4)
+    finish(pad=0.0, h_pad=0, w_pad=0.3)
 
 
 @plot
@@ -628,11 +649,11 @@ def posterior_p_arrows(n=1, **kwargs):
         spine.set_visible(False)
 
     for xpos, label in [
-        (-0.65, 'KLN'),
-        ( 0.0,  'EKRT'),
+        (-0.67, 'KLN'),
+        ( 0.11,  'EKRT'),
         ( 1.0,  'WN'),
     ]:
-        ax.text(xpos, 0.04, label, fontsize=texsmall, va='bottom', ha='center')
+        ax.text(xpos, 0.05, label, fontsize=texsmall, va='bottom', ha='center')
         ax.text(xpos, 0, '•', fontsize=texsmall, va='center', ha='center')
 
     ax.set_xticks(np.arange(-10, 11, 5)/10)
@@ -682,7 +703,7 @@ def viscosity_samples():
                 zetas_ax.plot(T1, zetas_norm*_zetas(T1), **line_kwargs)
 
     text_kwargs = dict(fontsize=texsmall)
-    fill_kwargs = dict(color=grey, zorder=-1000)
+    fill_kwargs = dict(color=grey, alpha=0.8, zorder=-1000)
 
     etas_ax.fill_between(T2, 0.3 + 2*(T2 - Tc), **fill_kwargs)
     etas_ax.axvline(Tc, dashes=(4,2), lw=0.8, color='0.3')
@@ -721,17 +742,29 @@ def viscosity_samples():
 @plot
 def trento_events():
     fig, axes = plt.subplots(2, 2, sharex=True, sharey=True, figsize=(columnwidth, columnwidth))
-
-    with h5py.File('data/trento/events.hdf', 'r') as f:
-        events = [np.array(f['event_{}'.format(i)]) for i in [0, 1, 3, 4]]
     
     x = np.linspace(-10, 10, 400)
-    lim = (-7.5, 7.5)
+    lim = (-8, 8)
     ticks = np.linspace(-5, 5, 3)
 
-    for ax, event in zip(axes.flat, events):
-        cs = ax.pcolorfast(x, x, event, zorder=-100, cmap=plt.cm.Blues)
-        cs.set_clim(0.0, np.max(event))
+    cdict = cm.get_cmap('Blues')._segmentdata
+    cdict['red'][0] = (0, 1, 1)
+    cdict['blue'][0] = (0, 1, 1)
+    cdict['green'][0] = (0, 1, 1)
+    my_cmap = LinearSegmentedColormap('Blues2', cdict)
+
+    for ax, iev in zip(axes.flat, [67, 56, 20, 43]):
+        with h5py.File('data/trento/events.hdf', 'r') as f:
+            ev = f['event_{}'.format(iev)]
+            profile = np.array(ev)
+            cs = ax.pcolorfast(x, x, profile, zorder=-100, cmap=my_cmap)
+            cs.set_clim(0.0, np.max(profile))
+            txt = '$=${}\n$=${:.1f} fm'.format(ev.attrs['npart'], ev.attrs['b'])
+            txt2 = '$N_{}$\n$b$'.format(r'\mathrm{part}')
+            ax.annotate(txt, xy=(0.67 if iev is 43 else 0.71, 0.98), xycoords='axes fraction', ha='left',
+                        va='top', fontsize=textiny)
+            ax.annotate(txt2, xy=(0.673 if iev is 43 else 0.713, 1.01), xycoords='axes fraction', ha='right',
+                        va='top', fontsize=textiny)
 
         for xy in ['x', 'y']:
             getattr(ax, 'set_{}lim'.format(xy))(lim)
@@ -740,6 +773,7 @@ def trento_events():
             ax.set_xlabel('$x$ [fm]')
         if ax.is_first_col():
             ax.set_ylabel('$y$ [fm]')
+
     
     finish(w_pad=0.3, h_pad=0.3)
 

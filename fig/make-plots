@@ -14,6 +14,7 @@ import colorsys
 import h5py
 import functools
 import random
+from decimal import Decimal
 
 aspect = 1/1.618
 resolution = 72.27
@@ -164,18 +165,20 @@ def ekrt_gen():
 
 ekrt = ekrt_gen()
 
-def pfit(model, Tmax):
+
+def pfit(model):
     
     def func(T, p, norm):
         TA, TB = T
         return norm*np.ravel(gen_mean(TA, TB, p))
 
-    T = np.linspace(0, Tmax, 100)
+    T = np.linspace(0, 4, 100)
     TA, TB = np.meshgrid(T, T)
     
     popt, pcov = curve_fit(func, np.meshgrid(T, T), np.ravel(model(TA, TB)))
-    
-    return popt
+    p, norm = popt
+
+    return [round(p, 2), round(norm, 5)] 
 
 
 @plot
@@ -184,22 +187,15 @@ def cgc_compare():
         ncols=3, figsize=(textwidth, 0.55*columnwidth), sharey=True
     )
 
-    saturation = [kln, ekrt, lambda x, y: (x + y)/2]
-
-    pvals = []
-    for model in saturation:
-        pvals.append([pfit(model, 2), pfit(model,4)])
-    
     labels = ['KLN model', 'EKRT model', 'WN model']
+    saturation = [kln, ekrt, lambda x, y: (x + y)/2]
+    pvals = [pfit(kln), [0, 1.03], [1, 1]]
     TB = [1, 2, 3]
 
-    for ax, (plo, phi), func, label in zip(axes, pvals, saturation, labels):
+    for ax, (p, norm), func, label in zip(axes, pvals, saturation, labels):
         X = np.linspace(0, 4, 1000)
-        p = (plo[0] + phi[0])/2
-        norm = (plo[1] + phi[1])/2
-        [ax.plot(X, norm*gen_mean(X, Y, p), lw=0.8,
-            color=plt.cm.Blues(0.6),
-            label='Gen. Mean; $p={:.2f}$'.format(p) if Y == 1 else '')
+        [ax.plot(X, norm*gen_mean(X, Y, p), lw=0.8, color=plt.cm.Blues(0.6),
+                label='Gen. Mean; $p={}$'.format(p) if Y == 1  else '')
          for Y in TB]
 
         [ax.plot(X, func(X, Y), lw=0.8, dashes=(4, 3),
@@ -358,6 +354,49 @@ def _zetas(T, Tc=0.180,
     zetas[mid] = A1*x*x + A2*x - A3
 
     return zetas
+
+
+@plot
+def validation():
+    calibration = 'data/bayesian/calibration/results_err10.hdf'
+    batch_obs_validation = 'data/bayesian/model/batch-observables-validation.hdf'
+    
+    observables = [
+        ('dN_dy/pion', r'$dN/dy_{\pi^\pm}$', (0, 3500)),
+        ('mean_pT/pion', r'$\langle p_T \rangle_{\pi^\pm}$', (0.4, 0.75)),
+        ('vn/2', r'$v_2\{2\}$', (0, 0.13)),
+    ]
+
+    cent_edges = [0, 5, 10, 20, 30, 40, 50, 60, 70, 80]
+    cent_bins = list(zip(cent_edges[:-1], cent_edges[1:]))
+
+    fig, axes = plt.subplots(ncols=len(observables), figsize=(textwidth, 1.1*textwidth/3))
+
+    with \
+            h5py.File(calibration, 'r') as cal, \
+            h5py.File(batch_obs_validation, 'r') as vld:
+        for (key, label, lim), ax in zip(observables, axes):
+            for i, cmap in (0, 'Blues'), (4, 'Oranges'):
+                x = cal['validation'][key]['Y'][:, i]
+                xerr = cal['validation'][key]['Yerr'][:, i]
+                y = vld[key]['Y'][:, i]
+                yerr = vld[key]['Yerr'][:, i]
+                ax.errorbar(
+                    x, y, xerr=xerr, yerr=yerr, fmt='o', ms=4, capsize=0,
+                    color=getattr(plt.cm, cmap)(0.8), mec='white', mew=0.3,
+                    label='–'.join(map(str, cent_bins[i])) + '%'
+                )
+            ax.plot(lim, lim, lw=1, color='.7', zorder=-10)
+            ax.set_xlim(lim)
+            ax.set_ylim(lim)
+            ax.set_aspect('equal')
+            ax.set_xlabel('Predicted ' + label)
+            if ax.is_first_col():
+                ax.set_ylabel('Observed')
+                ax.legend(loc='best')
+            set_loc(ax)
+
+    finish()
 
 
 @plot
@@ -543,10 +582,7 @@ def posterior(dataset, **kwargs):
                 t.label1.set_verticalalignment(justify)
 
      
-    plt.annotate('$^\dagger$Slope units: [GeV$^{-1}$]', xy=(1,0),
-                 xycoords='figure fraction', ha='right', va='bottom',
-                 clip_on=False) 
-    finish(h_pad=0.3, w_pad=0.3, rect=[0, 0.02, 0.98, 0.98])
+    finish(h_pad=0.3, w_pad=0.3, rect=[0, 0.0, 0.98, 0.98])
 
 @plot
 def posterior_identified():
@@ -580,8 +616,10 @@ def posterior_compare():
     )
     
     zorders = 2, 1
-    colors = plt.cm.Blues, plt.cm.Reds
-    clabels = '$dN/dy$ indentified', '$dN/d\eta$ charged' 
+    colors = plt.cm.Blues, plt.cm.Oranges
+    clabels = 'identified $dN/dy$', '$dN_\mathrm{ch}/d\eta$' 
+
+    axes[0].plot(0, 0, label='Calibrated to:', alpha=0)
 
     for calibration, cmap, order, clabel in zip(calibrations, colors, zorders, clabels):
         with h5py.File(calibration, 'r') as f:
@@ -617,11 +655,11 @@ def posterior_compare():
                                       ['left', 'center', 'right']):
                     t.label1.set_horizontalalignment(justify)
             if n==0:
-                ax.legend(bbox_to_anchor=(0.36, 1.08), ncol=2,
+                ax.legend(bbox_to_anchor=(0.5, 1.09), ncol=3,
                           fontsize=textiny, columnspacing=1,
-                          bbox_transform=fig.transFigure, loc=1)
-    
-    finish(w_pad=0.5, rect=[0, 0, 1, 0.9])
+                          bbox_transform=fig.transFigure, loc='upper center')
+   
+    finish(w_pad=0.5, rect=[0, 0, 1, 0.85])
 
 @plot
 def mode_observables(**kwargs):
@@ -845,11 +883,8 @@ def trento_events():
             profile = np.array(ev)
             cs = ax.pcolorfast(x, x, profile, zorder=-100, cmap=my_cmap)
             cs.set_clim(0.0, np.max(profile))
-            txt = '$=${}\n$=${:.1f} fm'.format(ev.attrs['npart'], ev.attrs['b'])
-            txt2 = '$N_{}$\n$b$'.format(r'\mathrm{part}')
-            ax.annotate(txt, xy=(0.67 if iev is 43 else 0.71, 0.98), xycoords='axes fraction', ha='left',
-                        va='top', fontsize=textiny)
-            ax.annotate(txt2, xy=(0.673 if iev is 43 else 0.713, 1.01), xycoords='axes fraction', ha='right',
+            properties = '$N_{}$$=${}\n$b$$=${:.1f} fm'.format(r'\mathrm{part}', ev.attrs['npart'], ev.attrs['b'])
+            ax.annotate(properties, xy=(0.99, 0.99), xycoords='axes fraction', ha='right',
                         va='top', fontsize=textiny)
 
         for xy in ['x', 'y']:

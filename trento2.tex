@@ -3,11 +3,16 @@
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{lipsum}
+%\usepackage{tabularx}
+%\usepackage{dcolumn}
 \graphicspath{{fig/}}
 
 \newcommand{\trento}{T\raisebox{-0.5ex}{R}ENTo}
 \newcommand{\avg}[1]{\langle #1 \rangle}
 \newcommand{\nch}{N_\text{ch}}
+\newcommand{\npart}{N_\text{part}}
+\newcommand{\sqrts}{\sqrt{s_{NN}}}
+%\newcolumntype{d}{D{.}{.}{-1}}
 
 \begin{document}
 
@@ -41,59 +46,109 @@ when particles are emitted from a commonly flowing source.
 Hydrodynamic models and related transport theories provide a necessary link between the ephemeral, early-time dynamics of the QGP droplet and the asymptotic 
 bound states measured by experiment. Provided realistic initial conditions, the QCD equation of state and values for the dissipative transport coefficients, the hydrodynamic equations of motion specify the full time-evolution the QGP medium which can be used to evolve the.
 
+\section{Motivation}
+
+\section{Modeling the QGP evolution}
+
+\subsection{Parametric initial conditions}
+
 \begin{figure*}
     \includegraphics{cgc_compare}
-    \caption{Profiles of the initial thermal distribution predicted by the KLN (left), EKRT (middle) and wounded nucleon (right) models compared to a generalized mean with different values of the parameter $p$. Lines show different cross sections of the initial entropy density $dS/(d^2r_\perp dy)$ as a function of the nucleon density $T_A$ for several values of $T_B = 1, 2, 3$ [fm$^{-2}$].} 
+    \caption{Profiles of the initial thermal distribution predicted by the KLN (left), EKRT (middle) and wounded nucleon (right) models (dashed black lines) compared to a generalized mean with different values of the parameter $p$ (solid blue lines). Staggered lines show different cross sections of the initial entropy density $dS/(d^2r_\perp dy)$ as a function of the nucleon density $T_A$ for several values of $T_B = 1, 2, 3$ [fm$^{-2}$].} 
 \end{figure*}
 
 \begin{figure}
     \includegraphics{trento_events}
-    \caption{Several \protect\trento\ Pb+Pb initial condition events for the transverse entropy density $dS/d^2r_\perp dy$ calculated using generalized mean parameter $p=0$, nucleon width $w=0.5$ fm and gamma fluctuation factor $k=1.4$.}
+    \caption{Several \protect\trento\ Pb+Pb initial condition events for the transverse entropy density $dS/(d^2r_\perp dy)$ calculated using generalized mean parameter $p=0$, nucleon width $w=0.5$ fm and gamma fluctuation factor $k=1.4$.}
 \end{figure}
 
 \begin{figure}[b]
     \includegraphics{thickness}
+    \caption{Cross section of the participant nucleon density in a mid-central Pb+Pb collision at $\sqrts=2.76$ TeV as a function of the transverse coordinate $x$ parallel to impact parameter $\vec{b}$. The gray band indicates the region bounded by the minimum and maximum values of the local participant thickness functions $T_A$ and $T_B$, while the blue band indicates the region spanned by the generalized mean of $T_A$ and $T_B$ with parameter $-1<p<1$. The solid blue line shows an example of a discrete mapping specified by a generalized mean with $p=0$.} 
 \end{figure}
 
-\begin{figure}
-    \includegraphics{nch_per_npart}
-\end{figure}
+\subsection{Hydrodynamics and Boltzmann transport}
 
-\begin{figure*}
-    \includegraphics{observables_plot}
-\end{figure*}
+
+\section{Constraining the model}
 
 \begin{figure*}
     \includegraphics{validation}
+    \caption{Emulator validation for pion yield $dN/dy_{\pi^\pm}$ (left), average transverse momentum ${\langle p_T \rangle}_{\pi^\pm}$ (middle) and flow cumulant $v_2\{2\}$ (right) for centralities 0--5\% (blue) and 30--40\% (orange). The horizontal axis shows predictions by the emulator at untested regions of parameter space, and the vertical axis shows the same quantity after it has been calculated directly from the model. The gray line indicates perfect correlation.} 
 \end{figure*}
 
-\begin{figure*}
-    \includegraphics{mode_observables}
-\end{figure*}
 
 \begin{figure*}
     \includegraphics{posterior_identified}
     \caption{Bayesian posterior}
+    \label{fig:posterior_identified}
 \end{figure*}
 
 \begin{figure*}
     \includegraphics{posterior_compare}
 \end{figure*}
 
+\begin{figure*}
+    \includegraphics{observables_plot}
+    \caption{Identified yields (left column), mean $p_T$ (middle column) and flow cumulants $v_n\{2\}$ (right column). The top row shows results obtained from the training data used to condition the emulator.
+    from 100 random samples drawn from the Bayesian posterior.}
+\end{figure*}
+
+\section{Results}
+
+\begin{table}
+    \caption{High likelihood parameters selected from the posterior distribution in Fig.~\ref{fig:posterior_identified} used to generate Fig.~\ref{fig:mode_observables}}
+    \begin{ruledtabular}    
+        \begin{tabular}{llll}
+            \multicolumn{2}{c}{Initial condition} & \multicolumn{2}{c}{QGP medium} \\
+            \noalign{\smallskip}\hline\noalign{\smallskip}
+            norm & 120.          &  $\eta/s$ min   & 0.08       \\
+            $p$  & 0.0           &  $\eta/s$ slope & 0.85 GeV$^{-1}$   \\
+            $k$  & 1.5           &  $\zeta/s$ norm & 1.25       \\
+            $w$  & 0.43 fm       &  $T_\text{sw}$  & 0.148 GeV  \\
+        \end{tabular}
+    \end{ruledtabular}
+    \label{table:highlikelihood_parameters}
+\end{table}
+
+\begin{figure*}
+    \includegraphics{mode_observables}
+    \caption{Top row: model calculations of identified yields $dN/dy$, mean $p_T$ and flow cumulants $v_n\{2\}$ as a function of collision centrality using high-likelihood parameters (listed in table) determined from the posterior in Fig.~\ref{fig:posterior_identified}. Symbols with error bars show data from ALICE and lines show results of the model. Bottom row: ratio of the model divided by experiment. Gray band indicates 10\% discrepancy between the model and experiment.}
+    \label{fig:mode_observables}
+\end{figure*}
+
+
+\subsection{Constraining initial conditions}
+\begin{figure}
+    \includegraphics{nch_per_npart}
+    \caption{Average charged particle density per participant pair $(d\nch/d\eta)/(\npart/2)$ as a function of participant number for Pb+Pb and p+Pb collisions at $\sqrts=5.02$ TeV.
+    Symbols are data from ALICE and lines are model calculations from \protect\trento\ using parameters selected by the Bayesian analysis.}
+\end{figure}
+
 \begin{figure}
     \centering
     \includegraphics{posterior_p_arrows}
+    \caption{Posterior on the generalized mean parameter $p$ which modulates the intensity of saturation effects in the initial conditions compared to the effective p-values needed to fit
+    the KLN, EKRT and wounded nucleon (WN) models.}
+    \label{posterior_p_arrows}
 \end{figure}
 
+\subsection{Determining QGP medium properties}
 \begin{figure}
     \includegraphics{viscosity_samples}
 \end{figure}
 
+\section{Conclusion}
+
+\acknowledgements
+
 \appendix
+
 \begin{figure*}
     \includegraphics{posterior_integrated}
     \caption{Bayesian posterior}
 \end{figure*}
+
 
 \bibliography{trento2}
 

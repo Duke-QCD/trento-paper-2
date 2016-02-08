@@ -771,14 +771,18 @@ def posterior_p_arrows(n=1, **kwargs):
     for spine in ax.spines.values():
         spine.set_visible(False)
 
-    for xpos, label in [
-        (-0.67, 'KLN'),
-        ( 1.0,  'WN'),
-    ]:
-        ax.text(xpos, 0.05, label, fontsize=texsmall, va='bottom', ha='center')
-        ax.text(xpos, 0, '•', fontsize=texsmall, va='center', ha='center')
+    # KLN model
+    ax.text(-0.67, 0.05, 'KLN', fontsize=texsmall, va='bottom', ha='center')
+    ax.plot([-0.68, -0.66], [0, 0], lw=4, color=offblack, alpha=0.6, label='KLN', clip_on=False)
+   
+    # EKRT model
     ax.text(0, 0.05, 'EKRT', fontsize=texsmall, va='bottom', ha='center')
     ax.plot([-0.09, 0.12], [0, 0], lw=4, color=offblack, alpha=0.6, label='EKRT', clip_on=False)
+
+
+    # WN model
+    ax.text(1, 0.05, 'WN', fontsize=texsmall, va='bottom', ha='center')
+    ax.text(1, 0, '•', fontsize=texsmall, va='center', ha='center')
     
     ax.set_xticks(np.arange(-10, 11, 5)/10)
     ax.set_xticks(np.arange(-75, 76, 50)/100, minor=True)

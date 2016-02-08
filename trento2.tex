@@ -74,24 +74,24 @@ bound states measured by experiment. Provided realistic initial conditions, the 
 
 \begin{figure*}
     \includegraphics{validation}
-    \caption{Emulator validation for pion yield $dN/dy_{\pi^\pm}$ (left), average transverse momentum ${\langle p_T \rangle}_{\pi^\pm}$ (middle) and flow cumulant $v_2\{2\}$ (right) for centralities 0--5\% (blue) and 30--40\% (orange). The horizontal axis shows predictions by the emulator at untested regions of parameter space, and the vertical axis shows the same quantity after it has been calculated directly from the model. The gray line indicates perfect correlation.} 
+    \caption{Emulator validation for pion yield $dN/dy_{\pi^\pm}$ (left), average transverse momentum ${\langle p_T \rangle}_{\pi^\pm}$ (middle) and flow cumulant $v_2\{2\}$ (right) for centralities 0--5\% (blue) and 30--40\% (orange). The horizontal axis shows predictions by the emulator at untested regions of parameter space, and the vertical axis shows the same quantity after it has been calculated directly from the model. The gray line indicates perfect model and emulator agreement.} 
 \end{figure*}
 
 
 \begin{figure*}
     \includegraphics{posterior_identified}
-    \caption{Bayesian posterior}
+    \caption{Diagonal and lower-diagonal: posterior marginal and joint distributions of the calibration parameters described in section \ref{?}. Diagonal entries show the posterior likelihood distribution of each parameter marginalized over remaining parameters, while lower-diagonal entries show the joint distribution of parameter pairs. Upper diagonal: the Pearson product-moment correlation coefficient $\rho_{X,Y}=\text{cov}(X,Y)/(\sigma_X \sigma_Y)$ for each pair of parameters $X$, $Y$. Red (blue) tiles indicate Pearson coefficients close to $1$ ($-1$) corresponding to strong linear correlation (anti-correlation). $^\dagger$The units for $\eta/s$ slope are [GeV$^{-1}$].}
     \label{fig:posterior_identified}
 \end{figure*}
 
 \begin{figure*}
     \includegraphics{posterior_compare}
+    \caption{Comparison of the posterior distributions obtained when the model is calibrated to fit identified pion, kaon and proton yields $dN/dy$ (blue lines), and when the model is calibrated to fit integrated charged particles $d\nch/d\eta$ (orange lines). $^\dagger$The units for $\eta/s$ slope are [GeV$^{-1}$].}
 \end{figure*}
 
 \begin{figure*}
     \includegraphics{observables_plot}
-    \caption{Identified yields (left column), mean $p_T$ (middle column) and flow cumulants $v_n\{2\}$ (right column). The top row shows results obtained from the training data used to condition the emulator.
-    from 100 random samples drawn from the Bayesian posterior.}
+    \caption{Identified yields (left column), mean $p_T$ (middle column) and flow cumulants $v_n\{2\}$ (right column). The top row shows results obtained from the training data used to condition the emulator. from 100 random samples drawn from the Bayesian posterior.}
 \end{figure*}
 
 \section{Results}
@@ -108,12 +108,12 @@ bound states measured by experiment. Provided realistic initial conditions, the 
             $w$  & 0.43 fm       &  $T_\text{sw}$  & 0.148 GeV  \\
         \end{tabular}
     \end{ruledtabular}
-    \label{table:highlikelihood_parameters}
+    \label{table:likely_param}
 \end{table}
 
 \begin{figure*}
     \includegraphics{mode_observables}
-    \caption{Top row: model calculations of identified yields $dN/dy$, mean $p_T$ and flow cumulants $v_n\{2\}$ as a function of collision centrality using high-likelihood parameters (listed in table) determined from the posterior in Fig.~\ref{fig:posterior_identified}. Symbols with error bars show data from ALICE and lines show results of the model. Bottom row: ratio of the model divided by experiment. Gray band indicates 10\% discrepancy between the model and experiment.}
+    \caption{Top row: model calculations of identified yields $dN/dy$, mean $p_T$ and flow cumulants $v_n\{2\}$ as a function of collision centrality using high-likelihood parameters (listed in table \ref{table:likely_param}) determined from the posterior in Fig.~\ref{fig:posterior_identified}. Symbols with error bars show data from ALICE and lines show results of the model. Bottom row: ratio of the model divided by experiment. Gray band indicates 10\% discrepancy between the model and experiment.}
     \label{fig:mode_observables}
 \end{figure*}
 
@@ -136,6 +136,8 @@ bound states measured by experiment. Provided realistic initial conditions, the 
 \subsection{Determining QGP medium properties}
 \begin{figure}
     \includegraphics{viscosity_samples}
+    \caption{Sampled curves of the temperature dependent shear viscosity $(\eta/s)(T)$ (top panel) and temperature dependent bulk viscosity $(\zeta/s)(T)$ (bottom panel) drawn from the
+        the posterior distributions on $\eta/s$ min, $\eta/s$ slope and $\zeta/s$ norm in Fig.~\ref{fig:posterior_identified}.}
 \end{figure}
 
 \section{Conclusion}

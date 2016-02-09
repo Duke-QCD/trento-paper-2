@@ -202,16 +202,13 @@ def cgc_compare():
                  color='0.25', label=label if Y == 1 else '')
          for Y in TB]
 
-        radians = np.array([np.arctan2(
-            gen_mean(4.5, Y, p) - gen_mean(4.4, Y, p), 0.1) for Y in TB])
-        angles = 180*radians/(2*np.pi)
-        offsets = [2.62, 3.65, 4.4]
+        offsets = [2.2, 2.8, 3.4]
         labels = ['${:d}$', '${:d}$', '$T_B={:d}$']
 
         if ax == axes[2]:
-            [ax.text(5, offset, label.format(int(Y)) + ' fm$^{-2}$',
-                     ha='right', va='bottom', rotation=angle)
-             for Y, angle, offset, label in zip(TB, angles, offsets, labels)]
+            [ax.text(4, func(4, Y) + 0.05, label.format(int(Y)) + ' fm$^{-2}$',
+                     ha='right', va='baseline', rotation=18)
+             for Y, offset, label in zip(TB, offsets, labels)]
 
         ax.set_xlim(0, 4)
         ax.set_xticks([0, 1, 2, 3, 4])

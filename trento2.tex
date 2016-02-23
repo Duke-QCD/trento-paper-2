@@ -27,8 +27,8 @@
 
 
 \begin{abstract}
-    
-  We implement a recently developed parametric initial condition model for relativistic nuclear collisions designed to interpolate among a general class of saturation based initial state models [?]. The model is compared to explicit calculations in Color-Glass Condensate effective field theory and embedded in a realistic hybrid model which couples event-by-event viscous hydrodynamics to a hadronic cascade in order to constrain free parameters of the model. We find that initial entropy deposition and particle production scale with the geometric mean of participant nuclear thickness $dS/dy \sim \sqrt{T_A T_B}$. 
+We aim to determine the quark-gluon-plasma initial conditions created in ultra-relativistic heavy-ion collisions and its temperature dependent transport coefficients
+utilizing Bayesian statistics and a multi-parameter model to data comparison. We implement a recently developed parametric initial condition model for relativistic nuclear collisions designed to interpolate among a general class of saturation based initial state models [?]. The model is compared to explicit calculations in Color-Glass Condensate effective field theory and embedded in a realistic hybrid model which couples event-by-event viscous hydrodynamics to a hadronic cascade in order to constrain free parameters of the model. We find that initial entropy deposition and particle production scale with the geometric mean of participant nuclear thickness $dS/dy \sim \sqrt{T_A T_B}$ and provide a first set of constraints on the temperature dependence of the specific shear- and bulk-viscosities of the quark-gluon-plasma.
 \end{abstract}
 
 
@@ -45,7 +45,7 @@ These developments have positioned hydrodynamic modeling to evolve beyond a qual
 
 The dominant source of uncertainty in determining QGP transport coefficients from hydrodynamic model-to-data comparison is in modeling the initial stages of the collision. Model predictions vary with the choice of initial conditions and hence prefer hydrodynamic transport coefficients, e.g.\ QGP shear and bulk viscosities, which differ from calculation to calculation. For example, an estimate of the effective (constant) QGP shear viscosity $(\eta/s)_\text{QGP}$ needed to fit spectra and flows at RHIC found ${1/4\pi \le (\eta/s)_\text{QGP} \le 2.5/4\pi}$, where the uncertainty was largely attributable to a factor of two discrepancy in $(\eta/s)_\text{QGP}$ extracted with two different hydrodynamic initial condition models. 
 
-The ongoing effort to constrain current bounds on the QGP shear viscosity typically focuses on improving theoretical descriptions of the initial conditions as well as the addition of new sensitive observables to assess the validity of each models' inherent assumptions and approximations. The process thus defines an iterative cycle in which theory calculations are embedded in hydrodynamic transport simulations and analyzed against a comprehensive list of bulk observables to determine the model's quality of fit and experimental consistency.
+The ongoing effort to constrain current bounds on the QGP shear viscosity typically focuses on improving theoretical descriptions of the initial conditions as well as the addition of new sensitive observables to assess the validity of each models' inherent assumptions and approximations. The process thus defines an iterative cycle in which theory calculations are embedded in hydrodynamic transport simulations and analyzed against a comprehensive list of bulk observables to determine the likelihood distributions of the model parameters.
 
 Model optimization and comparison is complicated by the high-dimensional nature of the underconstrained parameter space. In addition to free parameters which describe the QGP transport coefficients, hydrodynamic simulations depend on a number of auxiliary parameters such as an effective nucleon width, QGP thermalization time and chemical freezeout temperature which require simultaneous optimization. Correlations among these parameters remain poorly understood and obfuscate efforts to find optimal parameters for each initial condition model.
 
@@ -55,29 +55,45 @@ Once optimized fit parameters for hydrodynamic simulations with different calcul
 
 Even when a initial condition model is perfectly optimized there exists no consensus on the initial conditions. Furthermore, it's not clear how residual tension in the fit translates to uncertainties on QGP transport coefficients.
 
-% The difficult in the 'calculate and validate' approach is:  
-
+%perhaps add a few sentences here about minimizing bias...
 
 \section{Modeling the QGP evolution}
+
+State-of-the-art heavy-ion collision models simulate QGP spacetime evolution in several stages \cite{Bass:2000ib,Teaney:2001av,Hirano:2005xf,Nonaka:2006yn,Petersen:2008dd,Song:2010mg,Schenke:2010rr,Shen:2014vra}:
+\begin{enumerate}
+  \item an initial condition model describes the initial state and non-equilibrium dynamics until QGP formation,
+  \item viscous relativistic hydrodynamics calculates the dynamical expansion of the hot and dense QGP medium including the phase transition to a hadron gas,
+  \item then a particlization model converts the system into a microscopic ensemble of hadrons,
+  \item and finally a Boltzmann transport model calculates hadronic rescattering and decays.
+\end{enumerate}
+In this work, we opt for a mature, well-tested set of event-by-event models \cite{Shen:2014vra}  for the hydrodynamic evolution of the QGP and subsequent microscopic evolution of the hadronic phase. The initial condition will be provided by a novel parametric approach \cite{}.
 
 \begin{figure*}
     \includegraphics{cgc_compare}
     \caption{Profiles of the initial thermal distribution predicted by the KLN (left), EKRT (middle) and wounded nucleon (right) models (dashed black lines) compared to a generalized mean with different values of the parameter $p$ (solid blue lines). Staggered lines show different cross sections of the initial entropy density $dS/(d^2r_\perp dy)$ as a function of the nucleon density $T_A$ for several values of $T_B = 1, 2, 3$ [fm$^{-2}$].} 
 \end{figure*}
 
-\subsection{Parametric initial conditions}
+\subsection{Initial state models vs. parametric initial conditions}
 
-Typically, the initial conditions are calculated within a specific effective theory, subject to a number of assumptions and related approximations. Model predictions vary with the choice of initial conditions and hence prefer hydrodynamic transport coefficients, e.g.\ QGP shear and bulk viscosities, which differ from calculation to calculation.
-Historically, these initial conditions have been generated by one of two means: either from a two-component Glauber ansatz which asserts an admixture of soft and hard collision processes or from specific calculations in Color-Glass Condensate (CGC) effective field theory. 
+Ab-initio initial state models allow for the dynamical calculation of thermalization
+and QGP formation and provide the initial conditions for the subsequent hydrodynamic 
+evolution of the QGP \cite{}. A rigorous test of these models requires their integration
+into a description for the full time-evolution of the heavy-ion collision that includes 
+formation of the QGP, hydrodynamic evolution, hadronization and hadronic final state 
+interactions. This can become computationally very challenging, given that the 
+sizeable computational cost of calculating the early time off-equilibrium evolution adds 
+onto the very significant computational effort required for the event-by-event evolution 
+of the QGP and its decay products.
 
-
-Despite the phenomenological approach of the two-component Glauber model which is tuned to fit experiment, it was quickly realized that there is no binary collision fraction which can replicate the behavior of particle production in CGC based initial condition models. For instance, the Monte Carlo Glauber model (MC-Glb.) predicts profiles of entropy (or energy) which are less elliptic than CGC based Kharzeev-Levin-Nardi (MC-KLN) model predict profil
-
-
-eccentricity harmonics. The MC-KLN model produces profiles of energy and entropy which are more elliptic than MC-Glb.\ calculations and hence predicts more elliptic flow in ideal hydrodynamic simulations. Consequently, the KLN model necessitates a constant QGP shear viscosity which is
-
- and hence requires larger shear viscous corrections than the MC-Glb.\ model to fit the same experimental data.
-Hydrodynamic simulations are typically initialized using one of two approaches: simplistic parameteric
+In this paper we will pursue an alternative method for determining the initial condition
+of the hydrodynamic evolution, utilizing Bayesian statistics and a multi-parameter 
+model to data comparison. With the help of a parametric initial condition model, Trento, we aim to
+provide a likelihood distribution for the features of the initial condition that are 
+compatible with the data taken at the LHC. The resulting high likelihood 
+initial conditions can then be compared to the outcome of ab-initio initial state and 
+early-time dynamical models at the time of QGP formation, thus providing valuable 
+insight into their viability without the need for a full initial-to-final-state model 
+calculation.
 
 
 \begin{figure}

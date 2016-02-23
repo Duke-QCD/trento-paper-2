@@ -47,14 +47,19 @@ The dominant source of uncertainty in determining QGP transport coefficients fro
 
 The ongoing effort to constrain current bounds on the QGP shear viscosity typically focuses on improving theoretical descriptions of the initial conditions as well as the addition of new sensitive observables to assess the validity of each models' inherent assumptions and approximations. The process thus defines an iterative cycle in which theory calculations are embedded in hydrodynamic transport simulations and analyzed against a comprehensive list of bulk observables to determine the model's quality of fit and experimental consistency.
 
-The importance of systematic model-to-data  
+The task of testing initial condition models is made even more challenging by the complex interplay of underconstrained initial state and QGP medium parameters. In order to assess the performance of the hydrodynamic model subject to given initial conditions, the parameters must be simultaneously optimized
 
 
+ computational resources required to evaluate the model at a single point in parameter space. 
 % The difficult in the 'calculate and validate' approach is:  
 
 
 \section{Modeling the QGP evolution}
 
+\begin{figure*}
+    \includegraphics{cgc_compare}
+    \caption{Profiles of the initial thermal distribution predicted by the KLN (left), EKRT (middle) and wounded nucleon (right) models (dashed black lines) compared to a generalized mean with different values of the parameter $p$ (solid blue lines). Staggered lines show different cross sections of the initial entropy density $dS/(d^2r_\perp dy)$ as a function of the nucleon density $T_A$ for several values of $T_B = 1, 2, 3$ [fm$^{-2}$].} 
+\end{figure*}
 
 \subsection{Parametric initial conditions}
 
@@ -70,10 +75,6 @@ eccentricity harmonics. The MC-KLN model produces profiles of energy and entropy
  and hence requires larger shear viscous corrections than the MC-Glb.\ model to fit the same experimental data.
 Hydrodynamic simulations are typically initialized using one of two approaches: simplistic parameteric
 
-\begin{figure*}
-    \includegraphics{cgc_compare}
-    \caption{Profiles of the initial thermal distribution predicted by the KLN (left), EKRT (middle) and wounded nucleon (right) models (dashed black lines) compared to a generalized mean with different values of the parameter $p$ (solid blue lines). Staggered lines show different cross sections of the initial entropy density $dS/(d^2r_\perp dy)$ as a function of the nucleon density $T_A$ for several values of $T_B = 1, 2, 3$ [fm$^{-2}$].} 
-\end{figure*}
 
 \begin{figure}
     \includegraphics{trento_events}

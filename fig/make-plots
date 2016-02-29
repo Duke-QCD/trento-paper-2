@@ -9,12 +9,11 @@ import matplotlib.cm as cm
 import matplotlib.ticker as tick
 from matplotlib import patches
 from matplotlib.colors import LinearSegmentedColormap
-import matplotlib.gridspec as gridspec
+from matplotlib import lines
 import colorsys
 import h5py
 import functools
-import random
-from decimal import Decimal
+import glob
 
 aspect = 1/1.618
 resolution = 72.27
@@ -167,18 +166,18 @@ ekrt = ekrt_gen()
 
 
 def pfit(model):
-    
+
     def func(T, p, norm):
         TA, TB = T
         return norm*np.ravel(gen_mean(TA, TB, p))
 
     T = np.linspace(0, 4, 100)
     TA, TB = np.meshgrid(T, T)
-    
+
     popt, pcov = curve_fit(func, np.meshgrid(T, T), np.ravel(model(TA, TB)))
     p, norm = popt
 
-    return [round(p, 2), round(norm, 5)] 
+    return [round(p, 2), round(norm, 5)]
 
 
 @plot
@@ -195,7 +194,7 @@ def cgc_compare():
     for ax, (p, norm), func, label in zip(axes, pvals, saturation, labels):
         X = np.linspace(0, 4, 1000)
         [ax.plot(X, norm*gen_mean(X, Y, p), lw=0.8, color=plt.cm.Blues(0.6),
-                label='Gen. Mean; $p={}$'.format(p) if Y == 1  else '')
+                 label='Gen. Mean; $p={}$'.format(p) if Y == 1 else '')
          for Y in TB]
 
         [ax.plot(X, func(X, Y), lw=0.8, dashes=(4, 3),
@@ -356,8 +355,9 @@ def _zetas(T, Tc=0.180,
 @plot
 def validation():
     calibration = 'data/bayesian/calibration/results_err10.hdf'
-    batch_obs_validation = 'data/bayesian/model/batch-observables-validation.hdf'
-    
+    batch_obs_validation = \
+        'data/bayesian/model/batch-observables-validation.hdf'
+
     observables = [
         ('dN_dy/pion', r'$dN/dy_{\pi^\pm}$', (0, 3500)),
         ('mean_pT/pion', r'$\langle p_T \rangle_{\pi^\pm}$', (0.4, 0.75)),
@@ -367,7 +367,8 @@ def validation():
     cent_edges = [0, 5, 10, 20, 30, 40, 50, 60, 70, 80]
     cent_bins = list(zip(cent_edges[:-1], cent_edges[1:]))
 
-    fig, axes = plt.subplots(ncols=len(observables), figsize=(textwidth, 1.1*textwidth/3))
+    fig, axes = plt.subplots(ncols=len(observables),
+                             figsize=(textwidth, 1.1*textwidth/3))
 
     with \
             h5py.File(calibration, 'r') as cal, \
@@ -449,7 +450,8 @@ def observables_plot():
 
                 if posterior:
                     for i in samples:
-                        ax.plot(x, model['samples'][obs][subobs][i], alpha=0.15, **kwargs)
+                        ax.plot(x, model['samples'][obs][subobs][i],
+                                alpha=0.15, **kwargs)
                 else:
                     for y in model[obs][subobs]['Y'][:, :n]:
                         ax.plot(x, y, alpha=0.12, **kwargs)
@@ -457,8 +459,10 @@ def observables_plot():
             ax.set_xlim([0, 75])
             ax.set_ylim(ylim)
             if obs == 'dN_dy':
-                ax.set_ylabel('Posterior samples' if posterior else 'Training data')
-            #ax.set_ylabel(ylabel, position=(0,1), ha='right', va='baseline', labelpad=5)
+                ax.set_ylabel('Posterior samples'
+                              if posterior else 'Training data')
+            # ax.set_ylabel(ylabel, position=(0,1), ha='right',
+            #              va='baseline', labelpad=5)
 
             if posterior:
                 ax.set_xlabel('Centrality %')
@@ -470,8 +474,9 @@ def observables_plot():
                 ax.set_yscale('log')
                 ax.minorticks_off()
             else:
-                set_loc(ax, 'y', nbins=4, steps=[0,2,3,4,5,6,8,9,10],
-                prune='upper')
+                set_loc(ax, 'y', nbins=4,
+                        steps=[0, 2, 3, 4, 5, 6, 8, 9, 10],
+                        prune='upper')
 
     finish(h_pad=0, w_pad=0.3)
 
@@ -486,12 +491,12 @@ def posterior(dataset, **kwargs):
         etas_slope_index = 5
         indices = np.arange(len(labels)) != etas_hrg_index
         del labels[etas_hrg_index]
-        labels[etas_slope_index]  += '$^\dagger$'
+        labels[etas_slope_index] += '$^\dagger$'
         ranges = np.array(f['range'])[indices]
 
     with h5py.File(calibration, 'r') as f:
         chain = np.array(f['chain']).T[indices]
-        #chain = f['chain'][:1000000].T[indices]
+        # chain = f['chain'][:1000000].T[indices]
 
     nxy = chain.shape[0]
     assert nxy == len(labels)
@@ -503,7 +508,7 @@ def posterior(dataset, **kwargs):
         sharex='col', sharey='row',
         figsize=(textwidth, textwidth)
     )
-   
+
     for n, (ax, c, lim) in enumerate(zip(axes.diagonal(), chain, ranges)):
         cmap = highlight_cmap if n in [1, 6] else normal_cmap
         line_color = cmap(.8)
@@ -518,13 +523,6 @@ def posterior(dataset, **kwargs):
         y = .84 * (lim[1] - lim[0]) * counts / counts.max() + lim[0]
         ax.plot(x, y, lw=0.8, color=line_color)
         ax.fill_between(x, lim[0], y, color=fill_color, zorder=-10)
-
-        if n in [0, 1, 3, 6, 7]:
-            mode = x[y.argmax()]
-            fmt_str = '{:#.2g}' if n == 1 else '{:#.3g}'
-            #ax.text(mode, lim[1], fmt_str.format(mode),
-            #        ha='left' if mode < lim[0] + 0.3*(lim[1]-lim[0])
-            #        else 'center', va='top')
 
         ticks = [0.14, 0.15, 0.16] \
             if n == 7 else [lim[0], (lim[0] + lim[1])/2, lim[1]]
@@ -541,35 +539,36 @@ def posterior(dataset, **kwargs):
         hist = functools.partial(
             np.histogram2d, x, y, range=(ranges[nx], ranges[ny])
         )
-        
+
         ax = axes[ny][nx]
         H, xedges, yedges = hist(bins=100)
         H[H == 0] = None
         cmap = highlight_cmap if (ny, nx) == (5, 4) else normal_cmap
         ax.pcolorfast(xedges, yedges, H.T, cmap=cmap)
-        
+
         ax = axes[nx][ny]
         ax.get_xaxis().set_visible(False)
         ax.get_yaxis().set_visible(False)
         for side in 'left', 'right', 'top', 'bottom':
             ax.spines[side].set_visible(False)
-        corrcoef = np.corrcoef(x, y)[1,0]
+        corrcoef = np.corrcoef(x, y)[1, 0]
         color = 0.5 * (1 + corrcoef)
         ax.patch.set_facecolor(plt.cm.coolwarm(color))
         ax.patch.set_alpha(0.4)
-        ax.annotate("{0:.2f}".format(corrcoef).replace('-',u'\u2212'), xy=(0.5, 0.5),
+        ax.annotate("{0:.2f}".format(corrcoef).replace('-', u'\u2212'),
+                    xy=(0.5, 0.5),
                     ha='center', va='center', xycoords='axes fraction',
-                    fontsize=texnormal) 
-    
+                    fontsize=texnormal)
+
     for n, label in enumerate(labels):
         axes[-1][n].set_xlabel(label)
         axes[n][0].set_ylabel(label)
-        
+
         axes[0][n].annotate(label, xy=(0.5, 1.01), xycoords='axes fraction',
                             va='bottom', ha='center')
         axes[n][-1].annotate(label, xy=(1.01, 0.5), xycoords='axes fraction',
-                            va='center', ha='left', rotation=-90)
-        
+                             va='center', ha='left', rotation=-90)
+
         if n != 7:
             for t, justify in zip(axes[-1][n].xaxis.get_major_ticks(),
                                   ['left', 'center', 'right']):
@@ -578,8 +577,8 @@ def posterior(dataset, **kwargs):
                                   ['bottom', 'center', 'top']):
                 t.label1.set_verticalalignment(justify)
 
-     
     finish(h_pad=0.3, w_pad=0.3, rect=[0, 0.0, 0.98, 0.98])
+
 
 @plot
 def posterior_identified():
@@ -592,11 +591,12 @@ def posterior_integrated():
     filename = 'data/bayesian/calibration/results_err10_dNch_deta_only.hdf'
     posterior(filename)
 
+
 @plot
 def posterior_compare():
     design = 'data/bayesian/model/design.hdf'
     calibrations = 'data/bayesian/calibration/results_err10.hdf', \
-                  'data/bayesian/calibration/results_err10_dNch_deta_only.hdf'
+        'data/bayesian/calibration/results_err10_dNch_deta_only.hdf'
 
     with h5py.File(design, 'r') as f:
         labels = list(f['labels'])
@@ -611,19 +611,21 @@ def posterior_compare():
     fig, axes = plt.subplots(
         ncols=nxy, figsize=(textwidth, 2*aspect*textwidth/nxy)
     )
-    
+
     zorders = 2, 1
     colors = plt.cm.Blues, plt.cm.Oranges
-    clabels = 'identified $dN/dy$', '$dN_\mathrm{ch}/d\eta$' 
+    clabels = 'identified $dN/dy$', '$dN_\mathrm{ch}/d\eta$'
 
     axes[0].plot(0, 0, label='Calibrated to:', alpha=0)
 
-    for calibration, cmap, order, clabel in zip(calibrations, colors, zorders, clabels):
+    for calibration, cmap, order, clabel in \
+            zip(calibrations, colors, zorders, clabels):
         with h5py.File(calibration, 'r') as f:
             chain = np.array(f['chain']).T[indices]
-            #chain = f['chain'][:1000000].T[indices]
+            # chain = f['chain'][:1000000].T[indices]
 
-        for n, (ax, c, lim, label) in enumerate(zip(axes, chain, ranges, labels)):
+        for n, (ax, c, lim, label) in \
+                enumerate(zip(axes, chain, ranges, labels)):
             line_color = cmap(.8)
             fill_color = cmap(.5, alpha=.2)
 
@@ -634,11 +636,12 @@ def posterior_compare():
             counts, edges = np.histogram(c, bins=100, range=lim, density=True)
             x = (edges[1:] + edges[:-1]) / 2
             y = counts
-            ax.plot(x, y, lw=0.8, color=line_color, zorder=order, label=clabel if n==0 else '')
+            ax.plot(x, y, lw=0.8, color=line_color, zorder=order,
+                    label=clabel if n == 0 else '')
             ax.fill_between(x, 0, y, color=fill_color, zorder=order)
             ax.get_yaxis().set_visible(False)
             ax.spines['left'].set_visible(False)
-        
+
             ticks = [0.14, 0.15, 0.16] \
                 if n == 7 else [lim[0], (lim[0] + lim[1])/2, lim[1]]
 
@@ -646,23 +649,23 @@ def posterior_compare():
             ax.set_xticks(ticks)
             ax.set_xticklabels([fmt_tick(i) for i in ticks])
             ax.set_xlabel(label)
-           
-            if n !=7:
+
+            if n != 7:
                 for t, justify in zip(ax.get_xaxis().get_major_ticks(),
                                       ['left', 'center', 'right']):
                     t.label1.set_horizontalalignment(justify)
-            if n==0:
+            if n == 0:
                 ax.legend(bbox_to_anchor=(0.5, 1.09), ncol=3,
                           fontsize=textiny, columnspacing=1,
                           bbox_transform=fig.transFigure, loc='upper center')
-   
+
     finish(w_pad=0.5, rect=[0, 0, 1, 0.85])
+
 
 @plot
 def mode_observables(**kwargs):
     batch_obs_mode = 'data/bayesian/model/batch-observables-mode.hdf'
     exp_data = 'data/bayesian/exp/data.hdf'
-    colors = plt.cm.Set1(np.linspace(0,1,6, endpoint=False))
     id_parts = [
         ('pion',   r'$\pi^{\!\pm}$', 'Blues'),
         ('kaon',   r'$K^{\!\pm}$', 'Greens'),
@@ -700,7 +703,8 @@ def mode_observables(**kwargs):
 
             ax.set_xlim(0, 76)
             ax.set_ylim(ylim)
-            #ax.set_ylabel(ylabel, position=(0,1), ha='right', va='baseline', labelpad=5)
+            # ax.set_ylabel(ylabel, position=(0,1),
+            #              ha='right', va='baseline', labelpad=5)
             ax.set_title(title)
 
             for (subobs, label, cmap), labelxy in zip(subplots, labelpos):
@@ -745,7 +749,7 @@ def mode_observables(**kwargs):
 def posterior_p_arrows(n=1, **kwargs):
     design = 'data/bayesian/model/design.hdf'
     calibration = 'data/bayesian/calibration/results_err10.hdf'
-    
+
     with h5py.File(design, 'r') as f:
         label = f['labels'][n]
         lim = f['range'][n]
@@ -760,8 +764,10 @@ def posterior_p_arrows(n=1, **kwargs):
     x = (edges[1:] + edges[:-1]) / 2
     y = counts / counts.max()
     ax.plot(x, y, lw=0.8, color=plt.cm.Blues(0.8))
-    ax.fill_between(x, y, color=plt.cm.Blues(0.15), zorder=-10, label='Posterior')
-    ax.plot(np.linspace(-1, 1, 2), -1*np.ones(2), lw=0.8, color=offblack, label=r'dS/dy') 
+    ax.fill_between(x, y, color=plt.cm.Blues(0.15), zorder=-10,
+                    label='Posterior')
+    ax.plot(np.linspace(-1, 1, 2), -1*np.ones(2), lw=0.8, color=offblack,
+            label=r'dS/dy')
 
     ax.set_xlabel(label, labelpad=2)
 
@@ -770,17 +776,18 @@ def posterior_p_arrows(n=1, **kwargs):
 
     # KLN model
     ax.text(-0.67, 0.05, 'KLN', fontsize=texsmall, va='bottom', ha='center')
-    ax.plot([-0.68, -0.66], [0, 0], lw=4, color=offblack, alpha=0.6, label='KLN', clip_on=False)
-   
+    ax.plot([-0.68, -0.66], [0, 0], lw=4, color=offblack, alpha=0.6,
+            label='KLN', clip_on=False)
+
     # EKRT model
     ax.text(0, 0.05, 'EKRT', fontsize=texsmall, va='bottom', ha='center')
-    ax.plot([-0.09, 0.12], [0, 0], lw=4, color=offblack, alpha=0.6, label='EKRT', clip_on=False)
-
+    ax.plot([-0.09, 0.12], [0, 0], lw=4, color=offblack, alpha=0.6,
+            label='EKRT', clip_on=False)
 
     # WN model
     ax.text(1, 0.05, 'WN', fontsize=texsmall, va='bottom', ha='center')
     ax.text(1, 0, '•', fontsize=texsmall, va='center', ha='center')
-    
+
     ax.set_xticks(np.arange(-10, 11, 5)/10)
     ax.set_xticks(np.arange(-75, 76, 50)/100, minor=True)
     ax.set_xticklabels(['-1.0', '-0.5', '0.0', '0.5', '1.0'], y=-0.02)
@@ -804,11 +811,13 @@ def posterior_p_arrows(n=1, **kwargs):
 
     finish(despine=False)
 
+
 @plot
 def viscosity_samples():
     calibration = 'data/bayesian/calibration/results_err10.hdf'
-    
-    fig, axes = plt.subplots(nrows=2, figsize=(columnwidth, 1.8*aspect*columnwidth))
+
+    fig, axes = plt.subplots(nrows=2,
+                             figsize=(columnwidth, 1.8*aspect*columnwidth))
     etas_ax, zetas_ax = axes
 
     Tmin, Tc, Tmax = 0.145, 0.154, 0.300
@@ -827,33 +836,34 @@ def viscosity_samples():
                              **line_kwargs)
                 zetas_ax.plot(T1, zetas_norm*_zetas(T1), **line_kwargs)
 
-    text_kwargs = dict(fontsize=texsmall)
     fill_kwargs = dict(color=grey, alpha=0.8, zorder=-1000)
 
     etas_ax.fill_between(T2, 0.3 + 2*(T2 - Tc), **fill_kwargs)
-    etas_ax.axvline(Tc, dashes=(4,2), lw=0.8, color='0.3')
+    etas_ax.axvline(Tc, dashes=(4, 2), lw=0.8, color='0.3')
     etas_ax.text(Tc + 0.003, 0.45, '$T_c = \,{}$ GeV'.format(Tc),
-                 ha='left', va='center', fontsize = textiny, color=offblack)
+                 ha='left', va='center', fontsize=textiny, color=offblack)
 
     points = etas_ax.transData.transform([
         (Tc, 0.3),
         (Tmax, 0.3 + 2*(Tmax-Tc))
     ])
     dx, dy = points[1] - points[0]
-    angle = 180/np.pi * np.arctan2(dy, dx)
 
     etas_ax.set_ylabel(r'$\eta/s$')
     etas_title = etas_ax.set_title('Shear viscosity')
     etas_title.set_y(0.9)
 
-    zetas_ax.plot(T1, _zetas(T1), color=offblack, lw=0.8, label=r'Unscaled $(\zeta/s)(T)$')
-    zetas_ax.fill_between(T1, 2*_zetas(T1), label='Initial range', **fill_kwargs)
-    zetas_ax.plot(np.linspace(0, 0.3, 2), np.zeros(2), lw=0.8, color=plt.cm.Blues(0.6), label='Posterior samples')
+    zetas_ax.plot(T1, _zetas(T1), color=offblack, lw=0.8,
+                  label=r'Unscaled $(\zeta/s)(T)$')
+    zetas_ax.fill_between(T1, 2*_zetas(T1), label='Initial range',
+                          **fill_kwargs)
+    zetas_ax.plot(np.linspace(0, 0.3, 2), np.zeros(2), lw=0.8,
+                  color=plt.cm.Blues(0.6), label='Posterior samples')
     zetas_ax.set_xlabel('Temperature [GeV]')
     zetas_ax.set_ylabel(r'$\zeta/s$')
     zetas_title = zetas_ax.set_title('Bulk viscosity')
     zetas_title.set_y(0.9)
-    
+
     handles, labels = zetas_ax.get_legend_handles_labels()
     zetas_ax.legend(handles[::-1], labels[::-1], bbox_to_anchor=(1.03, 0.85))
 
@@ -864,10 +874,12 @@ def viscosity_samples():
 
     finish(h_pad=1)
 
+
 @plot
 def trento_events():
-    fig, axes = plt.subplots(2, 2, sharex=True, sharey=True, figsize=(columnwidth, columnwidth))
-    
+    fig, axes = plt.subplots(2, 2, sharex=True, sharey=True,
+                             figsize=(columnwidth, columnwidth))
+
     x = np.linspace(-10, 10, 400)
     lim = (-8, 8)
     ticks = np.linspace(-5, 5, 3)
@@ -884,9 +896,10 @@ def trento_events():
             profile = np.array(ev)
             cs = ax.pcolorfast(x, x, profile, zorder=-100, cmap=my_cmap)
             cs.set_clim(0.0, np.max(profile))
-            properties = '$N_{}$$=${}\n$b$$=${:.1f} fm'.format(r'\mathrm{part}', ev.attrs['npart'], ev.attrs['b'])
-            ax.annotate(properties, xy=(0.99, 0.99), xycoords='axes fraction', ha='right',
-                        va='top', fontsize=textiny)
+            properties = '$N_{}$$=${}\n$b$$=${:.1f} \
+                fm'.format(r'\mathrm{part}', ev.attrs['npart'], ev.attrs['b'])
+            ax.annotate(properties, xy=(0.99, 0.99), xycoords='axes fraction',
+                        ha='right', va='top', fontsize=textiny)
 
         for xy in ['x', 'y']:
             getattr(ax, 'set_{}lim'.format(xy))(lim)
@@ -896,8 +909,86 @@ def trento_events():
         if ax.is_first_col():
             ax.set_ylabel('$y$ [fm]')
 
-    
     finish(w_pad=0.3, h_pad=0.3)
+
+
+@plot
+def ipglasma():
+    fig, (ax1, ax2) = \
+        plt.subplots(2, 1, figsize=(columnwidth, 1.8*aspect*columnwidth),
+                     sharex=True)
+
+    # Event properties for IP-Glasma & Trento samples
+    models = ['data/ipglasma/ipglasma.dat']
+    models.extend(glob.glob('data/ipglasma/trento-samples/*.dat'))
+
+    for (i, f) in enumerate(models):
+
+        # plot style
+        if i == 0:
+            color = offblack
+            alpha = 1
+            lw = 1
+            zorder = 2
+            dashes = (4, 2)
+        else:
+            color = plt.cm.Blues(0.6)
+            alpha = 0.4
+            lw = 0.4
+            zorder = 1
+            dashes = []
+
+        # load model results
+        b, mult, e2, e3 = np.loadtxt(f, usecols=(1, 3, 4, 5)).T
+        if i > 0:
+            mult *= 5.1
+
+        # impact parameter bins
+        edges = np.linspace(0, 16, 16)
+
+        # plot multiplicity
+        mult = np.array([mult[(lo < b) & (b < hi)].mean()
+                         for lo, hi in zip(edges[:-1], edges[1:])])
+
+        if i == 0:
+            norm = mult[2]
+
+        ax1.plot((edges[:-1] + edges[1:])/2, norm*mult/mult[2], color=color, lw=lw,
+                 alpha=alpha, dashes=dashes, zorder=zorder)
+
+        # plot eccentricity
+        e2, e3 = [[np.nanmean(en[(lo < b) & (b < hi)])
+                   for lo, hi in zip(edges[:-1], edges[1:])]
+                  for en in [e2, e3]]
+        ax2.plot((edges[:-1] + edges[1:])/2, e2, color=color, lw=lw,
+                 alpha=alpha, dashes=dashes, zorder=zorder)
+        ax2.plot((edges[:-1] + edges[1:])/2, e3, color=color, lw=lw,
+                 alpha=alpha, dashes=dashes, zorder=zorder)
+
+    ax1.set_ylim(0, 2500)
+    ax1.set_yticks([0, 500, 1000, 1500, 2000, 2500])
+    ax1.set_ylabel('$dN_\mathrm{ch}/d\eta$')
+    ax1.set_title('Multiplicity', y=0.9)
+    ipglasma_handle = lines.Line2D([], [], dashes=(4, 2), color=offblack)
+    ipglasma_label = r'IP-Glasma$\vert_{\tau=0.4\mathrm{\ fm/c}}}$'
+    trento_handle = lines.Line2D([], [], lw=1, color=plt.cm.Blues(0.6))
+    trento_label = r'Trento & F.S.$\vert_{\tau=0.4\mathrm{\ fm/c}}}$'
+    ax1.legend([ipglasma_handle, trento_handle],
+               [ipglasma_label, trento_label],
+               bbox_to_anchor=(1.05, 0.875), handlelength=1.8)
+    ax1.text(1, 250, r'$\sqrt{s_{NN}} = 2.76$ TeV')
+
+    ax2.set_xlim(0, 16)
+    ax2.set_xticks([0, 4, 8, 12, 16])
+    ax2.set_yticks([0, 0.2, 0.4, 0.6])
+    ax2.set_ylim(0, 0.7)
+    ax2.set_xlabel('$b$ [fm]')
+    ax2.set_ylabel(r'$\varepsilon_n$')
+    ax2.set_title('Eccentricity', y=0.9)
+    ax2.text(11, 0.6, r'$\varepsilon_2$')
+    ax2.text(11, 0.36, r'$\varepsilon_3$')
+
+    finish(h_pad=1)
 
 
 def main():

@@ -49,14 +49,12 @@ The dominant source of uncertainty in determining QGP transport coefficients fro
 
 The ongoing effort to constrain current bounds on the QGP shear viscosity typically focuses on improving theoretical descriptions of the initial conditions as well as the addition of new sensitive observables to assess the validity of each model's inherent assumptions and approximations. The process thus defines an iterative cycle in which theory calculations are embedded in hydrodynamic transport simulations and analyzed against a comprehensive list of bulk observables to determine the likelihood distributions of the model parameters.
 
-Model optimization and comparison is complicated by the high-dimensional nature of the underconstrained parameter space. In addition to free parameters which describe the QGP transport coefficients, hydrodynamic simulations depend on a number of auxiliary parameters such as an effective nucleon width, QGP thermalization time and chemical freezeout temperature which require simultaneous optimization. Evaluating hydrodynamic models at a single point in parameter space may require tens of thousand of hydrodynamic simulations and thus brute force optimization technqiues quickly become intractable. 
+Model optimization and comparison is complicated by the high-dimensional nature of the underconstrained parameter space. In addition to free parameters which describe the QGP transport coefficients, hydrodynamic simulations depend on a number of auxiliary parameters such as an effective nucleon width, QGP thermalization time and chemical freezeout temperature which require simultaneous optimization. Evaluating hydrodynamic models at a single point in parameter space may require tens of thousand of hydrodynamic simulations and thus brute force optimization techniques quickly become intractable. 
 
-{\bf Jonah:} These complexities illustrate the necessity for systematic parameter fitting. Introduce Bayesian methodology. Cite Pratt and your previous paper.
+One solution to the model optimization problem is the use of modern Bayesian methods designed to tune computationally intensive models which depend on free parameters that live in large and highly correlated parameter spaces. A given model is first evaluated using a relatively small number of parameter configurations corresponding to discrete points in parameter space, and the model evaluations are used to train a Gaussian process emulator which interpolates model predictions between the training points. A standard Markov chain Monte Carlo algorithm is then be used to explore the parameter space interpolated by the emulator and isolate regions of parameter space which optimally replicate experiment. 
 
-Bayesian methodology also provides a unique opportunity to parameterize and extract QGP initial conditionsi directly from data via systematic model to data comparison in order in order to resolve the apparent degeneracy in hydrodynamic initial condition models.
+Application of the Bayesian parameter estimation to heavy-ion collisions has been limited to simulations optimized with Monte Carlo Glauber (MC-Glb.) and Monte Carlo Kharzeev-Levin-Nardi (MC-KLN) initial conditons as well as first efforts to constrain the QGP initial conditions using a saturation inspired parameterization. 
 
-
- and extract QGP initial conditions directly from experimental data. While parametric initial condition models are not a substitute , they
 
 \section{Modeling the QGP evolution}
 
@@ -75,6 +73,7 @@ In this work, we opt for a mature, well-tested set of event-by-event models \cit
 \end{figure*}
 
 \subsection{Initial state models vs. parametric initial conditions}
+\label{ic}
 
 Ab-initio initial state models allow for the dynamical calculation of thermalization
 and QGP formation and provide the initial conditions for the subsequent hydrodynamic 

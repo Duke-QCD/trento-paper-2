@@ -53,7 +53,12 @@ Model optimization and comparison is complicated by the high-dimensional nature 
 
 One solution to the model optimization problem is the use of modern Bayesian methods designed to tune computationally intensive models which depend on free parameters that live in large and highly correlated parameter spaces. A given model is first evaluated using a relatively small number of parameter configurations corresponding to discrete points in parameter space, and the model evaluations are used to train a Gaussian process emulator which interpolates model predictions between the training points. A standard Markov chain Monte Carlo algorithm is then be used to explore the parameter space interpolated by the emulator and isolate regions of parameter space which optimally replicate experiment. 
 
-Application of the Bayesian parameter estimation to heavy-ion collisions has been limited to simulations optimized with Monte Carlo Glauber (MC-Glb.) and Monte Carlo Kharzeev-Levin-Nardi (MC-KLN) initial conditons as well as first efforts to constrain the QGP initial conditions using a saturation inspired parameterization. 
+Previous studies have applied Bayesian parameter estimation to simulations initialized with Monte Carlo Glauber (MC-Glb.) and Monte Carlo Kharzeev-Levin-Nardi (MC-KLN) initial conditions as well as constrained parametric forms of the QGP equation of state and initial conditions in an event-averaged hydrodynamic model. 
+
+
+As of yet, there has been no effort to apply Bayesian methodology to parameterize and constrain fluctuating initial conditions within a saturation type picture.
+
+In this work we utilize a complementary ansatz to the two-component parameterization which mimics the behavior of CGC calculations and extends the coverage of existing parametric mappings to span the full space of reasonable initial condition models.
 
 
 \section{Modeling the QGP evolution}

@@ -896,8 +896,10 @@ def trento_events():
             profile = np.array(ev)
             cs = ax.pcolorfast(x, x, profile, zorder=-100, cmap=my_cmap)
             cs.set_clim(0.0, np.max(profile))
-            properties = '$N_{}$$=${}\n$b$$=${:.1f} \
-                fm'.format(r'\mathrm{part}', ev.attrs['npart'], ev.attrs['b'])
+            properties = \
+                '$N_{}$$=${}\n$b$$=${:.1f} fm'.format(r'\mathrm{part}',
+                                                      ev.attrs['npart'],
+                                                      ev.attrs['b'])
             ax.annotate(properties, xy=(0.99, 0.99), xycoords='axes fraction',
                         ha='right', va='top', fontsize=textiny)
 

@@ -928,7 +928,7 @@ def ipglasma():
 
         # plot style
         if i == 0:
-            color = offblack
+            color = plt.cm.Oranges(0.4)
             alpha = 1
             lw = 1
             zorder = 2
@@ -971,7 +971,7 @@ def ipglasma():
     ax1.set_yticks([0, 500, 1000, 1500, 2000, 2500])
     ax1.set_ylabel('$dN_\mathrm{ch}/d\eta$')
     ax1.set_title('Multiplicity', y=0.9)
-    ipglasma_handle = lines.Line2D([], [], dashes=(4, 2), color=offblack)
+    ipglasma_handle = lines.Line2D([], [], dashes=(4, 2), color='0.7')
     ipglasma_label = r'IP-Glasma$\vert_{\tau=0.4\mathrm{\ fm/c}}}$'
     trento_handle = lines.Line2D([], [], lw=1, color=plt.cm.Blues(0.6))
     trento_label = r'Trento & F.S.$\vert_{\tau=0.4\mathrm{\ fm/c}}}$'

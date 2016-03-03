@@ -30,7 +30,7 @@
 We aim to determine the quark-gluon-plasma initial conditions created in ultra-relativistic heavy-ion collisions and its temperature dependent transport coefficients utilizing Bayesian statistics and a multi-parameter model-to-data comparison.
 The study is performed using \trento\ a recently developed parametric initial condition model for relativistic nuclear collisions which is able to interpolate among a general class of saturation based particle production scenarios [?].
 The parameterization is compared to explicit calculations in Color-Glass Condensate effective field theory and embedded in a realistic hybrid model which couples event-by-event viscous hydrodynamics to a hadronic cascade.
-We find that the parameterized initial conditions are highly constrained by bulk observables and provide a first set of constraints on the temperature dependence of the specific shear- and bulk-viscosities of the quark-gluon-plasma.
+We find that the parameterized initial conditions are highly constrained by bulk observables and provide a first set of constraints on the temperature dependence of the specific shear- and bulk-viscosities of the quark-gluon plasma.
 \end{abstract}
 
 
@@ -53,12 +53,13 @@ Model optimization and comparison is complicated by the high-dimensional nature 
 
 One solution to the model optimization problem is the use of modern Bayesian methods designed to tune computationally intensive models which depend on free parameters that live in large and highly correlated parameter spaces. A given model is first evaluated using a relatively small number of parameter configurations corresponding to discrete points in parameter space, and the model evaluations are used to train a Gaussian process emulator which interpolates model predictions between the training points. A standard Markov chain Monte Carlo algorithm is then be used to explore the parameter space interpolated by the emulator and isolate regions of parameter space which optimally replicate experiment. 
 
-Bayesian methods have been applied in previous studies to hydrodynamic simulations initialized with a two-component Monte Carlo Glauber (MC-Glb.) model and initial conditions derived from Color Glass Condensate effective field theory using the Monte Carlo Kharzeev-Levin-Nardi (MC-KLN) model. One approach to improving current constraints on the QGP transport coefficients is to extend this coverage to more modern calculations of the QGP initial conditions and evaluate each model's performance using an appropriately chosen measure that quantifies the agreement of each model with experiment.
+Bayesian methods have been applied in previous studies to hydrodynamic simulations initialized with a two-component Monte Carlo Glauber (MC-Glb.) model and initial conditions derived from Color Glass Condensate effective field theory using the Monte Carlo Kharzeev-Levin-Nardi (MC-KLN) model. Future studies might expand this coverage to more modern calculations of the QGP initial conditions in order to systematically constrain hydrodynamic transport coefficients and auxiliary parameters for each initialization model described in the literature. Once the models are appropriately optimized, the accuracy of the different theory calculations can be assessed using an appropriately chosen goodness of fit measure or, as typically used in Bayesian methodology, an integrated likelihood that a given model describes experiment. 
 
-A second approach, which was introduced in a comprehensive Bayesian analysis of heavy-ion collisions at RHIC and the LHC [], is to replace derivative theory calculations with flexible parameterizations of the initial conditions that can mimic the full range of reasonable models. The approach effectively absorbs systematic uncertainties associated with different theory calculations into underconstrained parameters of the Bayesian analysis. 
+An alternative approach to this method of direct model validation is to parameterize the QGP initial conditions and apply Bayesian parameter estimation to determine systematic constraints on the initial energy (or entropy) deposited by competing models. The approach was first introduced in a comprehensive Bayesian analysis of heavy-ion collisions at RHIC and the LHC which constrained parameterized forms of the event-averaged initial conditions and temperature dependence of the QGP equation of state using viscous hydrodynamics coupled to a hadronic afterburner.  
 
+In this work we extend the study of parametric initial conditions using a recently developed
 
-In this work we utilize a complementary ansatz to the two-component parameterization which mimics the behavior of CGC calculations and extends the coverage of existing parametric mappings to span the full space of reasonable initial condition models.
+build the previous effort to parameterize and constrain the QGP initial conditions and perform a Bayesian analysis of event-by-event viscous hydrodynamics with parametric initial condition
 
 
 \section{Modeling the QGP evolution}

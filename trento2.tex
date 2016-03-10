@@ -57,11 +57,22 @@ Bayesian methods have been applied in previous studies to hydrodynamic simulatio
 
 An alternative approach to this method of direct model validation is to parameterize the QGP initial conditions and apply Bayesian parameter estimation to determine systematic constraints on the initial energy (or entropy) deposited by competing models. The approach was first introduced in a comprehensive Bayesian analysis of heavy-ion collisions at RHIC and the LHC which constrained parameterized forms of the event-averaged initial conditions and temperature dependence of the QGP equation of state using viscous hydrodynamics coupled to a hadronic afterburner. The authors parameterized the initial conditions using a saturation inspired mapping similar to an optical wounded nucleon model but with additional parameters to incorporate modifications to particle production expected in Color-Glass Condensate effective field theory.
 
-In this work we extend previous efforts to parameterize and constrain the QGP initial conditions using \trento , a recently developed parametric initial condition model designed to interpolate a subspace of all initialization models, including, but not limited to, parameterizations that mimic specific calculations in Color-Glass Condensate effective field theory. The parametric model generalizes trivially to incorporate fluctuations of the nucleon coordinates and minimum bias proton-proton yields and is used to conduct the first Bayesian analysis of QGP initial conditions which parameterizes both the magnitude of event-by-event fluctuations and the strength of saturation effects which modulate average particle production. We show that the experimental data imparts simultaneous constraints on the QGP initial conditions and medium properties, and compare these constraints to specific initial condition models used in the literature.  
-
+In this work we extend previous efforts to parameterize and constrain the QGP initial conditions using \trento , a recently developed parametric initial condition model designed to interpolate a subspace of all initialization models, including, but not limited to, parameterizations that mimic specific calculations in Color-Glass Condensate effective field theory. The parametric model generalizes trivially to incorporate fluctuations of the nucleon coordinates and minimum bias proton-proton yields and is used to conduct the first Bayesian analysis of QGP initial conditions which parameterizes both the magnitude of event-by-event fluctuations and the strength of saturation effects which modulate average particle production. We show that the experimental data imparts simultaneous constraints on the QGP initial conditions and medium properties, and compare these constraints to specific calculations in the literature.  
 
 \section{Modeling the QGP evolution}
 
+\begin{figure*}
+    \includegraphics{cgc_compare}
+    \caption{Profiles of the initial thermal distribution predicted by the KLN (left), EKRT (middle) and wounded nucleon (right) models (dashed black lines) compared to a generalized mean with different values of the parameter $p$ (solid blue lines). Staggered lines show different cross sections of the initial entropy density $dS/(d^2r_\perp dy)$ as a function of the nucleon density $T_A$ for several values of $T_B = 1, 2, 3$ [fm$^{-2}$].} 
+\end{figure*}
+
+The heavy-ion collision transport dynamics are modeled in a multi-stage approach which uses relativistic viscous hydrodynamics for the time-evolution of the QGP medium and a microscopic Boltzmann equation to simulate the dynamics of the system after hadronization. The hydrodynamic evolution is solved using an improved version of VISH2+1, a stable, extensively tested implementation of boost-invariant viscous hydrodynamics which has been updated to handle fluctuating event-by-event initial conditions. The equations of motion are described by the second-order Israel-Stewart equations in the 14-moment approximation which leads to a set of relaxation equations, 
+\begin{equation}
+
+\end{equation}
+for the bulk viscous pressure $\Pi$ and shear-stress tensor $\pi^{\mu\nu}$ and a number transport coefficients which are general functions of temperature and chemical potential.
+
+which models the strongly coupled QGP phase of the collision using relativistic viscous hydrodynamics and microscopic Boltzmann 
 State-of-the-art heavy-ion collision models simulate QGP spacetime evolution in several stages \cite{Bass:2000ib,Teaney:2001av,Hirano:2005xf,Nonaka:2006yn,Petersen:2008dd,Song:2010mg,Schenke:2010rr,Shen:2014vra}:
 \begin{enumerate}
   \item an initial condition model describes the initial state and non-equilibrium dynamics until QGP formation,
@@ -69,15 +80,21 @@ State-of-the-art heavy-ion collision models simulate QGP spacetime evolution in 
   \item then a particlization model converts the system into a microscopic ensemble of hadrons,
   \item and finally a Boltzmann transport model calculates hadronic rescattering and decays.
 \end{enumerate}
-In this work, we opt for a mature, well-tested set of event-by-event models \cite{Shen:2014vra}  for the hydrodynamic evolution of the QGP and subsequent microscopic evolution of the hadronic phase. The initial condition will be provided by a novel parametric approach \cite{}.
+In this work, we opt for a mature, well-tested set of event-by-event models \cite{Shen:2014vra} for the hydrodynamic evolution of the QGP and subsequent microscopic evolution of the hadronic phase. The initial condition will be provided by a novel parametric approach \cite{}.
 
-\begin{figure*}
-    \includegraphics{cgc_compare}
-    \caption{Profiles of the initial thermal distribution predicted by the KLN (left), EKRT (middle) and wounded nucleon (right) models (dashed black lines) compared to a generalized mean with different values of the parameter $p$ (solid blue lines). Staggered lines show different cross sections of the initial entropy density $dS/(d^2r_\perp dy)$ as a function of the nucleon density $T_A$ for several values of $T_B = 1, 2, 3$ [fm$^{-2}$].} 
-\end{figure*}
 
 \subsection{Initial state models vs. parametric initial conditions}
 \label{ic}
+
+\begin{figure}
+    \includegraphics{trento_events}
+    \caption{Several \protect\trento\ Pb+Pb initial condition events for the transverse entropy density $dS/(d^2r_\perp dy)$ calculated using generalized mean parameter $p=0$, nucleon width $w=0.5$ fm and gamma fluctuation factor $k=1.4$.}
+\end{figure}
+
+\begin{figure}[b]
+    \includegraphics{thickness}
+    \caption{Cross section of the participant nucleon density in a mid-central Pb+Pb collision at $\sqrts=2.76$ TeV as a function of the transverse coordinate $x$ parallel to impact parameter $\vec{b}$. The gray band indicates the region bounded by the minimum and maximum values of the local participant thickness functions $T_A$ and $T_B$, while the blue band indicates the region spanned by the generalized mean of $T_A$ and $T_B$ with parameter $-1<p<1$. The solid blue line shows an example of a discrete mapping specified by a generalized mean with $p=0$.} 
+\end{figure}
 
 Ab-initio initial state models allow for the dynamical calculation of thermalization
 and QGP formation and provide the initial conditions for the subsequent hydrodynamic 
@@ -100,15 +117,6 @@ insight into their viability without the need for a full initial-to-final-state 
 calculation.
 
 
-\begin{figure}
-    \includegraphics{trento_events}
-    \caption{Several \protect\trento\ Pb+Pb initial condition events for the transverse entropy density $dS/(d^2r_\perp dy)$ calculated using generalized mean parameter $p=0$, nucleon width $w=0.5$ fm and gamma fluctuation factor $k=1.4$.}
-\end{figure}
-
-\begin{figure}[b]
-    \includegraphics{thickness}
-    \caption{Cross section of the participant nucleon density in a mid-central Pb+Pb collision at $\sqrts=2.76$ TeV as a function of the transverse coordinate $x$ parallel to impact parameter $\vec{b}$. The gray band indicates the region bounded by the minimum and maximum values of the local participant thickness functions $T_A$ and $T_B$, while the blue band indicates the region spanned by the generalized mean of $T_A$ and $T_B$ with parameter $-1<p<1$. The solid blue line shows an example of a discrete mapping specified by a generalized mean with $p=0$.} 
-\end{figure}
 
 \subsection{Hydrodynamics and Boltzmann transport}
 
@@ -139,7 +147,7 @@ calculation.
 
 \section{Results}
 
-\begin{table}
+\begin{table}[H]
     \caption{High likelihood parameters selected from the posterior distribution in Fig.~\ref{fig:posterior_identified} used to generate Fig.~\ref{fig:mode_observables}}
     \begin{ruledtabular}    
         \begin{tabular}{llll}

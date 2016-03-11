@@ -66,21 +66,50 @@ In this work we extend previous efforts to parameterize and constrain the QGP in
     \caption{Profiles of the initial thermal distribution predicted by the KLN (left), EKRT (middle) and wounded nucleon (right) models (dashed black lines) compared to a generalized mean with different values of the parameter $p$ (solid blue lines). Staggered lines show different cross sections of the initial entropy density $dS/(d^2r_\perp dy)$ as a function of the nucleon density $T_A$ for several values of $T_B = 1, 2, 3$ [fm$^{-2}$].} 
 \end{figure*}
 
-The heavy-ion collision transport dynamics are modeled in a multi-stage approach which uses relativistic viscous hydrodynamics for the time-evolution of the QGP medium and a microscopic Boltzmann equation to simulate the dynamics of the system after hadronization. The hydrodynamic evolution is solved using an improved version of VISH2+1, a stable, extensively tested implementation of boost-invariant viscous hydrodynamics which has been updated to handle fluctuating event-by-event initial conditions. The equations of motion are described by the second-order Israel-Stewart equations in the 14-moment approximation which leads to a set of relaxation equations, 
+The heavy-ion collision transport dynamics are modeled in a multi-stage approach which uses relativistic viscous hydrodynamics for the time-evolution of the QGP medium and a microscopic Boltzmann equation to simulate the dynamics of the system after hadronization. 
+
+\subsection{Hydrodynamics and Boltzmann transport}
+The hydrodynamic evolution is solved using an improved version of VISH2+1, a stable, extensively tested implementation of boost-invariant viscous hydrodynamics which has been updated to handle fluctuating event-by-event initial conditions and incorporate bulk viscous corrections with shear and bulk coupling. The equations of motion are described by the second-order Israel-Stewart equations in the 14-moment approximation which yields a set of relaxation equations
+\begin{subequations}
+\label{relaxation}
+\begin{align}
+    \tau_\Pi \Pi + \dot{\Pi} =& -\zeta \theta - \delta_{\Pi\Pi} \Pi\theta + \phi_1 \Pi^2 + \lambda_{\Pi\pi} \pi^{\mu\nu} \sigma_{\mu\nu} \nonumber \\ 
+   &+\phi_3 \pi^{\mu\nu}\pi_{\mu\nu}, \\
+    \tau_\pi \dot{\pi}^{\langle \mu\nu \rangle} + \pi^{\mu\nu} =& ~2\eta\sigma^{\mu\nu} + 2\pi_\alpha^{\langle \mu} w^{\nu \rangle \alpha} - \delta_{\pi\pi} \pi^{\mu\nu} \theta \phi_7 \pi_\alpha^{\langle \mu} \pi^{\nu \rangle \alpha} \nonumber \\
+&-\tau_{\pi\pi} \pi_\alpha^{\langle \mu}\sigma^{\nu \rangle \alpha} + \lambda_{\pi\Pi} \Pi \sigma^{\mu\nu} + \phi_6 \Pi \pi^{\mu\nu},
+\end{align}
+\end{subequations}
+for the bulk viscous pressure $\Pi$ and shear-stress tensor $\pi^{\mu\nu}$. The terms $\zeta$ and $\eta$ are the first-order bulk and shear transport coefficients, and the parameters $\tau_\Pi$ and $\tau_\pi$ their second-order bulk and shear relaxation times. The remaining transport coefficients multiplying shear and bulk terms on the right can then be expressed as functions of the relaxation times and other thermodynamic quantities and have been determined in the limit of small but finite masses in reference \ref{?}.
+
+The relaxation equations in Eq.\eqref{relaxation} are then used to solve the hydrodynamic evolution equations,
 \begin{equation}
-
+\partial_\mu T^{\mu\nu} = 0, \quad T^{\mu\nu} = e u^\mu u^\nu  - \Delta^{\mu\nu} (P_0 + \Pi) + \pi^{\mu\nu},
 \end{equation}
-for the bulk viscous pressure $\Pi$ and shear-stress tensor $\pi^{\mu\nu}$ and a number transport coefficients which are general functions of temperature and chemical potential.
+for the energy-momentum tensor $T^{\mu\nu}$, provided a set of initial conditions for the energy density $e(x,y)$ and four-velocity $u^\mu(x,y)$ as well as an equation of state to interrelate the energy density $e$, ideal pressure $P_0$ and temperature $T$ of each fluid cell in local thermal equillibrium.
 
-which models the strongly coupled QGP phase of the collision using relativistic viscous hydrodynamics and microscopic Boltzmann 
-State-of-the-art heavy-ion collision models simulate QGP spacetime evolution in several stages \cite{Bass:2000ib,Teaney:2001av,Hirano:2005xf,Nonaka:2006yn,Petersen:2008dd,Song:2010mg,Schenke:2010rr,Shen:2014vra}:
-\begin{enumerate}
-  \item an initial condition model describes the initial state and non-equilibrium dynamics until QGP formation,
-  \item viscous relativistic hydrodynamics calculates the dynamical expansion of the hot and dense QGP medium including the phase transition to a hadron gas,
-  \item then a particlization model converts the system into a microscopic ensemble of hadrons,
-  \item and finally a Boltzmann transport model calculates hadronic rescattering and decays.
-\end{enumerate}
-In this work, we opt for a mature, well-tested set of event-by-event models \cite{Shen:2014vra} for the hydrodynamic evolution of the QGP and subsequent microscopic evolution of the hadronic phase. The initial condition will be provided by a novel parametric approach \cite{}.
+We use a modern QCD equation of state (EoS) based on continuum extrapolated lattice calculations at zero baryon density published by the HotQCD collaboration. The resulting EoS, characterized by the parameterized interaction measure $\theta^{\mu\mu}(T) = (e - 3p)/T^4$, has been compared to additional state-of-the-art calculations by the Wuppertal-Budapest collaboration and shown to agree within published errors. The two parameterizations were also studied in a recent error analysis at RHIC energies which quantified the effect of systematic lattice EoS discrepancies and statistical continuum extrapolation errors on hydrodynamic observables. The effect of these errors on mean $p_T$, elliptic flow $v_2$ and triangular flow $v_3$ was found to be order 1\% and hence is expected to be negligible in the present analysis.
+
+As the system expands and cools, the medium passes through a phase transition in the vicinity of the pseudo-critical phase transition temperature $T_c = 154$ MeV.
+
+from a strongly interacting QGP in local thermal and chemical equillibirum to a rapidly expanding dillute hadron resonance gas which 
+Below the QGP phase transition temperature the strongly interacting fluid hadronizes 
+
+the hybrid model used in this work switches from hydrodynamic field equations to microscopic scattering dynamics described by the UrQMD hadronic transport code.
+
+The fluid hadronization is performed along an isotherm $T_\text{sw}$ using the iSS particle sampler according to the Cooper-Frye prescription,
+\begin{equation}
+    \frac{dN}{dy p_T dp_T d\phi_p} = \int_\Sigma \frac{g}{(2\pi)^3} (f_0(x,p) + \delta f(x,p)) p^\mu d^3 \sigma_\mu,
+\end{equation}
+where $E$ and $p$ are the energy and momentum of the sampled particle, $f_0$ the ideal distribution function, $\delta f$ its viscous corrections and where $d^3\sigma_\mu$ is an element of the isothermal freezeout surface $\Sigma$.
+
+%State-of-the-art heavy-ion collision models simulate QGP spacetime evolution in several stages \cite{Bass:2000ib,Teaney:2001av,Hirano:2005xf,Nonaka:2006yn,Petersen:2008dd,Song:2010mg,Schenke:2010rr,Shen:2014vra}:
+%\begin{enumerate}
+%  \item an initial condition model describes the initial state and non-equilibrium dynamics until QGP formation,
+%  \item viscous relativistic hydrodynamics calculates the dynamical expansion of the hot and dense QGP medium including the phase transition to a hadron gas,
+%  \item then a particlization model converts the system into a microscopic ensemble of hadrons,
+%  \item and finally a Boltzmann transport model calculates hadronic rescattering and decays.
+%\end{enumerate}
+%In this work, we opt for a mature, well-tested set of event-by-event models \cite{Shen:2014vra} for the hydrodynamic evolution of the QGP and subsequent microscopic evolution of the hadronic phase. The initial condition will be provided by a novel parametric approach \cite{}.
 
 
 \subsection{Initial state models vs. parametric initial conditions}
@@ -147,7 +176,7 @@ calculation.
 
 \section{Results}
 
-\begin{table}[H]
+\begin{table}
     \caption{High likelihood parameters selected from the posterior distribution in Fig.~\ref{fig:posterior_identified} used to generate Fig.~\ref{fig:mode_observables}}
     \begin{ruledtabular}    
         \begin{tabular}{llll}

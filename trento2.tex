@@ -3,6 +3,7 @@
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{lipsum}
+\usepackage{amsmath}
 %\usepackage{tabularx}
 %\usepackage{dcolumn}
 \graphicspath{{fig/}}
@@ -83,20 +84,40 @@ for the bulk viscous pressure $\Pi$ and shear-stress tensor $\pi^{\mu\nu}$. The 
 
 The relaxation equations in Eq.\eqref{relaxation} are then used to solve the hydrodynamic evolution equations,
 \begin{equation}
+\label{conservation}
 \partial_\mu T^{\mu\nu} = 0, \quad T^{\mu\nu} = e u^\mu u^\nu  - \Delta^{\mu\nu} (P_0 + \Pi) + \pi^{\mu\nu},
 \end{equation}
 for the energy-momentum tensor $T^{\mu\nu}$, provided a set of initial conditions for the energy density $e(x,y)$ and four-velocity $u^\mu(x,y)$ as well as an equation of state to interrelate the energy density $e$, ideal pressure $P_0$ and temperature $T$ of each fluid cell in local thermal equillibrium.
 
-We use a modern QCD equation of state (EoS) based on continuum extrapolated lattice calculations at zero baryon density published by the HotQCD collaboration. The resulting EoS, characterized by the parameterized interaction measure $\theta^{\mu\mu}(T) = (e - 3p)/T^4$, has been compared to additional state-of-the-art calculations by the Wuppertal-Budapest collaboration and shown to agree within published errors. The two parameterizations were also studied in a recent error analysis at RHIC energies which quantified the effect of systematic lattice EoS discrepancies and statistical continuum extrapolation errors on hydrodynamic observables. The effect of these errors on mean $p_T$, elliptic flow $v_2$ and triangular flow $v_3$ was found to be order 1\% and hence is expected to be negligible in the present analysis.
+We use a modern QCD equation of state (EoS) based on continuum extrapolated lattice calculations at zero baryon density published by the HotQCD collaboration and blended into a hadron resonance gas EoS at $T = 130$ MeV using a smoothstep interpolation function. The HotQCD EoS, characterized by the parameterized interaction measure $\theta^{\mu\mu}(T) = (e - 3p)/T^4$, has been compared to additional state-of-the-art calculations by the Wuppertal-Budapest collaboration and shown to agree within published errors. The two parameterizations were also studied in a recent error analysis at RHIC energies which quantified the effect of systematic lattice EoS discrepancies and statistical continuum extrapolation errors on hydrodynamic observables. The effect of these errors on mean $p_T$, elliptic flow $v_2$ and triangular flow $v_3$ was found to be order 1\% and hence is expected to be negligible in the present analysis.
 
-As the system expands and cools, the QGP medium undergoes hadronization and rescatters as a hadron resonance gas for a period of time before collisions cease and the system starts to break up. Eventually, the mean free path of the medium approaches the system size and the hydrodynamic description breaks down.  The hybrid model approach used in the present analysis accounts for these off equilibirum hadronic scatterings and kinetic freezeout using the UrQMD hadronic cascade. 
+We seek to constrain, among other quantities, the temperature dependence of the shear and bulk transport coefficients $\eta(T)$ and $\zeta(T)$ in Eq.~\eqref{relaxation}. The QGP specific shear viscosity $\eta/s$ is qualitatively expected to reach a global minimum near the QGP phase transition temperature and hence is parameterized using a simple form,
+\begin{equation}
+(\eta/s)(T) = 
+\begin{cases}
+    (\eta/s)_\text{min} + (\eta/s)_\text{slope} \cdot (T - T_c) &\text{if } T > T_c \\
+    (\eta/s)_\text{hrg} &\text{if } T \le T_c
+\end{cases}
+\end{equation}
+where we fix $T_c = 0.155$ GeV using the approximate pseudo-critical phase transition temperature of the HotQCD equation of state, and $(\eta/s)_\text{min}$, $(\eta/s)_\text{slope}$ and $(\eta/s)_\text{hrg}$ are constants which we wish to determine. 
 
-The fluid hadronization is performed along an isotherm $T_\text{sw}$ using the iSS particle sampler according to the Cooper-Frye prescription,
+We parameterize the bulk viscosity using the  $(\zeta/s)(T)$ previously used in the literature. 
+\begin{equation}
+    (\zeta/s)(T) = (\zeta/s)_\text{norm} \cdot (\zeta/s)^\dagger(T) \hfill
+\end{equation}
+
+An obvious advantage of this choice is that it allows us to directly compare our results with previous extractions of $(\zeta/s)(T)$. For the 
+
+The fluid is particlized along an isotherm $T_\text{sw}$ using the iSS particle sampler according to the Cooper-Frye prescription,
 \begin{equation}
     \frac{dN}{dy p_T dp_T d\phi_p} = \int_\Sigma \frac{g}{(2\pi)^3} (f_0(x,p) + \delta f(x,p)) p^\mu d^3 \sigma_\mu,
 \end{equation}
 where $E$ and $p$ are the energy and momentum of the sampled particle, $f_0$ the ideal distribution function, $\delta f$ its viscous corrections and where $d^3\sigma_\mu$ is an element of the isothermal freezeout surface $\Sigma$.
 
+The shear viscous corrections to the distribution funtion are given by,
+\begin{equation}
+    \delta f(x^\mu, p^\mu) = f_0(x^\mu, p^\mu)(1 \pm f_0(x^\mu, p^\mu))\frac{\pi_{\mu\nu}p^\mu p^\nu}{2(e+P)\mathcal{X}\left(\frac{p u}{T})\right)}
+\end{equation}
 %State-of-the-art heavy-ion collision models simulate QGP spacetime evolution in several stages \cite{Bass:2000ib,Teaney:2001av,Hirano:2005xf,Nonaka:2006yn,Petersen:2008dd,Song:2010mg,Schenke:2010rr,Shen:2014vra}:
 %\begin{enumerate}
 %  \item an initial condition model describes the initial state and non-equilibrium dynamics until QGP formation,
@@ -105,6 +126,8 @@ where $E$ and $p$ are the energy and momentum of the sampled particle, $f_0$ the
 %  \item and finally a Boltzmann transport model calculates hadronic rescattering and decays.
 %\end{enumerate}
 %In this work, we opt for a mature, well-tested set of event-by-event models \cite{Shen:2014vra} for the hydrodynamic evolution of the QGP and subsequent microscopic evolution of the hadronic phase. The initial condition will be provided by a novel parametric approach \cite{}.
+At this point it is important to note that the hadron resonance gas viscosity $(\eta/s)_\text{hrg}$ plays a very different role than either $(\eta/s)_\text{min}$ or $(\eta/s)_\text{max}$.
+
 
 
 \subsection{Initial state models vs.\ parametric\\initial conditions}

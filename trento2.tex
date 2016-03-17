@@ -128,15 +128,24 @@ with dimensionless parameter $x = T/T_0$ and parameterization coefficients
 \end{align*}
 The $(\zeta/s)(T)$ curve in Eq.~\eqref{zetas} is then rescaled by an overall normalization factor $(\zeta/s)_\text{norm}$ which is a free parameter to be constrained by data. 
 
-The fluid is particlized along an isotherm $T_\text{sw}$ using the iSS particle sampler according to the Cooper-Frye prescription,
+The hybrid model used in the present analysis switches from hydrodynamic field equations to a microscopic kinetic description of the medium once the fluid expands, cools and hadronizes. Kinetic descriptions are well suited to describe late stages of the collision where the inter-particle mean free path approaches the system size and approximate local thermal equillibirum breaks down. Kinetic models also naturally describe species dependent kinetic freezeout and hadronic feed down dynamics which are difficult to incorporate in purely hydrodynamic models. More detailed discussion of the advantages of hybrid models can be found in references \ref{?}.
+
+The transition from viscous hydrodynamics to a hadronic cascade is performed along a constant isotherm $T_\text{sw}$ using the iSS particle sampler according to the Cooper-Frye prescription,
 \begin{equation}
+    \label{cooper_frye}
     \frac{dN}{dy p_T dp_T d\phi_p} = \int_\Sigma \frac{g}{(2\pi)^3} (f_0(x,p) + \delta f(x,p)) p^\mu d^3 \sigma_\mu,
 \end{equation}
 where $E$ and $p$ are the energy and momentum of the sampled particle, $f_0$ the ideal distribution function, $\delta f$ its viscous corrections and where $d^3\sigma_\mu$ is an element of the isothermal freezeout surface $\Sigma$.
 
-The shear viscous corrections to the distribution funtion are given by,
+In general, the viscous corrections to the distribution function $\delta f(x, p)$ in Eq.~\eqref{cooper_frye} include both shear and bulk contributions. The shear correction to the distribution function is given by,
 \begin{equation}
-    \delta f(x^\mu, p^\mu) = f_0(x^\mu, p^\mu)(1 \pm f_0(x^\mu, p^\mu))\frac{\pi_{\mu\nu}p^\mu p^\nu}{2(e+P)T^2}
+    \delta f_\text{shear}(x^\mu, p^\mu) = f_0(x^\mu, p^\mu)(1 \pm f_0(x^\mu, p^\mu))\frac{\pi_{\mu\nu}p^\mu p^\nu}{2(e+P)T^2}
+\end{equation}
+where $f_0$ is the ideal distribution function, $\pi_{\mu\nu}$ the shear stress tensor, $p^\mu$ the particle momentum and $e$, $P$ and $T$ the fluid's energy density, pressure and temperature. The bulk viscous correction, on the other hand, is described by multiple formulations in the literature which predict significantly different behaviour when either the bulk viscosity $\zeta$ or the transverse momentum $p_T$ are large. We note, however, that since the bulk parameterization $(\zeta/s)(T)$ in Eq.~\eqref{zetas} is small in the allowed hydro-to-micro transition region $135 \le T_\text{sw} \le 165$~MeV used in this study, that the bulk viscous corrections $\delta f_\text{bulk} \propto (\zeta/s)\vert_{T_\text{sw}}$ are also expected to be small and are neglected in the present work.
+
+Once the fluid is converted into hadrons, the subsequent microscopic dynamics are modeled using the UrQMD hadronic afterburner. The UrQMD model solves a numerical implementation of the relativistic Boltzmann equation,
+\begin{equation}
+2=2
 \end{equation}
 %State-of-the-art heavy-ion collision models simulate QGP spacetime evolution in several stages \cite{Bass:2000ib,Teaney:2001av,Hirano:2005xf,Nonaka:2006yn,Petersen:2008dd,Song:2010mg,Schenke:2010rr,Shen:2014vra}:
 %\begin{enumerate}
@@ -147,8 +156,9 @@ The shear viscous corrections to the distribution funtion are given by,
 %\end{enumerate}
 %In this work, we opt for a mature, well-tested set of event-by-event models \cite{Shen:2014vra} for the hydrodynamic evolution of the QGP and subsequent microscopic evolution of the hadronic phase. The initial condition will be provided by a novel parametric approach \cite{}.
 
-
-\subsection{Initial state models vs.\ parametric\\initial conditions}
+At this point we briefly recapitulate the free parameters enumerated thus far which describe the hydrodynamic evolution of the produced QGP:
+ 
+\subsection{Initial state models vs.\ parametric initial conditions}
 \label{ic}
 
 \begin{figure}
@@ -182,9 +192,7 @@ insight into their viability without the need for a full initial-to-final-state 
 calculation.
 
 
-
-\subsection{Hydrodynamics and Boltzmann transport}
-
+At this time, we take a moment to briefly summarize the model and enumerate the free parameters used to model the initial conditions and QGP evolution.
 
 \section{Constraining the model}
 
@@ -234,7 +242,7 @@ calculation.
 \end{figure*}
 
 
-\subsection{Constraining initial conditions}
+\subsection{Initial condition properties}
 \begin{figure}
     \includegraphics{nch_per_npart}
     \caption{Average charged particle density per participant pair $(d\nch/d\eta)/(\npart/2)$ as a function of participant number for Pb+Pb and p+Pb collisions at $\sqrts=5.02$ TeV.
@@ -256,7 +264,7 @@ calculation.
     Charged particle multiplicity $d\nch/d\eta$ (top) and eccentricity harmonics $\varepsilon_n$ (bottom) for ${\sqrt{s_{NN}}=2.76}$ TeV Pb+Pb collisions as a function of impact parameter $b$. \protect\trento\ results using parameters drawn from the Bayesian posterior in Fig.~\ref{fig:posterior_identified} (solid lines) compared to results from the IP-Glasma model. Each \protect\trento\ initial condition event is freestreamed an additional 0.4 fm/c to match the pre-equilibrium evolution time of Classical Yang-Mills dynamics in the IP-Glasma model.}
 \end{figure}
 
-\subsection{Determining QGP medium properties}
+\subsection{QGP medium properties}
 \begin{figure}
     \includegraphics{viscosity_samples}
     \caption{Posterior constraints on the temperature dependent shear viscosity $(\eta/s)(T)$ (top panel) and temperature dependent bulk viscosity $(\zeta/s)(T)$ (bottom panel). The gray shaded regions mark the allowable values of $\eta/s$ and $\zeta/s$ used in the design while blue lines represent sample curves drawn from the posterior distributions of $\eta/s$ min, $\eta/s$ slope and $\zeta/s$ norm in Fig.~\ref{fig:posterior_identified}. unscaled bulk viscosity curve with unit norm (black line) used by the authors in \ref{?} is shown for reference.}
@@ -265,7 +273,7 @@ calculation.
 \section{Conclusion}
 
 \acknowledgements
-The authors thank Ulrich Heinz, Scott Pratt and Harri Niemi for helpful discussions and clarifications in the production of the manuscript.
+The authors thank Ulrich Heinz, Scott Pratt, Harri Niemi and Bj\"orn Schenke for helpful discussions and clarifications in the production of the manuscript.
 \appendix
 
 \begin{figure*}

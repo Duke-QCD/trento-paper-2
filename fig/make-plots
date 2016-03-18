@@ -4,6 +4,7 @@ import argparse
 
 import numpy as np
 from scipy.optimize import curve_fit
+from scipy import optimize
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import matplotlib.ticker as tick
@@ -128,7 +129,6 @@ def desaturate(color, fraction=0.5):
 
 
 def gen_mean(x, y, p):
-
     if abs(p) < 1e-9:
         return np.sqrt(x * y)
     else:
@@ -143,7 +143,8 @@ def kln(x, y):
 
 
 def ekrt_gen():
-    K, beta = 0.5, 0.8
+    K, beta = 0.63, 0.8
+
     a = (-0.0044020 + 0.0220154*K - 0.0005974*beta
          + 0.0125320*K*beta - 0.0032844*beta**2 - 0.0033841*K**2)
     b = (0.8537670 - 0.0580163*K + 0.0957157*beta
@@ -154,11 +155,10 @@ def ekrt_gen():
          - 0.0022506*K*beta + 0.0615129*beta**2 + 0.0052116*K**2)
 
     def inner(x, y):
-        p_sat = C*(a + x*y)**n - b*C*a**n
-        e_0 = (K/np.pi)*p_sat**3
-        s_0 = e_0**(3/4)
-
-        return s_0
+        psat = C*(a + x*y)**n - b*C*a**n
+        e0 = (K/np.pi) * psat**3
+        s0 = e0**(3/4)
+        return s0
 
     return inner
 
@@ -171,7 +171,11 @@ def pfit(model):
         TA, TB = T
         return norm*np.ravel(gen_mean(TA, TB, p))
 
-    T = np.linspace(0, 4, 100)
+    if model is ekrt:
+        T = np.linspace(0.3, 4, 100)
+    else:
+        T = np.linspace(0, 4, 100)
+
     TA, TB = np.meshgrid(T, T)
 
     popt, pcov = curve_fit(func, np.meshgrid(T, T), np.ravel(model(TA, TB)))
@@ -179,6 +183,15 @@ def pfit(model):
 
     return [round(p, 2), round(norm, 5)]
 
+
+def fobj(T, NA, NB, sigma):
+    P1 = T[0]*(1 - np.exp(-sigma*T[1])) - NA
+    P2 = T[1]*(1 - np.exp(-sigma*T[0])) - NB
+    return P1**2 + P2**2
+
+
+def thick(NA, NB, sigma):
+    return optimize.minimize(fobj, [NA, NB], args=(NA, NB, sigma)).x
 
 @plot
 def cgc_compare():
@@ -188,19 +201,23 @@ def cgc_compare():
 
     labels = ['KLN model', 'EKRT model', 'WN model']
     saturation = [kln, ekrt, lambda x, y: (x + y)/2]
-    pvals = [pfit(kln), [0, 1.03], [1, 1]]
+    #pvals = [pfit(kln), [0.05, 1.08], [1, 1]]
+    pvals = [pfit(kln), pfit(ekrt), [1, 1]]
     TB = [1, 2, 3]
 
     for ax, (p, norm), func, label in zip(axes, pvals, saturation, labels):
         X = np.linspace(0, 4, 1000)
-        [ax.plot(X, norm*gen_mean(X, Y, p), lw=0.8, color=plt.cm.Blues(0.6),
+        for Y in TB:
+            ax.plot(X, norm*gen_mean(X, Y, p), lw=0.8, color=plt.cm.Blues(0.6),
                  label='Gen. Mean; $p={}$'.format(p) if Y == 1 else '')
-         for Y in TB]
-
-        [ax.plot(X, func(X, Y), lw=0.8, dashes=(4, 3),
-                 color='0.25', label=label if Y == 1 else '')
-         for Y in TB]
-
+            
+            if func is ekrt: 
+                f = np.array([func(*thick(X_, Y, 6.4)) for X_ in X[X > 0.3]])
+                ax.plot(X[X > 0.3], 0.99*f, lw=0.8, dashes=(4, 3),
+                        color='0.25', label=label if Y == 1 else '')
+            else:
+                ax.plot(X, func(X, Y), lw=0.8, dashes=(4, 3),
+                        color='0.25', label=label if Y == 1 else '')
         offsets = [2.2, 2.8, 3.4]
         labels = ['${:d}$', '${:d}$', '$T_B={:d}$']
 

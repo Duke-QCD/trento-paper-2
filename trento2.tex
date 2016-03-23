@@ -5,6 +5,7 @@
 \usepackage{lipsum}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage[inline]{enumitem}
 \graphicspath{{fig/}}
 
 \newcommand{\trento}{T\raisebox{-0.5ex}{R}ENTo}
@@ -187,9 +188,22 @@ Once the particles cease interacting, the position, momentum and particle type i
     \caption{Several \protect\trento\ Pb+Pb initial condition events for the transverse entropy density $dS/(d^2r_\perp dy)$ calculated using generalized mean parameter $p=0$, nucleon width $w=0.5$~fm and gamma fluctuation factor $k=1.4$.}
 \end{figure}
 
-The hydrodynamic equations of motion necessitate initial conditions for the energy density $e$, four-velocity $u^\mu$, bulk pressure $\Pi$ and shear stress tensor $\pi^{\mu\nu}$ at the thermalization time $\tau_\text{therm}$ when the fluid attains local thermal equilibrium. Systematic studies of the QGP pre-equilibrium evolution indicate the onset of rapid thermalization $\tau_\text{therm} \lesssim 1$~fm/c which suggests that pre-equilibrium flow is a subleading effects. 
+The hydrodynamic equations of motion necessitate initial conditions for the energy density $e$, four-velocity $u^\mu$, bulk pressure $\Pi$ and shear stress tensor $\pi^{\mu\nu}$ at the thermalization time $\tau_\text{therm}$ when the fluid attains local thermal equillibrium. The initial conditions are typically procured using one of two types of models:
+\begin{enumerate*}[label={\arabic*)}]
+    \item dynamical models derived from approximations of QCD or related quantum field theories which describe the full time evolution of the system as it approaches local thermal equilibrium, and 
+    \item simpler non-dynamical models which map the state of the system at time $\tau=0^+$ directly to time $\tau=\tau_\text{therm}$ and set the initial flow profile $u^\mu$ to zero.
+\end{enumerate*}
 
-Ab-initio initial state models allow for the dynamical calculation of thermalization and QGP formation and provide the initial conditions for the subsequent hydrodynamic evolution of the QGP \cite{}. A rigorous test of these models requires their integration into a description for the full time-evolution of the heavy-ion collision that includes formation of the QGP, hydrodynamic evolution, hadronization and hadronic final state interactions. This can become computationally very challenging, given that the sizeable computational cost of calculating the early time off-equilibrium evolution adds onto the very significant computational effort required for the event-by-event evolution of the QGP and its decay products.
+The importance of pre-equilibrium dynamics was recently quantified by initializing hydrodynamic simulations with a freestreaming phase (zero coupling) and switching to hydrodynamics (strong coupling) after different periods of time. The authors showed that although freestreaming never leads to thermalization, it can be used to bracket the influence of pre-equilibrium dynamics on the system evolution where the coupling strength is expected to fall between the freestreaming and hydrodynamic limits. They found that the largest effect of a weakly coupled pre-equilibirum phase was an enhancement to radial flow and demonstrated that the data necessitate rapid thermalization $\tau_\text{therm} \lesssim 1$ fm/c in order to provide an optimal description of observed mean $p_T$. The study also showed that including a freestreaming phase has a rather small effect on hydrodynamic flow observables and less than a 10\% effect on the optimal value of the QGP specific shear viscosity $\eta/s$ which represents a conservative upper bound given the extreme nature of a freestreaming pre-equilibrium phase.
+
+Moreover, dynamical calculations of the QGP initial conditions typically involve computationally intensive numerical calculations which add onto the very significant computational effort required for the event-by-event evolution of the QGP and its decay products.
+ 
+
+
+
+A rigorous test of these models requires their integration into a description for the full time-evolution of the heavy-ion collision that includes formation of the QGP, hydrodynamic evolution, hadronization and hadronic final state interactions. This can become computationally very challenging, given that the sizeable computational cost of calculating the early time off-equilibrium evolution adds onto the very significant computational effort required for the event-by-event evolution of the QGP and its decay products.
+
+This can become computationally very challenging, given that the sizeable computational cost of calculating the early time off-equilibrium evolution adds onto the very significant computational effort required for the event-by-event evolution of the QGP and its decay products.
 
 In this paper we will pursue an alternative method for determining the initial condition of the hydrodynamic evolution, utilizing Bayesian statistics and a multi-parameter model to data comparison. With the help of a parametric initial condition model, Trento, we aim to provide a likelihood distribution for the features of the initial condition that are compatible with the data taken at the LHC. The resulting high likelihood initial conditions can then be compared to the outcome of ab-initio initial state and early-time dynamical models at the time of QGP formation, thus providing valuable insight into their viability without the need for a full initial-to-final-state model calculation.
 

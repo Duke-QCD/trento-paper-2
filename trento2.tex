@@ -196,13 +196,14 @@ We choose to neglect pre-equilibrium dynamics in the present study, and set the 
 \end{equation}
 where the mapping $f$ is some static function of the density of nuclear matter in each nucleus which participates in inelastic collisions denoted $T_{\text{part}A(B)}$, constructed by summing over the participant proton thicknesses
 \begin{equation}
-    T_{\text{part}}(\vec{x}) = \sum\limits_{i=1}^{N_\text{part}} T_p(\vec{x} - \vec{x}_i),
+    \label{participant}
+    T_{\text{part}}(\vec{x}) = \sum\limits_{i=1}^{N_\text{part}} \gamma_i\, T_p(\vec{x} - \vec{x}_i),
 \end{equation}
 using a Gaussian for the proton thickness function
 \begin{equation}
     T_p(\vec{x}) = \frac{1}{2\pi w^2} \exp\bigg(\!-\frac{x^2 + y^2}{2 w^2}\bigg). 
 \end{equation}    
-with nucleon width $w$ taken as a free parameter.
+with nucleon width $w$ taken as a free parameter. The random weight factor $\gamma_i$ multiplying each nucleon in Eq.~\eqref{participant} is added to account for minimum bias proton-proton multiplicity fluctuations and is sampled from a Gamma distribution $X = \Gamma(\mu, k)$ with unit mean $\mu$ and shape parameter $k = 1/\text{Var}(X)$.
 
 The inelastic nucleon-nucleon participation probability, and hence the density of participant matter, can be calculated from a standard Glauber formalism,
 \begin{equation}
@@ -232,22 +233,12 @@ In Ref.~\ref{?} we motivate the generalized mean ansatz using basic physical con
 
 At this point the reader may complain that while the generalized mean parameterizes entropy deposition in asymmetric regions of the collision $T_\text{min} < T_\text{max}$, it asserts a particular scaling law for entropy deposition in symmetric regions of the collision where $T_\text{min} = T_\text{max}$. In particular, 
 \begin{equation}
+    \label{homogenous}
     f(p; \alpha T_\text{part}, \alpha T_\text{part}) = \alpha T_\text{part}. 
 \end{equation}
-This property of the generalized mean is known as scale invariance or homogeneity. While it is difficult to empirically prove or disprove exact homogeneity, multiple experimental observations indicate that it holds as a very good approximation. For instance, one way to test the scale invariant constraint is to collide symmetric systems of different sizes and look for a non-linear increase in the number of charged particles as a function of the number of participants. The closest realization of such an ideal experiment is obtained by looking at 0--5\% central collisions of copper-copper, gold-gold and uranium-uranium collisions at RHIC. Table~\ref{?} shows that although uranium has 238 nucleons compared to copper's 62, it produces only 8.7\% more charged particles per participant pair at mid-rapidity in central (fully overlapping) collisions. Calculations performed using the \trento\ initial condition model with the scale invariant generalized mean ansatz predict a corresponding 3.7\% increase from copper-copper to uranium-uranium collisions which is well within the errorbars of the PHENIX data. In contrast, a non-homogeneous soft/hard two-component ansatz predicts a 23\% increase using a standard binary collision fraction $\alpha=0.14$.  
-\begin{table}[h!]
-    \caption{Charged particle production per participant pair $(d\nch/d\eta)/(\npart/2)$ at mid-rapidity for symmetric collisions of small and large nuclei.}
-\begin{tabular}{llll}
-    & Cu+Cu 0--5\% \quad & Au+Au 0--5\% \quad & U+U 0--5\% \\
-    \hline
-    PHENIX \quad & $3.65 \pm 0.28$ \quad & $3.92 \pm 0.22$ \quad & $3.97 \pm 0.33$ \\
-    \trento\ \quad & 3.73 & 3.86  & 3.86
-\end{tabular}
-\end{table}
+This property of the generalized mean is known as scale invariance or homogeneity. While it is difficult to empirically prove or disprove exact scale invariance, multiple experimental observations indicate that it holds to very good approximation. For example, it was demonstrated that collisions of highly deformed uranium nuclei exhibit elliptic flow patterns which are incompatible with a scale-violating binary collision term postulated by the two-component Glauber ansatz. Measurements of central copper-copper, gold-gold and uranium-uranium particle production at RHIC also exhibit approximate participant scaling in agreement with Eq.~\eqref{homogenous}. Moreover, the scale invariant constraint serves as a reasonable approximation for a number of calculations of the mapping $f$ in Eq.~\eqref{mapping} derived from CGC effective field theory as we show momentarily. At present we thus assert the scale invariant constraint as a simplifying postulate although future work should relax this constraint by including additional initial condition model parameters.  
 
-Additional support for the approximate scale invariance of the mapping $f$ is provided by the elliptic flow of ultra-central uranium-uranium collisions. Several studies have shown that breaking scale invariance produces a multiplicity separation of fully overlapping tip-tip and side-side uranium-uranium collisions. Such a correlation, if it existed, would then predict a knee-like structure in the centrality dependent elliptic flow harmonics. The knee structure has not been observed in uranium elliptic flow data at RHIC and cast doubt on the existence of binary collision scaling. We thus accept the scale invariant postulate of the generalized mean ansatz as a reasonable restriction on the space of allowable initial condition mappings, although future improvements to the present work might relax this constraint by allowing for a small binary collision term in Eq.~\eqref{entropy_propto}. 
-
-Equations ?--? specify the parametric \trento\ initial condition model proposed in Ref.~\ref{?} and can be used to generate a wide range models by varying the four initial condition parameters which specify the entropy normalization, deposition parameter $p$, proton-proton multiplicity fluctuation parameter $k$ and nucleon width $w$. A few sample events of the model output are pictured in Fig.~\ref{fig:trento_events}. 
+The aforementioned construction defines the \trento\ initial condition model proposed in Ref.~\ref{?} and can be used to generate a wide range initial condition models by varying the four parameters which specify the entropy normalization, deposition parameter $p$, proton-proton multiplicity fluctuation parameter $k$ and nucleon width $w$. A few sample events of the model output are pictured in Fig.~\ref{fig:trento_events}. 
 
 \begin{figure}
     \includegraphics{trento_events}

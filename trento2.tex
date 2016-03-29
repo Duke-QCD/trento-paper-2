@@ -13,10 +13,8 @@
 \newcommand{\nch}{N_\text{ch}}
 \newcommand{\npart}{N_\text{part}}
 \newcommand{\sqrts}{\sqrt{s_{NN}}}
-\newcommand{\TA}{T_{\text{part},A}}
-\newcommand{\TB}{T_{\text{part},B}}
-\newcommand{\Qmin}{Q_{s,\text{min}}}
-\newcommand{\Qmax}{Q_{s,\text{max}}}
+\newcommand{\T}{\tilde{T}}
+\newcommand{\Qs}[1]{Q_{s,\text{#1}}}
 
 \begin{document}
 
@@ -100,7 +98,7 @@ for the bulk viscous pressure $\Pi$ and shear-stress tensor $\pi^{\mu\nu}$.
 The terms $\zeta$ and $\eta$ are the first-order bulk and shear transport coefficients, and the parameters $\tau_\Pi$ and $\tau_\pi$ their second-order bulk and shear relaxation times.
 The remaining transport coefficients multiplying shear and bulk terms on the right can then be expressed as functions of the relaxation times and other thermodynamic quantities and have been determined in the limit of small but finite masses in reference \ref{?}.
 
-The relaxation equations in Eq.\eqref{relaxation} are then used to solve the hydrodynamic evolution equations,
+The relaxation equations in Eq.~\eqref{relaxation} are then used to solve the hydrodynamic evolution equations,
 \begin{equation}
     \label{conservation}
     \partial_\mu T^{\mu\nu} = 0, \quad T^{\mu\nu} = e u^\mu u^\nu  - \Delta^{\mu\nu} (P_0 + \Pi) + \pi^{\mu\nu},
@@ -177,9 +175,9 @@ The calculation is performed using a Monte Carlo realization of the Boltzmann eq
 where $f_i(x,p)$ represents the phase space density of species $i$ and $\mathcal{C}_i$ is its corresponding collision kernel.
 Once the particles cease interacting, the position, momentum and particle type is saved to file.
 
-% Initial state models vs. parametric initial conditions
-\subsection{Parameterizing the initial conditions}
 
+% Parametric initial conditions
+\subsection{Parametric initial conditions}
 
 The hydrodynamic equations of motion necessitate initial conditions for the energy density $e$, four-velocity $u^\mu$, bulk pressure $\Pi$ and shear stress tensor $\pi^{\mu\nu}$ at the thermalization time $\tau_0$ when the fluid attains local thermal equillibrium. The initial conditions are typically procured using one of two types of models:
 \begin{enumerate*}[label={\arabic*)}]
@@ -192,36 +190,29 @@ The importance of pre-equilibrium dynamics was quantified in a recent study by i
 We choose to neglect pre-equilibrium dynamics in the present study, and set the fluid four-velocity to zero ${u^\mu = (1,0,0,0)}$ as well as the shear and bulk viscous tensors $\pi^{\mu\nu}$ and $\Pi$ which quickly relax to their Navier-Stokes values. This reduces the initial conditions to a thermal energy density $e(\tau_0, x, y, \eta)$ which can be expressed as an entropy density via the QCD EoS. The initial conditions in boost-invariant hydrodynamics can thus described by an entropy density profile
 \begin{equation}
     \label{mapping}
-    s(\tau_0, x, y)\vert_{\eta=0} = f(\TA, \TB)
+    s(\tau_0, x, y)\vert_{\eta=0} = f(\T_A, \T_B)
 \end{equation}
-where the mapping $f$ is some static function of the density of nuclear matter in each nucleus which participates in inelastic collisions denoted $T_{\text{part}A(B)}$, constructed by summing over the participant proton thicknesses
+where the mapping $f$ is some static function of the density of nuclear matter in each nucleus which participates in inelastic collisions denoted $\T$, constructed by summing over the participant proton thicknesses
 \begin{equation}
     \label{participant}
-    T_{\text{part}}(\vec{x}) = \sum\limits_{i=1}^{N_\text{part}} \gamma_i\, T_p(\vec{x} - \vec{x}_i),
+    \T(x, y) = \sum\limits_{i=1}^{N_\text{part}} \gamma_i\, T_p(x - x_i, y - y_i),
 \end{equation}
 using a Gaussian for the proton thickness function
 \begin{equation}
     T_p(\vec{x}) = \frac{1}{2\pi w^2} \exp\bigg(\!-\frac{x^2 + y^2}{2 w^2}\bigg). 
 \end{equation}    
-with nucleon width $w$ taken as a free parameter. The random weight factor $\gamma_i$ multiplying each nucleon in Eq.~\eqref{participant} is added to account for minimum bias proton-proton multiplicity fluctuations and is sampled from a Gamma distribution $X = \Gamma(\mu, k)$ with unit mean $\mu$ and shape parameter $k = 1/\text{Var}(X)$.
+with nucleon width $w$ taken as a free parameter. The random weight factor $\gamma_i$ multiplying each nucleon in Eq.~\eqref{participant} is added to account for minimum bias proton-proton multiplicity fluctuations and is sampled from a Gamma distribution with unit mean and variance $1/k$, where $k$ is a tunable shape parameter.
 
 The inelastic nucleon-nucleon participation probability, and hence the density of participant matter, can be calculated from a standard Glauber formalism,
 \begin{equation}
     P_\text{coll}(b) = 1 - \exp \bigg[ -\sigma_{gg} \int d^2x_\perp T_p(|\vec{x}|) T_p(|\vec{x} - \vec{b}|) \bigg ] 
 \end{equation}
+$\mathcal{T}_A$, $T_A$, $\T_A$
 where $b$ is the impact parameter between two nucleons and the partonic cross section $\sigma_{gg}$ is tuned to fit the inelastic nucleon-nucleon cross section
 \begin{equation}
     \int 2 \pi b\, db\, P_\text{coll}(b) = \sigma_\text{NN}^\text{inel} 
 \end{equation}
-at the desired beam energy. The collision cross sections thus enter through the calculation of $\TA$ and $\TB$ which are determined \emph{independently} of the function $f$ used to convert local participant density into entropy deposition.
-
-At this point it becomes necessary to specify the function $f$ in Eq~\eqref{mapping} which maps participant matter to local entropy deposition. In general, the function $f(\TA, \TB)$ is assumed to be symmetric, monotonically increasing and smooth. In this work we employ a parameterization for $f$ motivated in Ref.~\ref{?} based on a functional form known as the generalized mean,
-\begin{align}
-    \label{entropy_propto}
-    s(\tau_0, x, y)\vert_{\eta=0} &\propto f(p; \TA, \TB), \\
-    f(p; x, y) &\equiv \left( \frac{x^p + y^p}{2} \right)^{1/p}.
-\end{align}
-The parameterization introduces two free parameters, a normalization prefactor and a continuous entropy deposition parameter $p\in(-\infty, \infty)$ which interpolates between different types of entropy deposition schemes. For ${p=(-1, 0, 1)}$, the generalized mean reduces to the well known harmonic $2 x y/(x + y)$, geometric $\sqrt{x\,y}$ and arithmetic $(x + y)/2$ forms, and for $p\rightarrow \pm\infty$ it asymptotes to $\min(x,y)$ and $\max(x,y)$ functions.
+at the desired beam energy. The collision cross sections thus enter through the calculation of $\T_A$ and $\T_B$ which are determined \emph{independently} of the function $f$ used to convert local participant density into entropy deposition.
 
 \begin{figure}[t]
     \includegraphics{thickness}
@@ -229,16 +220,35 @@ The parameterization introduces two free parameters, a normalization prefactor a
     \label{fig:thickness}
 \end{figure}
 
-In Ref.~\ref{?} we motivate the generalized mean ansatz using basic physical constraints and phenomenological observations, but perhaps the simplest explanation of the ansatz is to examine the effect of the mapping on a realistic event. Fig.~\ref{fig:thickness} shows a cut-away of a lead-lead collision at $\sqrts=2.76$~TeV, sliced along the direction of impact parameter $\hat{b}$. At each point in the transverse plane there are two relevant scales of interest, the minimum participant density $T_\text{min}$ and the maximum participant density $T_\text{max}$. The gray band marks the region spanned by $T_\text{min}$ and $T_\text{max}$, while the blue band/line show the generalized mean acting on the participant density of each nucleus with different values of the parameter $p$. The figure shows that decreasing $p$ pulls the generalized mean towards the minimum of $\TA$ and $\TB$ while increasing $p$ pushes it to the maximum of the two. The generalized mean ansatz thus parameterizes asymmetric entropy deposition, or in the parlance of Color-Glass Condensate theory, the intensity of saturation effects on local gluon production.
+At this point it becomes necessary to specify the function $f$ in Eq~\eqref{mapping} which maps participant matter to local entropy deposition. In general, the function $f(\T_A, \T_B)$ is assumed to be symmetric, monotonically increasing and smooth. In this work we employ a parameterization for $f$ motivated in Ref.~\ref{?} based on a functional form known as the generalized mean,
+\begin{align}
+    \label{entropy_propto}
+    s \propto \left( \frac{\T_A^p + \T_B^p}{2} \right)^{1/p}.
+\end{align}
+The parameterization introduces two free parameters, a normalization prefactor and a continuous entropy deposition parameter $p\in(-\infty, \infty)$ which interpolates between different types of entropy deposition schemes. For ${p=(1, 0, -1)}$, the generalized mean reduces to the well known arithmetic, geometric and harmonic means, and for $p\rightarrow \pm\infty$ it asymptotes to minimum and maximum functions,
+\begin{equation}
+  \label{means}
+  \newlength{\extraspace}
+  \setlength{\extraspace}{0.5ex}
+  s \propto
+  \begin{cases}
+    \max(\T_A, \T_B) & p \rightarrow +\infty, \\[\extraspace]
+    (\T_A + \T_B)/2 & p = +1, \hfill \text{ (arithmetic)} \\[\extraspace]
+    \sqrt{\T_A \T_B} & p = 0, \hfill \text{ (geometric)} \\[\extraspace]
+    2\, \T_A \T_B/(\T_A + \T_B) & p = -1, \hfill \text{ (harmonic)} \\[\extraspace]
+    \min(\T_A, \T_B) & p \rightarrow -\infty.
+  \end{cases}
+\end{equation}
 
-At this point the reader may complain that while the generalized mean parameterizes entropy deposition in asymmetric regions of the collision $T_\text{min} < T_\text{max}$, it asserts a particular scaling law for entropy deposition in symmetric regions of the collision where $T_\text{min} = T_\text{max}$. In particular, 
+In Ref.~\ref{?} we motivate the generalized mean ansatz using basic physical constraints and phenomenological observations, but perhaps the simplest explanation of the ansatz is to examine the effect of the mapping on a realistic event. Fig.~\ref{fig:thickness} shows a cut-away of a lead-lead collision at $\sqrts=2.76$~TeV, sliced along the direction of impact parameter $\hat{b}$. At each point in the transverse plane there are two relevant scales of interest, the minimum participant density $\T_\text{min}$ and the maximum participant density $\T_\text{max}$. The gray band marks the region spanned by $\T_\text{min}$ and $\T_\text{max}$, while the blue band/line show the generalized mean acting on the participant density of each nucleus with different values of the parameter $p$. The figure shows that decreasing $p$ pulls the generalized mean towards the minimum of $\T_A$ and $\T_B$ while increasing $p$ pushes it to the maximum of the two. The generalized mean ansatz thus parameterizes asymmetric entropy deposition, or in the parlance of Color-Glass Condensate theory, the intensity of saturation effects on local gluon production.
+
+At this point the reader may complain that while the generalized mean parameterizes entropy deposition in asymmetric regions of the collision $\T_\text{min} < \T_\text{max}$, it asserts a particular scaling law for entropy deposition in symmetric regions of the collision where $\T_\text{min} = \T_\text{max}$. In particular, 
 \begin{equation}
     \label{homogenous}
-    f(p; \alpha T_\text{part}, \alpha T_\text{part}) = \alpha T_\text{part}. 
+    f(p; \alpha \T, \alpha \T) = \alpha \T. 
 \end{equation}
-This property of the generalized mean is known as scale invariance or homogeneity. While it is difficult to empirically prove or disprove exact scale invariance, multiple experimental observations indicate that it holds to very good approximation. For example, it was demonstrated that collisions of highly deformed uranium nuclei exhibit elliptic flow patterns which are incompatible with a scale-violating binary collision term postulated by the two-component Glauber ansatz. Measurements of central copper-copper, gold-gold and uranium-uranium particle production at RHIC also exhibit approximate participant scaling in agreement with Eq.~\eqref{homogenous}. Moreover, the scale invariant constraint serves as a reasonable approximation for a number of calculations of the mapping $f$ in Eq.~\eqref{mapping} derived from CGC effective field theory as we show momentarily. At present we thus assert the scale invariant constraint as a simplifying postulate although future work should relax this constraint by including additional initial condition model parameters.  
+This property of the generalized mean is known as scale invariance or homogeneity. While it is difficult to empirically prove or disprove exact scale invariance, multiple experimental observations indicate that it holds to very good approximation. For example, it was demonstrated that collisions of highly deformed uranium nuclei exhibit elliptic flow patterns which are incompatible with a scale-violating binary collision term postulated by the two-component Glauber ansatz. Measurements of central copper-copper, gold-gold and uranium-uranium particle production at RHIC also exhibit approximate participant scaling in agreement with Eq.~\eqref{homogenous}. Moreover, the scale invariant constraint serves as a reasonable approximation for a number of calculations of the mapping $f$ in Eq.~\eqref{mapping} derived from CGC effective field theory as we show momentarily. At present we thus assert the scale invariant constraint as a simplifying postulate although future work may relax this constraint to further reduce bias in the chosen parameterization.  
 
-The aforementioned construction defines the \trento\ initial condition model proposed in Ref.~\ref{?} and can be used to generate a wide range initial condition models by varying the four parameters which specify the entropy normalization, deposition parameter $p$, proton-proton multiplicity fluctuation parameter $k$ and nucleon width $w$. A few sample events of the model output are pictured in Fig.~\ref{fig:trento_events}. 
 
 \begin{figure}
     \includegraphics{trento_events}
@@ -246,25 +256,38 @@ The aforementioned construction defines the \trento\ initial condition model pro
     \label{fig:trento_events}
 \end{figure}
 
-\subsection{Mimicing initial condition models}
-
 \begin{figure*}
     \includegraphics{cgc_compare}
     \caption{Profiles of the initial thermal distribution predicted by the KLN (left), EKRT (middle) and wounded nucleon (right) models (dashed black lines) compared to a generalized mean with different values of the parameter $p$ (solid blue lines).
     Staggered lines show different cross sections of the initial entropy density $dS/(d^2r_\perp dy)$ as a function of the nucleon density $T_A$ for several values of $T_B = 1, 2, 3$ [fm$^{-2}$].} 
 \end{figure*}
 
-Charged particle production in the KLN model can be approximated from the produced gluon density $\nch \propto N_g$ where,
+
+\subsection{Reproducing existing models}
+
+The aforementioned procedure defines the \trento\ initial condition model proposed in Ref.~\ref{?}. The model is purposefully constructed to achieve maximal flexibility using a minimal number of parameters and can mimic a wide range initial condition models proposed in the literature. To demonstrate the efficacy of the generalized mean ansatz, we now show that the mapping can reproduce different theory calculations using suitably chosen values of the generalized mean parameter $p$.
+
+Perhaps the simplest and oldest model of heavy-ion initial conditions is the so called participant or wounded nucleon model which deposits a blob of entropy for each nucleon in the nucleus that engages in one or more inelastic collisions. In its Monte Carlo formulation, the wounded nucleon model is described by
+\begin{equation}
+    \label{wn}
+    s \propto \T_A + \T_B
+\end{equation}
+where $\T_A$ and $\T_B$ denote the event-by-event participant densities defined in Eq.~\eqref{participant}. Quick examination of Eqs.~\eqref{means} and \eqref{wn} shows that the wounded nucleon model describes a subcase of the generalized mean ansatz for $p=1$ up to an arbitrary factor which can be absorbed by the normalization constant.
+
+More sophisticated calculations of the mapping $f$ in Eq.~\eqref{mapping} can be derived from Color-Glass Condensate effective field theory. A common implementation of a CGC based saturation picture is provided by the Kharzeev-Levin-Nardi (KLN) model where entropy deposition at the QGP thermalization time can be determined from the produced gluon density $s \propto N_g$ where,
 \begin{equation}
     \label{kln}
-    \frac{dN_g}{dy\,d^2r_\perp} \sim \Qmin^2 \biggl[ 2 + \log \biggr(\frac{\Qmax^2}{\Qmin^2} \biggr) \biggr]
+    \frac{dN_g}{dy\,d^2r_\perp} \sim \Qs{min}^2 \biggl[ 2 + \log \biggr(\frac{\Qs{max}^2}{\Qs{min}^2} \biggr) \biggr]
 \end{equation}
-and $\Qmax$ and $\Qmin$ denote the larger and smaller values of the two saturation scales in opposite nuclei at any fixed position in the transverse plane.
-In the original formulation of the KLN model, the two saturation scales are proportional to the local participant nucleon density in each nucleus $Q^2_{s,A} \propto \TA$, which can be used to recast Eq.~\eqref{kln} as a function of participant nucleon density,
+and $\Qs{max}$ and $\Qs{min}$ denote the larger and smaller values of the two saturation scales in opposite nuclei at any fixed position in the transverse plane.
+In the original formulation of the KLN model, the two saturation scales are proportional to the local participant nucleon density in each nucleus $Q^2_{s,A} \propto \T_A$, and Eq.~\eqref{kln} can be recast as,
 \begin{align}
-    s(\tau_0, x, y)\vert_{\eta=0} &\propto f(\TA, \TB), \\
-    f(x, y) &= \min(x, y)\biggr[2 + \log \biggr(\frac{\max(x,y)}{\min(x,y)}\biggr) \biggr].
+    s &\propto \min(\T_A, \T_B)\biggr[2 + \log \biggr(\frac{\max(\T_A,\T_B)}{\min(\T_A,\T_B)}\biggr) \biggr].
 \end{align}
+
+More modern calculations derived from CGC effective field theory include the EKRT model which combines collinearly factorized pQCD minijet production with gluon saturation, and IP-Glasma which combines the IP-Sat (impact parameter dependent saturation) model of nuclear collisions with classical Yang-Mills dynamics to describe the pre-equilibrium evolution of produced glasma fields.
+
+Rigorously evaluating the EKRT model for an event-by-event initial condition is rather complicated and thus the authors described by a rather 
 
 Particle production in the EKRT model can be approximated from the initial entropy density ${\nch \propto \int dx\,dy S(x,y)}$ where,
 \begin{align}
@@ -282,7 +305,6 @@ with coefficients,
 \end{align*}
 
 \vfill
-
 
 \section{Constraining the model}
 

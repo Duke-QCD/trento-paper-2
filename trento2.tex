@@ -197,7 +197,7 @@ where the mapping $f$ is some static function of the density of nuclear matter i
     \label{participant}
     \T(x, y) = \sum\limits_{i=1}^{N_\text{part}} \gamma_i\, T_p(x - x_i, y - y_i),
 \end{equation}
-using a Gaussian for the proton thickness function
+where the relative nucleon coordinates of each nucleus are shifted by a random impact parameter such that ${\T_{A,B}(x, y) = \T(x \pm b/2, y)}$. For the proton thickness function we use a Gaussian
 \begin{equation}
     T_p(\vec{x}) = \frac{1}{2\pi w^2} \exp\bigg(\!-\frac{x^2 + y^2}{2 w^2}\bigg). 
 \end{equation}    
@@ -207,7 +207,6 @@ The inelastic nucleon-nucleon participation probability, and hence the density o
 \begin{equation}
     P_\text{coll}(b) = 1 - \exp \bigg[ -\sigma_{gg} \int d^2x_\perp T_p(|\vec{x}|) T_p(|\vec{x} - \vec{b}|) \bigg ] 
 \end{equation}
-$\mathcal{T}_A$, $T_A$, $\T_A$
 where $b$ is the impact parameter between two nucleons and the partonic cross section $\sigma_{gg}$ is tuned to fit the inelastic nucleon-nucleon cross section
 \begin{equation}
     \int 2 \pi b\, db\, P_\text{coll}(b) = \sigma_\text{NN}^\text{inel} 
@@ -249,7 +248,6 @@ At this point the reader may complain that while the generalized mean parameteri
 \end{equation}
 This property of the generalized mean is known as scale invariance or homogeneity. While it is difficult to empirically prove or disprove exact scale invariance, multiple experimental observations indicate that it holds to very good approximation. For example, it was demonstrated that collisions of highly deformed uranium nuclei exhibit elliptic flow patterns which are incompatible with a scale-violating binary collision term postulated by the two-component Glauber ansatz. Measurements of central copper-copper, gold-gold and uranium-uranium particle production at RHIC also exhibit approximate participant scaling in agreement with Eq.~\eqref{homogenous}. Moreover, the scale invariant constraint serves as a reasonable approximation for a number of calculations of the mapping $f$ in Eq.~\eqref{mapping} derived from CGC effective field theory as we show momentarily. At present we thus assert the scale invariant constraint as a simplifying postulate although future work may relax this constraint to further reduce bias in the chosen parameterization.  
 
-
 \begin{figure}
     \includegraphics{trento_events}
     \caption{Several \protect\trento\ Pb+Pb initial condition events for the transverse entropy density $dS/(d^2r_\perp dy)$ calculated using generalized mean parameter $p=0$, nucleon width $w=0.5$~fm and gamma fluctuation factor $k=1.4$.}
@@ -274,38 +272,32 @@ Perhaps the simplest and oldest model of heavy-ion initial conditions is the so 
 \end{equation}
 where $\T_A$ and $\T_B$ denote the event-by-event participant densities defined in Eq.~\eqref{participant}. Quick examination of Eqs.~\eqref{means} and \eqref{wn} shows that the wounded nucleon model describes a subcase of the generalized mean ansatz for $p=1$ up to an arbitrary factor which can be absorbed by the normalization constant.
 
-More sophisticated calculations of the mapping $f$ in Eq.~\eqref{mapping} can be derived from Color-Glass Condensate effective field theory. A common implementation of a CGC based saturation picture is provided by the Kharzeev-Levin-Nardi (KLN) model where entropy deposition at the QGP thermalization time can be determined from the produced gluon density $s \propto N_g$ where,
+More sophisticated calculations of the mapping $f$ in Eq.~\eqref{mapping} can be derived from Color-Glass Condensate effective field theory. A common implementation of a CGC based saturation picture is provided by the KLN model where entropy deposition at the QGP thermalization time can be determined from the produced gluon density $s \propto N_g$ where,
 \begin{equation}
     \label{kln}
     \frac{dN_g}{dy\,d^2r_\perp} \sim \Qs{min}^2 \biggl[ 2 + \log \biggr(\frac{\Qs{max}^2}{\Qs{min}^2} \biggr) \biggr]
 \end{equation}
 and $\Qs{max}$ and $\Qs{min}$ denote the larger and smaller values of the two saturation scales in opposite nuclei at any fixed position in the transverse plane.
 In the original formulation of the KLN model, the two saturation scales are proportional to the local participant nucleon density in each nucleus $Q^2_{s,A} \propto \T_A$, and Eq.~\eqref{kln} can be recast as,
-\begin{align}
-    s &\propto \min(\T_A, \T_B)\biggr[2 + \log \biggr(\frac{\max(\T_A,\T_B)}{\min(\T_A,\T_B)}\biggr) \biggr].
-\end{align}
+\begin{equation}
+    s \sim \min(\T_A, \T_B)\biggr[2 + \log \biggr(\frac{\max(\T_A,\T_B)}{\min(\T_A,\T_B)}\biggr) \biggr]
+\end{equation}
+to put it in a form which can be directly compared with the wounded nucleon model.
 
-More modern calculations derived from CGC effective field theory include the EKRT model which combines collinearly factorized pQCD minijet production with gluon saturation, and IP-Glasma which combines the IP-Sat (impact parameter dependent saturation) model of nuclear collisions with classical Yang-Mills dynamics to describe the pre-equilibrium evolution of produced glasma fields.
+Another CGC model which has attracted recent interest after it successfully described an extensive list of experimental particle multiplicity and flow observables is the EKRT model which combines collinearly factorized pQCD minijet production with a simple conjecture for gluon saturation. The energy density predicted by the EKRT model after a pre-thermal stage described by Bjorken free streaming is given by
+\begin{equation}
+    e(\tau_0, x, y) \sim \frac{K_\text{sat}}{\pi} p_\text{sat}^3(T_A, T_B).
+\end{equation}
+The energy density can then be recast as an entropy density using the power law relation ${s \sim e^{3/4}}$ of the QCD EoS at high temperature.
 
-Rigorously evaluating the EKRT model for an event-by-event initial condition is rather complicated and thus the authors described by a rather 
+We note that Eq.~\eqref{ekrt2} is expressed as a function of nuclear thickness $T$ which is different than the participant density $\T$ used previously. The nuclear thickness functions are typically constructed from Gaussian nucleons with infinite tails and hence result in ill defined cross sections when passed through an analytic mapping such as Eq.~\eqref{ekrt2}. In the EKRT model this issue is resolved by imposing a minimum nucleon-nucleon collision criteria $r_\text{min} = \sqrt{\sigma_\text{NN}/\pi}$ which restores Glauber cross sections.
 
-Particle production in the EKRT model can be approximated from the initial entropy density ${\nch \propto \int dx\,dy S(x,y)}$ where,
-\begin{align}
-    p_\text{sat}(\rho_{AA}) &= C(a + T_A T_B)^n - b\,C a^n \\
-    e_0 &= \frac{K_\text{sat}}{\pi} p_\text{sat}^3 \\
-    s_0 &= e_0^{3/4} 
-\end{align}
-with coefficients,
-\begin{align*}
-    &C_1=0.03, ~~C_2=0.001, \\ 
-    &A_0=-13.45, ~~A_1=27.55, ~~A_2=-13.77, \\
-    &\sigma_1=0.0025, ~~\sigma_2=0.022, ~~\sigma_3=0.025, ~~\sigma_4=0.13, \\
-    &\lambda_1=0.9, ~~\lambda_2=0.22, ~~\lambda_3=0.9, ~~\lambda_4=0.25, \\
-    &T_0 = 0.18 \text{ GeV}, ~~T_a = 0.995\, T_0, ~~T_b = 1.05\, T_0.
-\end{align*}
+On a practical level, differences between the use of $T$ and $\T$ are typically small when the entropy deposition mapping vanishes for zero projectile or target density--as is the case with the EKRT model--since the mapping naturally removes contributions from nucleons which are non-overlapping. We thus redefine $T_A$ and $T_B$ in Eq.~\eqref{ekrt2} as $\T_A$ and $\T_B$ in order to permit direct comparison with the wounded nucleon, KLN and \trento\ models. The approximation has also been checked by expressing the participant density as a function of nuclear thickness using a standard optical Glauber mapping to express all mappings as a function of $T_A$ and $T_B$.
+
+
+%and IP-Glasma which combines the IP-Sat (impact parameter dependent saturation) model with classical Yang-Mills dynamics to describe the pre-equilibrium evolution of produced glasma fields.
 
 \vfill
-
 \section{Constraining the model}
 
 \begin{figure*}
@@ -332,7 +324,7 @@ with coefficients,
 % Results
 \section{Results}
 
-\begin{table}
+\begin{table}[h]
     \caption{High likelihood parameters selected from the posterior distribution in Fig.~\ref{fig:posterior_identified} used to generate Fig.~\ref{fig:mode_observables}}
     \begin{ruledtabular}    
         \begin{tabular}{llll}

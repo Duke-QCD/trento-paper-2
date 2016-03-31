@@ -257,7 +257,8 @@ This property of the generalized mean is known as scale invariance or homogeneit
 \begin{figure*}
     \includegraphics{cgc_compare}
     \caption{Profiles of the initial thermal distribution predicted by the KLN (left), EKRT (middle) and wounded nucleon (right) models (dashed black lines) compared to a generalized mean with different values of the parameter $p$ (solid blue lines).
-    Staggered lines show different cross sections of the initial entropy density $dS/(d^2r_\perp dy)$ as a function of the nucleon density $T_A$ for several values of $T_B = 1, 2, 3$ [fm$^{-2}$].} 
+    Staggered lines show different cross sections of the initial entropy density $dS/(d^2r_\perp dy)$ as a function of the nucleon density $T_A$ for several values of $T_B = 1, 2, 3$ [fm$^{-2}$]. Entropy normalization is arbitrary.}
+    \label{fig:cgc_compare}
 \end{figure*}
 
 
@@ -284,20 +285,26 @@ In the original formulation of the KLN model, the two saturation scales are prop
 \end{equation}
 to put it in a form which can be directly compared with the wounded nucleon model.
 
-Another CGC model which has attracted recent interest after it successfully described an extensive list of experimental particle multiplicity and flow observables is the EKRT model which combines collinearly factorized pQCD minijet production with a simple conjecture for gluon saturation. The energy density predicted by the EKRT model after a pre-thermal stage described by Bjorken free streaming is given by
+Another CGC model which has attracted recent interest after it successfully described an extensive list of experimental particle multiplicity and flow observables is the EKRT model which combines collinearly factorized pQCD minijet production with a simple conjecture for gluon saturation. The energy density predicted by the model after a pre-thermal Bjorken free streaming stage is given by
 \begin{equation}
+    \label{ekrt_energy}
     e(\tau_0, x, y) \sim \frac{K_\text{sat}}{\pi} p_\text{sat}^3(T_A, T_B).
 \end{equation}
-The energy density can then be recast as an entropy density using the thermodynamic relation ${s \sim e^{3/4}}$.
+where the saturation momentum $p_\text{sat}$, defined in Ref.~\ref{?}, is a function of phenomenological model parameters $K_\text{sat}$ and $\beta$. The energy density in Eq.~\eqref{ekrt_energy} can then be recast as an entropy density using the thermodynamic relation ${s \sim e^{3/4}}$ to compare it with previous models.
 
-We note that Eq.~\eqref{ekrt2} is expressed as a function of nuclear thickness $T$ which is different than the participant density $\T$ used previously. The nuclear thickness functions are typically constructed from Gaussian nucleons with infinite tails and hence result in ill defined cross sections when passed through an analytic mapping such as Eq.~\eqref{ekrt2}. In the EKRT model this issue is resolved by imposing a minimum nucleon-nucleon collision criteria $r_\text{min} = \sqrt{\sigma_\text{NN}/\pi}$ which restores Glauber cross sections.
+Note that Eq.~\eqref{ekrt_energy} is expressed as a function of nuclear thickness $T$ which includes contributions from \emph{all} nucleons inside the nucleus and is different than the participant density $\T$ used previously. In order to express initial condition mappings as functions of a common variable one could, e.g.\ relate $\T$ and $T$ using an analytic wounded nucleon model. The effect of this substitution on the EKRT model, however, is small as the mapping deposits zero entropy if nucleons are non-overlapping effectively removing them from the participant thickness function. We thus replace $T$ with $\T$ in the EKRT model and note that similar results are obtained by recasting the wounded nucleon, KLN and \trento\ models as functions of $T$ using standard Glauber relations.
 
-On a practical level, differences between the use of $T$ and $\T$ are typically small when the entropy deposition mapping vanishes for zero projectile or target density--as is the case with the EKRT model--since the mapping naturally removes contributions from nucleons which are non-overlapping. We thus redefine $T_A$ and $T_B$ in Eq.~\eqref{ekrt2} as $\T_A$ and $\T_B$ in order to permit direct comparison with the wounded nucleon, KLN and \trento\ models. The approximation has also been checked by expressing the participant density as a function of nuclear thickness using a standard optical Glauber mapping to express all mappings as a function of $T_A$ and $T_B$.
+In Fig.~\ref{fig:cgc_compare} we plot one-dimensional slices of the entropy deposition mapping predicted by the KLN, EKRT and wounded nucleon (WN) models for characteristic values of the participant nucleon density sampled in lead-lead collisions at $\sqrts=2.76$~TeV. The vertically staggered lines in each panel show the change in entropy deposited as a function of $\T_A$ for several constant values of $\T_B$, while the superimposed dashed lines show the generalized mean ansatz after it has been tuned to fit each model. The figure illustrates the flexibility of the generalized mean ansatz to reproduce different initial condition calculations and quantify differences via the generalized mean parameter $p$. The KLN model, for example, is described by $p\sim-0.67$ which is smaller than both the EKRT model $p \sim 0$ and the WN model $p=1$. In this sense, it is possible to systematize the strength of saturation effects in terms of the parameter $p$ needed to fit a given model.
 
+The three models shown in Fig.~\ref{fig:cgc_compare} are by no means an exhaustive list of initial condition proposed in the literature. Notably absent, for instance, is the highly successful IP-Glasma model which combines IP-Sat.\ CGC initial conditions with classical Yang-Mills dynamics to describe the full pre-equilibrium evolution of produced glasma fields. The dynamical nature of IP-Glasma makes it difficult to determine the mapping which translates participant density into average entropy deposition at the QGP thermalization time, though it is possible to examine quantities such as the elliptic and triangular eccentricity harmonics $\varepsilon_2$ and $\varepsilon_3$ which serves as unique signatures of different initial condition models. Fig.~\ref{fig:ipglasma} shows the
 
-%and IP-Glasma which combines the IP-Sat (impact parameter dependent saturation) model with classical Yang-Mills dynamics to describe the pre-equilibrium evolution of produced glasma fields.
+\begin{figure}[t]
+    \centering
+    \includegraphics{ipglasma}
+    \caption{Comparison of trento parameteric initial conditions
+    Charged particle multiplicity $d\nch/d\eta$ (top) and eccentricity harmonics $\varepsilon_n$ (bottom) for ${\sqrt{s_{NN}}=2.76}$ TeV Pb+Pb collisions as a function of impact parameter $b$. \protect\trento\ results using parameters drawn from the Bayesian posterior in Fig.~\ref{fig:posterior_identified} (solid lines) compared to results from the IP-Glasma model. Each \protect\trento\ initial condition event is freestreamed an additional 0.4 fm/c to match the pre-equilibrium evolution time of Classical Yang-Mills dynamics in the IP-Glasma model.}
+\end{figure}
 
-\vfill
 \section{Constraining the model}
 
 \begin{figure*}
@@ -346,7 +353,6 @@ On a practical level, differences between the use of $T$ and $\T$ are typically 
 \end{figure*}
 
 
-\subsection{Initial condition properties}
 \begin{figure}
     \includegraphics{nch_per_npart}
     \caption{Average charged particle density per participant pair $(d\nch/d\eta)/(\npart/2)$ as a function of participant number for Pb+Pb and p+Pb collisions at $\sqrts=5.02$ TeV.
@@ -361,14 +367,7 @@ On a practical level, differences between the use of $T$ and $\T$ are typically 
     \label{posterior_p_arrows}
 \end{figure}
 
-\begin{figure}
-    \centering
-    \includegraphics{ipglasma}
-    \caption{Comparison of trento parameteric initial conditions
-    Charged particle multiplicity $d\nch/d\eta$ (top) and eccentricity harmonics $\varepsilon_n$ (bottom) for ${\sqrt{s_{NN}}=2.76}$ TeV Pb+Pb collisions as a function of impact parameter $b$. \protect\trento\ results using parameters drawn from the Bayesian posterior in Fig.~\ref{fig:posterior_identified} (solid lines) compared to results from the IP-Glasma model. Each \protect\trento\ initial condition event is freestreamed an additional 0.4 fm/c to match the pre-equilibrium evolution time of Classical Yang-Mills dynamics in the IP-Glasma model.}
-\end{figure}
 
-\subsection{QGP medium properties}
 \begin{figure}
     \includegraphics{viscosity_samples}
     \caption{Posterior constraints on the temperature dependent shear viscosity $(\eta/s)(T)$ (top panel) and temperature dependent bulk viscosity $(\zeta/s)(T)$ (bottom panel). The gray shaded regions mark the allowable values of $\eta/s$ and $\zeta/s$ used in the design while blue lines represent sample curves drawn from the posterior distributions of $\eta/s$ min, $\eta/s$ slope and $\zeta/s$ norm in Fig.~\ref{fig:posterior_identified}. unscaled bulk viscosity curve with unit norm (black line) used by the authors in \ref{?} is shown for reference.}

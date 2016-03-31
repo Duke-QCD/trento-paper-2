@@ -221,7 +221,7 @@ def cgc_compare():
                  color='0.25', label=label if Y == 1 else '')
             
         offsets = [2.2, 2.8, 3.4]
-        labels = ['${:d}$', '${:d}$', '$T_B={:d}$']
+        labels = ['${:d}$', '${:d}$', r'$\tilde{{T}}_B={}$']
 
         if ax == axes[2]:
             [ax.text(4, func(4, Y) + 0.05, label.format(int(Y)) + ' fm$^{-2}$',
@@ -230,7 +230,7 @@ def cgc_compare():
 
         ax.set_xlim(0, 4)
         ax.set_xticks([0, 1, 2, 3, 4])
-        ax.set_xlabel(r'$T_A$ [fm$^{-2}$]')
+        ax.set_xlabel(r'$\tilde{T}_A$ [fm$^{-2}$]')
         ax.set_ylim(0, 4)
         ax.set_yticks([0, 1, 2, 3])
 
@@ -238,7 +238,7 @@ def cgc_compare():
         ax.legend(handles, labels, bbox_to_anchor=(0, 1.05),
                   loc=2, handlelength=1.5)
 
-    axes[0].set_ylabel(r'Entropy density [fm$^{-2}$]')
+    axes[0].set_ylabel(r'Entropy density [fm$^{-3}$]')
 
     finish()
 
@@ -932,9 +932,45 @@ def trento_events():
 
     finish(w_pad=0.3, h_pad=0.3)
 
-
 @plot
 def ipglasma():
+    trento = 'data/ipglasma/trento-fs.dat'
+    ipglasma = 'data/ipglasma/ipglasma.dat'
+    models = trento, ipglasma
+    labels = r'Trento + F.S.', 'IP-Glasma'
+    colors = plt.cm.Blues(0.6), offblack
+    dashes = (), (4,2)
+
+    fig = plt.figure(figsize=(columnwidth, aspect*columnwidth))
+
+    for model, label, color, dash in zip(models, labels, colors, dashes):
+        b, e2, e3 = np.loadtxt(model, usecols=(1,4,5)).T
+        
+        edges = np.linspace(0, 14, 14)
+        
+        e2_mean, e3_mean = np.array([[np.nanmean(en[(lo < b) & (b < hi)])
+                   for lo, hi in zip(edges[:-1], edges[1:])]
+                  for en in [e2, e3]])
+        
+        plt.plot((edges[:-1] + edges[1:])/2, e2_mean, color=color, dashes=dash, label=label)
+        plt.plot((edges[:-1] + edges[1:])/2, e3_mean, color=color, dashes=dash)
+   
+    plt.xlabel('b [fm]')
+    plt.ylabel(r'$\varepsilon_n$')
+    plt.ylim(0, 0.65)
+   
+    plt.text(12.1, 0.48, r'$\varepsilon_2$', fontsize=texnormal) 
+    plt.text(12.1, 0.26, r'$\varepsilon_3$', fontsize=texnormal) 
+
+    handles, labels = plt.gca().get_legend_handles_labels()
+    none = patches.Rectangle((0, 0), 0, 0, alpha=0)
+    handles = handles[0], none, handles[1], none
+    labels = labels[0], 'p=0, k=1.4, w=0.43 fm', labels[1], 'w=0.43 fm'
+    plt.legend(handles, labels, bbox_to_anchor=(0, 1.05), loc=2, handlelength=1.5)
+    finish()
+
+@plot
+def ipglasma2():
     fig, (ax1, ax2) = \
         plt.subplots(2, 1, figsize=(columnwidth, 1.8*aspect*columnwidth),
                      sharex=True)

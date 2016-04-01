@@ -257,7 +257,7 @@ This property of the generalized mean is known as scale invariance or homogeneit
 \begin{figure*}
     \includegraphics{cgc_compare}
     \caption{Profiles of the initial thermal distribution predicted by the KLN (left), EKRT (middle) and wounded nucleon (right) models (dashed black lines) compared to a generalized mean with different values of the parameter $p$ (solid blue lines).
-    Staggered lines show different cross sections of the initial entropy density $dS/(d^2r_\perp dy)$ as a function of the nucleon density $T_A$ for several values of $T_B = 1, 2, 3$ [fm$^{-2}$]. Entropy normalization is arbitrary.}
+    Staggered lines show different cross sections of the initial entropy density $dS/(d^2r_\perp dy)$ as a function of the participant nucleon density $\T_A$ for several values of $\T_B = 1, 2, 3$ [fm$^{-2}$]. Entropy normalization is arbitrary.}
     \label{fig:cgc_compare}
 \end{figure*}
 
@@ -290,46 +290,23 @@ Another CGC model which has attracted recent interest after it successfully desc
     \label{ekrt_energy}
     e(\tau_0, x, y) \sim \frac{K_\text{sat}}{\pi} p_\text{sat}^3(T_A, T_B).
 \end{equation}
-where the saturation momentum $p_\text{sat}$, defined in Ref.~\ref{?}, is a function of phenomenological model parameters $K_\text{sat}$ and $\beta$. The energy density in Eq.~\eqref{ekrt_energy} can then be recast as an entropy density using the thermodynamic relation ${s \sim e^{3/4}}$ to compare it with previous models.
+where the saturation momentum $p_\text{sat}$, defined in Ref.~\ref{?}, is a function of phenomenological model parameters $K_\text{sat}$ and $\beta$. The energy density in Eq.~\eqref{ekrt_energy} can then be recast as an entropy density using the thermodynamic relation ${s \sim e^{3/4}}$ to compare it with the previous models.
 
 Note that Eq.~\eqref{ekrt_energy} is expressed as a function of nuclear thickness $T$ which includes contributions from \emph{all} nucleons inside the nucleus and is different than the participant density $\T$ used previously. In order to express initial condition mappings as functions of a common variable one could, e.g.\ relate $\T$ and $T$ using an analytic wounded nucleon model. The effect of this substitution on the EKRT model, however, is small as the mapping deposits zero entropy if nucleons are non-overlapping effectively removing them from the participant thickness function. We thus replace $T$ with $\T$ in the EKRT model and note that similar results are obtained by recasting the wounded nucleon, KLN and \trento\ models as functions of $T$ using standard Glauber relations.
 
-In Fig.~\ref{fig:cgc_compare} we plot one-dimensional slices of the entropy deposition mapping predicted by the KLN, EKRT and wounded nucleon (WN) models for characteristic values of the participant nucleon density sampled in lead-lead collisions at $\sqrts=2.76$~TeV. The vertically staggered lines in each panel show the change in entropy deposited as a function of $\T_A$ for several constant values of $\T_B$, while the superimposed dashed lines show the generalized mean ansatz after it has been tuned to fit each model. The figure illustrates the flexibility of the generalized mean ansatz to reproduce different initial condition calculations and quantify differences via the generalized mean parameter $p$. The KLN model, for example, is described by $p\sim-0.67$ which is smaller than both the EKRT model $p \sim 0$ and the WN model $p=1$. In this sense, it is possible to systematize the strength of saturation effects in terms of the parameter $p$ needed to fit a given model.
+In Fig.~\ref{fig:cgc_compare} we plot one-dimensional slices of the entropy deposition mapping predicted by the KLN, EKRT and wounded nucleon (WN) models for characteristic values of the participant nucleon density sampled in lead-lead collisions at $\sqrts=2.76$~TeV. The vertically staggered lines in each panel show the change in entropy density deposited as a function of $\T_A$ for several constant values of $\T_B$, while the superimposed dashed lines show the generalized mean ansatz after it has been tuned to fit each model. The figure illustrates the flexibility of the generalized mean ansatz to reproduce different initial condition calculations and quantify differences between the models in terms of the generalized mean parameter $p$. The KLN model, for example, is described by $p\sim-0.67$ which is smaller than both the EKRT model $p \sim 0$ and the WN model $p=1$. Smaller, more negative values of $p$ pull the generalized mean toward a minimum function and correspond to more extreme gluon saturation.
 
-The three models shown in Fig.~\ref{fig:cgc_compare} are by no means an exhaustive list of initial condition proposed in the literature. Notably absent, for instance, is the highly successful IP-Glasma model which combines IP-Sat.\ CGC initial conditions with classical Yang-Mills dynamics to describe the full pre-equilibrium evolution of produced glasma fields. The dynamical nature of IP-Glasma makes it difficult to determine the mapping which translates participant density into average entropy deposition at the QGP thermalization time, though it is possible to examine quantities such as the elliptic and triangular eccentricity harmonics $\varepsilon_2$ and $\varepsilon_3$ which serves as unique signatures of different initial condition models. Fig.~\ref{fig:ipglasma} shows the
+The three models shown in Fig.~\ref{fig:cgc_compare} are by no means an exhaustive list of initial condition proposed in the literature. Notably absent, for instance, is the highly successful IP-Glasma model which combines IP-Sat CGC initial conditions with classical Yang-Mills dynamics to describe the full pre-equilibrium evolution of produced glasma fields. The dynamical nature of IP-Glasma makes it difficult to characterize its mapping from participant density to average entropy deposition at the QGP thermalization time, however, it is possible to examine its elliptic and triangular eccentricity harmonics $\varepsilon_2$ and $\varepsilon_3$ which serves as unique signatures of its effective initial condition mapping.
 
+Fig.~\ref{fig:ipglasma} compares the eccentricity harmonics of IP-Glasma and \trento\ using a geometric mean ${p=0}$ which was previously shown to reproduce the eccentricity hierarchy of $\varepsilon_2$ and $\varepsilon_3$ predicted by IP-Glasma. Each \trento\ initial condition event is free streamed for $\tau=0.4$~fm/c \ref{?} to mimic the weakly coupled pre-equilibrium dynamics of IP-Glasma and match the evolution time of both models. The calculations are performed using the same nucleon width $w=0.43$~fm/c and correlated lead nucleus configurations described in Ref.~\ref{}. The result shows a striking similarity in the eccentricity harmonics predicted by both models out to large values of the impact parameter $b$ where the sub-nucleonic structure of the IP-Glasma model starts to have significant effect. The simularity suggests that \trento\ can effectively reproduce the scaling behavior of the IP-Glasma model, although a more detailed comparison of the two models would be necessary to establish the strength of correspondence illustrated in Fig.~\ref{fig:cgc_compare}. 
 \begin{figure}[t]
     \centering
     \includegraphics{ipglasma}
-    \caption{Comparison of trento parameteric initial conditions
-    Charged particle multiplicity $d\nch/d\eta$ (top) and eccentricity harmonics $\varepsilon_n$ (bottom) for ${\sqrt{s_{NN}}=2.76}$ TeV Pb+Pb collisions as a function of impact parameter $b$. \protect\trento\ results using parameters drawn from the Bayesian posterior in Fig.~\ref{fig:posterior_identified} (solid lines) compared to results from the IP-Glasma model. Each \protect\trento\ initial condition event is freestreamed an additional 0.4 fm/c to match the pre-equilibrium evolution time of Classical Yang-Mills dynamics in the IP-Glasma model.}
+    \caption{Eccentricity harmonics $\varepsilon_2$ and $\varepsilon_3$ as a function of impact parameter $b$ for Pb+Pb collisions at ${\sqrts=2.76}$~TeV. IP-Glasma events are evaluated after $\tau=0.4$~fm/c CYM evolution and \protect\trento\ events after $\tau=0.4$~fm/c free streaming. \protect\trento\ specific parameters are $p=0$ and $k=1.4$. Both models use nucleon-nucleon cross section $\sigma_\text{NN}=6.4$~fm$^2$, nucleon width $w=0.43$~fm and correlated lead nuclei from Ref.~\ref{?}. The eccentricity calculation is performed using the energy density of the IP-Glasma model and $T^{00}$ component of the \protect\trento\ stress energy tensor after free streaming.}
+    \label{fig:ipglasma}
 \end{figure}
 
 \section{Constraining the model}
-
-\begin{figure*}
-    \includegraphics{validation}
-    \caption{Emulator validation for pion yield $dN/dy_{\pi^\pm}$ (left), average transverse momentum ${\langle p_T \rangle}_{\pi^\pm}$ (middle) and flow cumulant $v_2\{2\}$ (right) for centralities 0--5\% (blue) and 30--40\% (orange). The horizontal axis shows predictions by the emulator at untested regions of parameter space, and the vertical axis shows the same quantity after it has been calculated directly from the model. The gray line indicates perfect model and emulator agreement.} 
-\end{figure*}
-
-\begin{figure*}
-    \includegraphics{posterior_identified}
-    \caption{Diagonal and lower-diagonal: posterior marginal and joint distributions of the calibration parameters described in section \ref{?}. Diagonal entries show the posterior likelihood distribution of each parameter marginalized over remaining parameters, while lower-diagonal entries show the joint distribution of parameter pairs. Upper diagonal: the Pearson product-moment correlation coefficient $\rho_{X,Y}=\text{cov}(X,Y)/(\sigma_X \sigma_Y)$ for each pair of parameters $X$, $Y$. Red (blue) tiles indicate Pearson coefficients close to $1$ ($-1$) corresponding to strong linear correlation (anti-correlation). $^\dagger$The units for $\eta/s$ slope are [GeV$^{-1}$].}
-    \label{fig:posterior_identified}
-\end{figure*}
-
-\begin{figure*}
-    \includegraphics{posterior_compare}
-    \caption{Comparison of the posterior distributions obtained when the model is calibrated to fit identified pion, kaon and proton yields $dN/dy$ (blue lines), and when the model is calibrated to fit integrated charged particles $d\nch/d\eta$ (orange lines). $^\dagger$The units for $\eta/s$ slope are [GeV$^{-1}$].}
-\end{figure*}
-
-\begin{figure*}
-    \includegraphics{observables_plot}
-    \caption{Identified yields (left column), mean $p_T$ (middle column) and flow cumulants $v_n\{2\}$ (right column). The top row shows results obtained from the training data used to condition the emulator. from 100 random samples drawn from the Bayesian posterior.}
-\end{figure*}
-
-% Results
-\section{Results}
 
 \begin{table}[h]
     \caption{High likelihood parameters selected from the posterior distribution in Fig.~\ref{fig:posterior_identified} used to generate Fig.~\ref{fig:mode_observables}}
@@ -345,6 +322,31 @@ The three models shown in Fig.~\ref{fig:cgc_compare} are by no means an exhausti
     \end{ruledtabular}
     \label{table:likely_param}
 \end{table}
+
+\begin{figure*}
+    \includegraphics{validation}
+    \caption{Emulator validation for pion yield $dN/dy_{\pi^\pm}$ (left), average transverse momentum ${\langle p_T \rangle}_{\pi^\pm}$ (middle) and flow cumulant $v_2\{2\}$ (right) for centralities 0--5\% (blue) and 30--40\% (orange). The horizontal axis shows predictions by the emulator at untested regions of parameter space, and the vertical axis shows the same quantity after it has been calculated directly from the model. The gray line indicates perfect model and emulator agreement.} 
+\end{figure*}
+
+\begin{figure*}
+    \includegraphics{posterior_compare}
+    \caption{Comparison of the posterior distributions obtained when the model is calibrated to fit identified pion, kaon and proton yields $dN/dy$ (blue lines), and when the model is calibrated to fit integrated charged particles $d\nch/d\eta$ (orange lines). $^\dagger$The units for $\eta/s$ slope are [GeV$^{-1}$].}
+\end{figure*}
+
+\begin{figure*}
+    \includegraphics{observables_plot}
+    \caption{Identified yields (left column), mean $p_T$ (middle column) and flow cumulants $v_n\{2\}$ (right column). The top row shows results obtained from the training data used to condition the emulator. from 100 random samples drawn from the Bayesian posterior.}
+\end{figure*}
+
+\begin{figure*}
+    \includegraphics{posterior_identified}
+    \caption{Diagonal and lower-diagonal: posterior marginal and joint distributions of the calibration parameters described in section \ref{?}. Diagonal entries show the posterior likelihood distribution of each parameter marginalized over remaining parameters, while lower-diagonal entries show the joint distribution of parameter pairs. Upper diagonal: the Pearson product-moment correlation coefficient $\rho_{X,Y}=\text{cov}(X,Y)/(\sigma_X \sigma_Y)$ for each pair of parameters $X$, $Y$. Red (blue) tiles indicate Pearson coefficients close to $1$ ($-1$) corresponding to strong linear correlation (anti-correlation). $^\dagger$The units for $\eta/s$ slope are [GeV$^{-1}$].}
+    \label{fig:posterior_identified}
+\end{figure*}
+
+% Results
+\section{Results}
+
 
 \begin{figure*}
     \includegraphics{mode_observables}
@@ -373,7 +375,10 @@ The three models shown in Fig.~\ref{fig:cgc_compare} are by no means an exhausti
     \caption{Posterior constraints on the temperature dependent shear viscosity $(\eta/s)(T)$ (top panel) and temperature dependent bulk viscosity $(\zeta/s)(T)$ (bottom panel). The gray shaded regions mark the allowable values of $\eta/s$ and $\zeta/s$ used in the design while blue lines represent sample curves drawn from the posterior distributions of $\eta/s$ min, $\eta/s$ slope and $\zeta/s$ norm in Fig.~\ref{fig:posterior_identified}. unscaled bulk viscosity curve with unit norm (black line) used by the authors in \ref{?} is shown for reference.}
 \end{figure}
 
-\section{Conclusion}
+\section{Summary and conclusions}
+
+\medskip
+All models use in this study are open source. The \trento\ model and free streaming package are available at \url{github.com/Duke-QCD/trento}, the iEBE-VISHNU hybrid model at \url{u.osu.edu/vishnu} and latest version of UrQMD can be downloaded from \url{urqmd.org}.
 
 \acknowledgements
 The authors thank Ulrich Heinz, Scott Pratt, Harri Niemi and Bj\"orn Schenke for helpful discussions and clarifications in the production of the manuscript.

@@ -28,7 +28,7 @@
 
 \begin{abstract}
 We aim to determine the quark-gluon-plasma initial conditions created in ultra-relativistic heavy-ion collisions and its temperature dependent transport coefficients utilizing Bayesian statistics and a multi-parameter model-to-data comparison.
-The study is performed using \trento\ a recently developed parametric initial condition model for relativistic nuclear collisions which is able to interpolate among a general class of saturation based particle production scenarios [?].
+The study is performed using \trento , a recently developed parametric initial condition model for relativistic nuclear collisions which is able to interpolate among a general class of saturation based particle production scenarios.
 The parameterization is compared to explicit calculations in Color-Glass Condensate (CGC) effective field theory and embedded in a realistic hybrid model which couples event-by-event viscous hydrodynamics to a hadronic cascade.
 We find that the parameterized initial conditions are highly constrained by bulk observables and provide a first set of constraints on the temperature dependence of the specific shear- and bulk-viscosities of the quark-gluon plasma.
 \end{abstract}
@@ -43,34 +43,34 @@ Simulations based on relativistic viscous hydrodynamics have been highly success
 Initially, the success of hydrodynamic simulations was primarily qualitative. The framework elegantly described a number experimental phenomena, for example the existence of large azimuthal particle correlations, the mass ordering of these correlations and their characteristic momentum dependence.
 
 Modern hydrodynamic simulations have greatly improved upon the successes of first-generation models.
-The addition of dissipative corrections to ideal hydrodynamics, event-by-event fluctuations in the colliding nuclei and modern lattice quantum chromodynamics (QCD) calculations for the quark-gluon plasma (QGP) equation of state are just a few examples of developments which have dramatically improved the agreement of hydrodynamic models with experiment.
+The addition of dissipative corrections to ideal hydrodynamics \cite{Muronga:2004sf, Chaudhuri:2006jd, Romatschke:2007mq, Dusling:2007gi, Song:2007ux, Luzum:2008cw}, event-by-event fluctuations in the colliding nuclei \cite{Alver:2008zza, Alver:2010gr} and modern lattice quantum chromodynamics (QCD) calculations for the quark-gluon plasma (QGP) equation of state \cite{Bazavov:2009zn, Borsanyi:2013bia, Bazavov:2014pvz} are just a few examples of developments which have dramatically improved the agreement of hydrodynamic models with experiment.
 
-These developments have positioned hydrodynamic modeling to evolve beyond a qualitative science and extract intrinsic properties of hot and dense QCD matter with quantitative uncertainties. A primary goal of the ongoing effort is to determine the temperature dependence of the QGP transport coefficients such as the specific shear viscosity $\eta/s$ which is theorized to reach a lower bound ${(\eta/s)(T) \ge 1/4\pi}$ near the QGP phase transition temperature. 
+These developments have positioned hydrodynamic modeling to evolve beyond a qualitative science and extract intrinsic properties of hot and dense QCD matter with quantitative uncertainties. A primary goal of the ongoing effort is to determine the temperature dependence of the QGP transport coefficients such as the specific shear viscosity $\eta/s$ which is theorized to reach a lower bound ${(\eta/s)(T) \ge 1/4\pi}$ near the QGP phase transition temperature \cite{Policastro:2001yc, Kovtun:2004de}. 
 
 A prominent source of uncertainty in determining QGP transport coefficients from hydrodynamic model-to-data comparison is in modeling the initial stages of the collision.
 Model predictions vary with the choice of initial conditions and hence prefer hydrodynamic transport coefficients, e.g.\ QGP shear and bulk viscosities, which differ from calculation to calculation.
-For example, an estimate of the effective (constant) QGP shear viscosity $(\eta/s)_\text{QGP}$ needed to fit spectra and flows at RHIC found ${1/4\pi \le (\eta/s)_\text{QGP} \le 2.5/4\pi}$, where the uncertainty was largely attributable to a factor of two discrepancy in $(\eta/s)_\text{QGP}$ extracted with two different hydrodynamic initial condition models. 
+For example, an estimate of the effective (constant) QGP shear viscosity $(\eta/s)_\text{QGP}$ needed to fit spectra and flows at RHIC found ${1 \le 4 \pi(\eta/s)_\text{QGP} \le 2.5}$, where the uncertainty was attributable to discrepancies in $(\eta/s)_\text{QGP}$ extracted with two different hydrodynamic initial condition models \cite{Song:2010mg}. 
 
-The ongoing effort to constrain current bounds on the QGP shear viscosity typically focuses on improving theoretical descriptions of the initial conditions as well as the addition of new sensitive observables to assess the validity of each model's inherent assumptions and approximations.
+The ongoing effort to constrain current bounds on the QGP shear viscosity typically focuses on improving theoretical descriptions of the initial conditions \cite{Schenke:2012wb, Niemi:2015qia} as well as the addition of new sensitive observables to assess the validity of each model's inherent assumptions and approximations.
 The process thus defines an iterative cycle in which theory calculations are embedded in hydrodynamic transport simulations and analyzed against a comprehensive list of bulk observables to determine the likelihood distributions of the model parameters.
 
 Model optimization and comparison is complicated by the high-dimensional nature of the underconstrained parameter space.
 In addition to free parameters which describe the QGP transport coefficients, hydrodynamic simulations depend on a number of auxiliary parameters such as an effective nucleon width, QGP thermalization time and chemical freezeout temperature which require simultaneous optimization.
 Evaluating hydrodynamic models at a single point in parameter space may require tens of thousand of hydrodynamic simulations and thus brute force optimization techniques quickly become intractable. 
 
-One solution to the model optimization problem is the use of modern Bayesian methods designed to tune computationally intensive models which depend on free parameters that live in large and highly correlated parameter spaces.
+One solution to the model optimization problem is the use of modern Bayesian methods designed to tune computationally intensive models which depend on free parameters that live in large and highly correlated parameter spaces \cite{OHagan:2006ba, Higdon:2008cmc, Higdon:2014tva}. 
 A given model is first evaluated using a relatively small number of parameter configurations corresponding to discrete points in parameter space, and the model evaluations are used to train a Gaussian process emulator which interpolates model predictions between the training points.
 A standard Markov chain Monte Carlo algorithm is then be used to explore the parameter space interpolated by the emulator and isolate regions of parameter space which optimally replicate experiment. 
 
-Bayesian methods have been applied in previous studies to hydrodynamic simulations initialized with a two-component Monte Carlo Glauber (MC-Glb.) model and initial conditions derived from Color Glass Condensate effective field theory using the Monte Carlo Kharzeev-Levin-Nardi (MC-KLN) model.
+Bayesian methods have been applied to heavy-ion collisions in several previous studies \cite{Novak:2013bqa, Pratt:2015zsa, Bernhard:2015hxa, Sangaline:2015isa}, including simulations initialized with a two-component Monte Carlo Glauber (MC-Glb.) model and Color-Glass Condensate (CGC) initial conditions described by the Kharzeev-Levin-Nardi (MC-KLN) model \cite{Bernhard:2015hxa}.
 Future studies might expand this coverage to more modern calculations of the QGP initial conditions in order to systematically constrain hydrodynamic transport coefficients and auxiliary parameters for each initialization model described in the literature.
 Once the models are appropriately optimized, the accuracy of the different theory calculations can be assessed using an appropriately chosen goodness of fit measure or, as typically used in Bayesian methodology, an integrated likelihood that a given model describes experiment. 
 
-An alternative approach to this method of direct model validation is to parameterize the QGP initial conditions and apply Bayesian parameter estimation to determine systematic constraints on the initial energy (or entropy) deposited by competing models.
-The approach was first introduced in a comprehensive Bayesian analysis of heavy-ion collisions at RHIC and the LHC which constrained parameterized forms of the event-averaged initial conditions and temperature dependence of the QGP equation of state using viscous hydrodynamics coupled to a hadronic afterburner.
+An alternative approach to this method of direct model validation is to parameterize the QGP initial conditions and apply Bayesian parameter estimation to determine systematic constraints on the initial energy (or entropy) deposited by competing models, as employed in \cite{Novak:2013bqa, Pratt:2015zsa, Sangaline:2015isa}.
 The authors parameterized the initial conditions using a saturation inspired mapping similar to an optical wounded nucleon model but with additional parameters to incorporate modifications to particle production expected in Color-Glass Condensate effective field theory.
+Bayesian analysis was then used to constrain parameterized forms of the event-averaged initial conditions and temperature dependence of the QGP equation of state using viscous hydrodynamics coupled to a hadronic afterburner.
 
-In this work we extend previous efforts to parameterize and constrain the QGP initial conditions using \trento , a recently developed parametric initial condition model designed to interpolate a subspace of all initialization models, including, but not limited to, parameterizations that mimic specific calculations in Color-Glass Condensate effective field theory.
+In this work we extend previous efforts to parameterize and constrain the QGP initial conditions using \trento , a recently developed parametric initial condition model designed to interpolate a subspace of all initialization models, including, but not limited to, parameterizations that mimic specific calculations in Color-Glass Condensate effective field theory \cite{Moreland:2014oya}.
 The parametric model generalizes trivially to incorporate fluctuations of the nucleon coordinates and minimum bias proton-proton yields and is used to conduct the first Bayesian analysis of QGP initial conditions which parameterizes both the magnitude of event-by-event fluctuations and the strength of saturation effects which modulate average particle production.
 We show that the experimental data imparts simultaneous constraints on the QGP initial conditions and medium properties, and compare these constraints to specific calculations in the literature.  
 
@@ -83,7 +83,7 @@ The heavy-ion collision transport dynamics are modeled in a multi-stage approach
 % Hydrodynamics and Boltzmann transport
 \subsection{Hydrodynamics and Boltzmann transport}
 
-The hydrodynamic evolution is solved using an improved version of VISH2+1, a stable, extensively tested implementation of boost-invariant viscous hydrodynamics which has been updated to handle fluctuating event-by-event initial conditions and incorporate bulk viscous corrections with shear and bulk coupling.
+The hydrodynamic evolution is solved using an improved version of VISH2+1 \cite{Song:2007ux}, a stable, extensively tested implementation of boost-invariant viscous hydrodynamics which has been updated to handle fluctuating event-by-event initial conditions and incorporate bulk viscous corrections with shear and bulk coupling.
 The equations of motion are described by the second-order Israel-Stewart equations in the 14-moment approximation which yields a set of relaxation equations
 \begin{subequations}
     \label{relaxation}
@@ -377,27 +377,26 @@ Fig.~\ref{fig:ipglasma} compares the eccentricity harmonics predicted by IP-Glas
 
 \section{Summary and conclusions}
 
-We have determined initial condition and transport properties of the QGP medium produced in relativistic heavy-ion collisions using Bayesian parameter estimation methods. The primary contribution of the present work is the application of the recently developed \trento\ model to parameterize the QGP initial conditions in a flexible manner which permits the Bayesian model-to-data analysis to select high likelihood initial conditions from the data. We show that the parameterized initial conditions are highly constrained by bulk observables and that the constraints are robust to the presence of correlated model uncertainties such as the temperature dependent shear and bulk viscosities.
+We have determined initial condition and transport properties of the QGP medium produced in relativistic heavy-ion collisions using Bayesian methodology. The primary contribution of the present work is the application of the recently developed \trento\ model to parameterize entropy deposition in relativistic nuclear collisions and extract high likelihood parameters for the QGP initial conditions while asserting minimal theoretical assumptions. We show that the parameterized initial conditions are highly constrained by bulk observables and that the constraints are robust to the presence of correlated model uncertainties such as the temperature dependent shear and bulk viscosities.
 
-The QGP initial conditions are well described by entropy deposition proportional to the geometric mean of local participant nucleon density \eqref{means}. 
+\begin{enumerate}
+    \item The QGP initial conditions are well described by entropy deposition proportional to the geometric mean of local participant nucleon density \eqref{means}. 
 
-We find a preferred nucleon width $w\approx0.43$~fm that is in remarkable agreement with values extracted from experiment \ref{blah}.
+    \item We see very little sensitivity of the model to variations in the strength of proton-proton multiplicity fluctuations.
+     
+    \item We find a preferred nucleon width $w\approx0.43$~fm that is in remarkable agreement with values extracted from experiment \ref{blah}.
 
-We see very little sensitivity of the model to variations in the strength of proton-proton multiplicity fluctuations.
+    \item The data is unable to individually constrain $(\eta/s)_\text{min}$ and $(\eta/s)_\text{slope}$ at a single beam energy, but it does constrain a linear combination of the two.
 
-The data is unable to tightly constrain $(\eta/s)_\text{min}$ and $(\eta/s)_\text{slope}$ at a single beam energy but it does constrain a linear combination of the two parameters.
+    \item The simulation prefers a non-zero bulk viscosity which corroborates the findings in Ref.~\ref{}.
 
-The simulation prefers non-zero bulk viscosity which corroborates the findings in Ref.~\ref{}.
+    \item We find a tight constraint on the hydro-to-micro switching temperature ${T_\text{sw} \approx 149}$~MeV which vanishes if identified pion, kaon and proton yields are replaced with species-blind charged particle yield.
+\end{enumerate}
 
-The simulation prefers a hydro-to-micro switching temperature ${T_\text{sw} \approx 149}$~MeV which is close to the EoS pseudo-critical phase transition temperature ${T_c=154}$~MeV. Further investigation reveals that this preference is entirely controlled by chemistry.
-
-Bayesian parameter estimation is unable to resolve the tension in the relative yield of pions, kaons and protons. 
-
-Model predictions vary with the choice of initial conditions and hence lead to different extracted values of the QGP transport coefficients.
-from model-to-data comparison using viscous relativistic fluid dynamics relies on theoretical calculations for the initial conditions of the produced medium .
+We've selected a set of high likelihood model parameters from the Bayesian analysis and used them to analyze the optimal performance of the model. The resulting discrepancy between model and experiment is less than $\pm10\%$ for mean $p_T$, flow cumulants, and charged particle yields while we observe significant $\sim\!10$--$30\%$ tension in the relative abundances of pions, kaons and protons when the model is tuned to fit identified yields.
 
 
-The analysis shows, for the first time, that the largest source of uncertainty in hydrodynamic simulations of heavy-ion collisions can be significantly reduced once the 
+
 
 \medskip
 All models use in this study are open source. The \trento\ model and free streaming package are available at \url{github.com/Duke-QCD/trento}, the iEBE-VISHNU hybrid model at \url{u.osu.edu/vishnu} and latest version of UrQMD can be downloaded from \url{urqmd.org}.

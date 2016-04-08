@@ -16,6 +16,8 @@
 \newcommand{\sqrts}{\sqrt{s_{NN}}}
 \newcommand{\T}{\tilde{T}}
 \newcommand{\Qs}[1]{Q_{s,\text{#1}}}
+\newcommand{\paddedhline}{\noalign{\smallskip}\hline\noalign{\smallskip}}
+\newcommand{\order}[1]{$\mathcal O(10^{#1})$}
 
 \begin{document}
 
@@ -310,7 +312,123 @@ Fig.~\ref{fig:ipglasma} compares the eccentricity harmonics predicted by IP-Glas
     \label{fig:ipglasma}
 \end{figure}
 
-\section{Constraining the model}
+
+\section{Parameter estimation}
+
+With the full evolution model in hand, a number of important model parameters---related to both initial-state entropy deposition and the QGP medium---remain undetermined.
+These parameters typically correlate among each other and affect multiple observables, hence, if we wish to describe a wide variety of experimental observables, the only option is a simultaneous fit of all parameters.
+But, it is not feasible to do this directly, since simulating observables at even a single set of parameter values requires thousands of individual events and significant computation time.
+
+To overcome this limitation, we employ a Bayesian method for parameter estimation with computationally expensive models \cite{OHagan:2006ba,Higdon:2008cmc,Higdon:2014tva}.
+Briefly, the model is evaluated at a relatively small \order 2 number of parameter points, the output is interpolated by a Gaussian process emulator, and the emulator is used to systematically explore parameter space with Markov chain Monte Carlo.
+This section summarizes the methodology; see Ref.~\cite{Bernhard:2015hxa} for a complete treatment.
+
+\subsection{Intro to Gaussian process emulators}
+
+\newcommand{\x}{\mathbf x}
+\newcommand{\y}{\mathbf y}
+\newcommand{\N}{\mathcal N}
+\newcommand{\muvec}{\boldsymbol\mu}
+
+Central to the method is a statistical surrogate model that interpolates parameter space and provides fast predictions of model output at arbitrary inputs.
+We use a Gaussian process emulator \cite{Rasmussen:2006gp} as a flexible, non-parametric interpolator.
+Essentially, this amounts to assuming that the model follows a multivariate normal distribution with mean and covariance functions determined by conditioning on actual model calculations.
+
+Suppose a generic model takes a vector of $n$ input parameters $\x$ and produces a single output $y$.
+If the model is evaluated at a set of $m$ points $X = \{\x_1, \ldots, \x_m\}$, it analogously produces $m$ outputs $\y = \{y_1, \ldots, y_m\}$.
+Those outputs may be assumed to have a multivariate normal distribution
+\begin{equation}
+  \y \sim \N(\muvec, \Sigma),
+\end{equation}
+where
+\begin{equation}
+  \muvec = \mu(X) = \{\mu(\x_1), \mu(\x_2), \ldots, \mu(\x_m)\} \\
+\end{equation}
+is the $m$-dimensional mean vector from applying the mean function $\mu$ to each input, and
+\begin{equation}
+  \Sigma = \sigma(X, X) =
+  \begin{pmatrix}
+    \sigma(\x_1, \x_1) & \cdots & \sigma(\x_1, \x_m) \\
+    \vdots & \ddots & \vdots \\
+    \sigma(\x_m, \x_1) & \cdots & \sigma(\x_m, \x_m) \\
+  \end{pmatrix}
+\end{equation}
+is the $m \times m$ covariance matrix from applying the covariance function $\sigma$ to each pair of inputs.
+
+Now, given the training data $(X, \y)$, the predictive distribution for the model outputs $\y_*$ at another set of input points $X_*$ is
+\begin{equation}
+  \begin{aligned}
+    \y_* &\sim \N(\muvec, \Sigma), \\
+    \muvec &= \sigma(X_*, X)\sigma(X, X)^{-1}\y, \\
+    \Sigma &= \sigma(X_*,X_*) - \sigma(X_*,X)\sigma(X,X)^{-1}\sigma(X,X_*).
+  \end{aligned}
+\end{equation}
+Thus, by assuming only that the model follows a certain covariance function $\sigma$, we obtain both the mean predicted output and corresponding uncertainty at any desired point.
+Generally, the uncertainty is small near explicitly calculated points and wide in gaps, reflecting the true state of knowledge of the interpolation.
+
+The covariance function $\sigma$ quantifies the correlation between pairs of input points.
+We use a typical Gaussian function
+\begin{equation}
+  \sigma(\x, \x') = \sigma_\text{GP}^2 \exp\Biggl[ -\sum_{k=1}^n \frac{(x_k - x'_k)^2}{2\ell_k^2} \Biggr] + \sigma_n^2\delta_{\x\x'},
+\end{equation}
+which yields smoothly-varying processes with continuous derivatives, making it a common choice for well-behaved models.
+This form has several \emph{hyperparameters} to be estimated from the training data:
+the overall variance of the Gaussian process $\sigma_\text{GP}^2$,
+the correlation lengths for each input parameter $\ell_k$,
+and the noise variance $\sigma_n^2$ which allows for statistical error.
+
+While Gaussian processes are fundamentally scalar functions, computer models may produce multiple outputs---the present QGP evolution model certainly does.
+This is readily solved by transforming the output data into orthogonal and uncorrelated linear combinations called principal components, then emulating each component with an individual Gaussian process.
+
+\newcommand{\tran}{^\intercal}
+
+Suppose a model has $p$-dimensional output, that is, given an $m \times n$ input matrix $X$, it produces $m \times p$ output $Y$.
+The principal components are then computed by the linear transformation
+\begin{equation}
+  Z = \sqrt m \, Y U
+\end{equation}
+where $U$ are the eigenvectors of the sample covariance matrix $Y\tran Y$.
+The Gaussian processes predict principal components $Z_*$ at input points $X_*$ which are then transformed back to physical space as
+\begin{equation}
+  Y_* = \frac{1}{\sqrt m} Z_* U\tran.
+\end{equation}
+
+Often, the $p$ model outputs are strongly correlated and so a much smaller number of principal components $q~\ll~p$ account for nearly all of the model's variance.
+Thus one can consider only $q$ components, thereby reducing a high-dimensional output space to a few one-dimensional problems with negligible error.
+
+
+\subsection{Model parameters and observables}
+
+Latin hypercube, postprocessing, validation
+
+
+\subsection{Calibration with MCMC}
+
+Bayes' theorem, ensemble sampling, uncertainty
+
+
+\begin{table}
+  \caption{
+    \label{tab:design}
+    Input parameter ranges for the initial condition and hydrodynamic models.
+  }
+  \begin{ruledtabular}
+  \begin{tabular}{lll}
+    Parameter         & Description                        & Range           \\
+    \paddedhline
+    Norm              & Overall normalization              & 100--250        \\
+    $p$               & Entropy deposition parameter       & $-1$ to $+1$    \\
+    $k$               & Multiplicity fluct.\ shape         & 0.8--2.2        \\
+    $w$               & Gaussian nucleon width             & 0.4--1.0 fm     \\
+    $\eta/s$ hrg      & Const.\ shear viscosity, $T < T_c$ & 0.3--1.0        \\
+    $\eta/s$ min      & Shear viscosity at $T_c$           & 0--0.3          \\
+    $\eta/s$ slope    & Slope above $T_c$                  & 0--2 GeV$^{-1}$ \\
+    $\zeta/s$ norm    & Prefactor for $(\zeta/s)(T)$       & 0--2            \\
+    $T_\text{switch}$ & Hydro-UrQMD switching temp.        & 135--165 MeV    \\
+  \end{tabular}
+  \end{ruledtabular}
+\end{table}
+
 
 \begin{table}[h]
     \caption{High likelihood parameters selected from the posterior distribution in Fig.~\ref{fig:posterior_identified} used to generate Fig.~\ref{fig:mode_observables}}

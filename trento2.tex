@@ -185,11 +185,11 @@ Once the particles cease interacting, the position, momentum and particle type i
 
 The hydrodynamic equations of motion necessitate initial conditions for the energy density $e$, four-velocity $u^\mu$, bulk pressure $\Pi$ and shear stress tensor $\pi^{\mu\nu}$ at the thermalization time $\tau_0$ when the fluid attains local thermal equillibrium. The initial conditions are typically procured using one of two types of models:
 \begin{enumerate*}[label={\arabic*)}]
-    \item dynamical models derived from approximations of QCD or related quantum field theories which describe the full time evolution of the system as it approaches local thermal equilibrium, and 
-    \item simpler non-dynamical models which map the state of the system at time $\tau=0^+$ directly to time $\tau=\tau_0$ and set the initial flow profile $u^\mu$ to zero.
+    \item dynamical models derived from approximations of QCD or related quantum field theories which describe the full time evolution of the system as it approaches local thermal equilibrium \cite{Schenke:2012wb, vanderSchee:2013pia, Wang:1991hta}, and 
+    \item simpler non-dynamical models which map the state of the system at time $\tau=0^+$ directly to time $\tau=\tau_0$ when the system thermalizes \cite{}.
 \end{enumerate*}
 
-The importance of pre-equilibrium dynamics was quantified in a recent study by initializing hydrodynamic simulations with a free streaming phase (zero coupling) and switching to hydrodynamics (strong coupling) after different periods of time. The authors showed that although free streaming never leads to thermalization, it can be used to bracket the influence of pre-equilibrium dynamics on the medium evolution as the pre-equilibrium coupling strength is expected to fall between the free streaming and hydrodynamic limits. The analysis found a preference for a brief free streaming phase ${\tau_\text{fs} \lesssim 1}$~fm/c, but the effect on hydrodynamic bulk observables was small and modifications to the preferred value of the QGP specific shear viscosity $\eta/s$ were less than 10\%. In reality, the magnitude of the effect is expected to be even smaller as the pre-equilibrium coupling strength is necessarily non-zero.
+The importance of pre-equilibrium dynamics was quantified in a recent study by initializing hydrodynamic simulations with a free streaming phase (zero coupling) and switching to hydrodynamics (strong coupling) after different periods of time \cite{Liu:2015nwa}. The authors showed that although free streaming never leads to thermalization, it can be used to bracket the influence of pre-equilibrium dynamics on the medium evolution as the pre-equilibrium coupling strength is expected to fall between the free streaming and hydrodynamic limits. The analysis found a preference for a brief free streaming phase ${\tau_\text{fs} \lesssim 1}$~fm/c, but the effect on hydrodynamic bulk observables was small and modifications to the preferred value of the QGP specific shear viscosity $\eta/s$ were less than 10\%. In reality, the magnitude of the effect is expected to be even smaller as the pre-equilibrium coupling strength is necessarily non-zero.
 
 We choose to neglect pre-equilibrium dynamics in the present study, and set the fluid four-velocity to zero ${u^\mu = (1,0,0,0)}$ as well as the shear and bulk viscous tensors $\pi^{\mu\nu}$ and $\Pi$ which quickly relax to their Navier-Stokes values. This reduces the initial conditions to a thermal energy density $e(\tau_0, x, y, \eta)$ which can be expressed as an entropy density via the QCD EoS. The initial conditions in boost-invariant hydrodynamics can thus described by an entropy density profile
 \begin{equation}
@@ -353,7 +353,7 @@ Fig.~\ref{fig:ipglasma} compares the eccentricity harmonics predicted by IP-Glas
 
 
 \begin{figure*}
-    \includegraphics{mode_observables}
+    \includegraphics{mode_observables_identified}
     \caption{Top row: model calculations of identified yields $dN/dy$, mean $p_T$ and flow cumulants $v_n\{2\}$ as a function of collision centrality using high-likelihood parameters (listed in table \ref{table:likely_param}) determined from the posterior in Fig.~\ref{fig:posterior_identified}. Symbols with error bars show data from ALICE and lines show results of the model. Bottom row: ratio of the model divided by experiment. Gray band indicates 10\% discrepancy between the model and experiment.}
     \label{fig:mode_observables}
 \end{figure*}
@@ -408,6 +408,12 @@ All models use in this study are open source. The \trento\ model and free stream
 \acknowledgements
 The authors thank Ulrich Heinz, Scott Pratt, Harri Niemi and Bj\"orn Schenke for helpful discussions and clarifications in the production of the manuscript.
 \appendix
+
+\begin{figure*}
+    \includegraphics{mode_observables_integrated}
+    \caption{Top row: model calculations of integrated yield $dN/d\eta$, identified mean $p_T$ and flow cumulants $v_n\{2\}$ as a function of collision centrality using high-likelihood parameters (listed in table \ref{table:likely_param}) determined from the posterior in Fig.~\ref{fig:posterior_identified}. Symbols with error bars show data from ALICE and lines show results of the model. Bottom row: ratio of the model divided by experiment. Gray band indicates 10\% discrepancy between the model and experiment.}
+    \label{fig:mode_observables}
+\end{figure*}
 
 \begin{figure*}
     \includegraphics{posterior_integrated}

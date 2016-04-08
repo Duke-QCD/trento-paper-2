@@ -681,8 +681,7 @@ def posterior_compare():
     finish(w_pad=0.5, rect=[0, 0, 1, 0.85])
 
 
-@plot
-def mode_observables(**kwargs):
+def mode_observables(model_data, **kwargs):
     batch_obs_mode = 'data/bayesian/model/batch-observables-mode.hdf'
     exp_data = 'data/bayesian/exp/data.hdf'
     id_parts = [
@@ -763,6 +762,15 @@ def mode_observables(**kwargs):
 
     finish(pad=0.0, h_pad=0, w_pad=0.3)
 
+@plot
+def mode_observables_identified():
+    batch_obs_mode = 'data/bayesian/model/batch-observables-mode.hdf'
+    mode_observables(batch_obs_mode)
+
+@plot
+def mode_observables_integrated():
+    batch_obs_mode = 'data/bayesian/model/batch-observables-mode-dNch_deta.hdf'
+    mode_observables(batch_obs_mode)
 
 @plot
 def posterior_p_arrows(n=1, **kwargs):

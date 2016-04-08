@@ -1,4 +1,4 @@
-\documentclass[aps,prc,reprint,amsmath,nofootinbib]{revtex4-1}
+\documentclass[aps,prc,reprint,amsmath,nofootinbib,superscriptaddress]{revtex4-1}
 
 \usepackage{hyperref}
 \usepackage{graphicx}
@@ -6,6 +6,7 @@
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage[inline]{enumitem}
+\usepackage[dvipsnames]{color}
 \graphicspath{{fig/}}
 
 \newcommand{\trento}{T\raisebox{-0.5ex}{R}ENTo}
@@ -23,6 +24,8 @@
 \author{Jonah E.\ Bernhard}
 \author{Steffen A.\ Bass}
 \affiliation{Department of Physics, Duke University, Durham, NC 27708-0305}
+\author{Jia Liu}
+\affiliation{Department of Physics, Ohio State University, Columbus, OH 43210-1117}
 \date{\today}
 
 
@@ -59,7 +62,7 @@ In addition to free parameters which describe the QGP transport coefficients, hy
 Evaluating hydrodynamic models at a single point in parameter space may require tens of thousand of hydrodynamic simulations and thus brute force optimization techniques quickly become intractable. 
 
 One solution to the model optimization problem is the use of modern Bayesian methods designed to tune computationally intensive models which depend on free parameters that live in large and highly correlated parameter spaces \cite{OHagan:2006ba, Higdon:2008cmc, Higdon:2014tva}. 
-A given model is first evaluated using a relatively small number of parameter configurations corresponding to discrete points in parameter space, and the model evaluations are used to train a Gaussian process emulator which interpolates model predictions between the training points.
+A given model is first evaluated using a relatively small number of parameter configurations corresponding to discrete points in parameter space, and the model evaluations are used to train a Gaussian process emulator which interpolates model predictions between the training points \cite{Rasmussen:2006gp}.
 A standard Markov chain Monte Carlo algorithm is then be used to explore the parameter space interpolated by the emulator and isolate regions of parameter space which optimally replicate experiment. 
 
 Bayesian methods have been applied to heavy-ion collisions in several previous studies \cite{Novak:2013bqa, Pratt:2015zsa, Bernhard:2015hxa, Sangaline:2015isa}, including simulations initialized with a two-component Monte Carlo Glauber (MC-Glb.) model and Color-Glass Condensate (CGC) initial conditions described by the Kharzeev-Levin-Nardi (MC-KLN) model \cite{Bernhard:2015hxa}.
@@ -83,8 +86,8 @@ The heavy-ion collision transport dynamics are modeled in a multi-stage approach
 % Hydrodynamics and Boltzmann transport
 \subsection{Hydrodynamics and Boltzmann transport}
 
-The hydrodynamic evolution is solved using an improved version of VISH2+1 \cite{Song:2007ux}, a stable, extensively tested implementation of boost-invariant viscous hydrodynamics which has been updated to handle fluctuating event-by-event initial conditions and incorporate bulk viscous corrections with shear and bulk coupling.
-The equations of motion are described by the second-order Israel-Stewart equations in the 14-moment approximation which yields a set of relaxation equations
+The hydrodynamic evolution is solved using an improved version of VISH2+1 \cite{Song:2007ux}, a stable, extensively tested implementation of boost-invariant viscous hydrodynamics which has been updated to handle fluctuating event-by-event initial conditions \cite{Shen:2014vra} and incorporate bulk viscous corrections with shear and bulk coupling \cite{Denicol:2014vaa}.
+The equations of motion are described by the second-order Israel-Stewart equations in the 14-moment approximation \cite{Stewart59, Israel43, ISRAEL1976213} which yields a set of relaxation equations
 \begin{subequations}
     \label{relaxation}
     \begin{align}
@@ -96,7 +99,7 @@ The equations of motion are described by the second-order Israel-Stewart equatio
 \end{subequations}
 for the bulk viscous pressure $\Pi$ and shear-stress tensor $\pi^{\mu\nu}$.
 The terms $\zeta$ and $\eta$ are the first-order bulk and shear transport coefficients, and the parameters $\tau_\Pi$ and $\tau_\pi$ their second-order bulk and shear relaxation times.
-The remaining transport coefficients multiplying shear and bulk terms on the right can then be expressed as functions of the relaxation times and other thermodynamic quantities and have been determined in the limit of small but finite masses in reference \ref{?}.
+The remaining transport coefficients multiplying shear and bulk terms on the right can then be expressed as functions of the relaxation times and other thermodynamic quantities and have been determined in the limit of small but finite masses in reference \cite{Denicol:2014vaa}.
 
 The relaxation equations in Eq.~\eqref{relaxation} are then used to solve the hydrodynamic evolution equations,
 \begin{equation}
@@ -105,9 +108,9 @@ The relaxation equations in Eq.~\eqref{relaxation} are then used to solve the hy
 \end{equation}
 for the energy-momentum tensor $T^{\mu\nu}$, provided a set of initial conditions for the energy density $e(x,y)$ and four-velocity $u^\mu(x,y)$ as well as an equation of state to interrelate the energy density $e$, ideal pressure $P_0$ and temperature $T$ of each fluid cell in local thermal equilibrium.
 
-We use a modern QCD equation of state (EoS) based on continuum extrapolated lattice calculations at zero baryon density published by the HotQCD collaboration and blended into a hadron resonance gas EoS in the interval $110 \le T \le 130$~MeV using a smoothstep interpolation function.
-The HotQCD EoS, characterized by the parameterized interaction measure $\theta^{\mu\mu}(T) = (e - 3p)/T^4$, has been compared to additional state-of-the-art calculations by the Wuppertal-Budapest collaboration and shown to agree within published errors.
-The two parameterizations were also studied in a recent error analysis at RHIC energies which quantified the effect of systematic lattice EoS discrepancies and statistical continuum extrapolation errors on hydrodynamic observables.
+We use a modern QCD equation of state (EoS) based on continuum extrapolated lattice calculations at zero baryon density published by the HotQCD collaboration \cite{Bazavov:2014pvz} and blended into a hadron resonance gas EoS in the interval $110 \le T \le 130$~MeV using a smoothstep interpolation function \cite{Moreland:2015dvc}.
+The HotQCD EoS, characterized by the parameterized interaction measure $\theta^{\mu\mu}(T) = (e - 3p)/T^4$, has been compared to additional state-of-the-art calculations by the Wuppertal-Budapest collaboration and shown to agree within published errors \cite{Bazavov:2014pvz}.
+The two parameterizations were also studied in a recent error analysis at RHIC energies which quantified the effect of systematic lattice EoS discrepancies and statistical continuum extrapolation errors on hydrodynamic observables \cite{Moreland:2015dvc}.
 The effect of these errors on mean $p_T$, elliptic flow $v_2$ and triangular flow $v_3$ was found to be order 1\% and hence is expected to be negligible in the present analysis.
 
 We seek to constrain, among other quantities, the temperature dependence of the shear and bulk transport coefficients $\eta(T)$ and $\zeta(T)$ in Eq.~\eqref{relaxation}.
@@ -115,12 +118,12 @@ The QGP specific shear viscosity $\eta/s$ is qualitatively expected to reach a g
 \begin{equation}
     (\eta/s)(T) = 
     \begin{cases}
-        (\eta/s)_\text{min} + (\eta/s)_\text{slope} \cdot (T - T_c) &T > T_c \\
+        (\eta/s)_\text{min} + (\eta/s)_\text{slope} (T - T_c) &T > T_c \\
         (\eta/s)_\text{hrg} &T \le T_c
     \end{cases}
 \end{equation}
 where we fix $T_c = 0.155$~GeV using the approximate pseudo-critical phase transition temperature of the HotQCD equation of state, and $(\eta/s)_\text{min}$, $(\eta/s)_\text{slope}$ and $(\eta/s)_\text{hrg}$ are constants which we wish to determine.
-For the temperature dependent bulk viscosity, we use the parameterization constructed in Ref.~\ref{?},
+For the temperature dependent bulk viscosity, we use the parameterization constructed in Ref.~\cite{Denicol:2009am, Ryu:2015vwa},
 \begin{equation}
     \label{zetas}
     (\zeta/s)(T) = 
@@ -144,13 +147,14 @@ with dimensionless parameter $x = T/T_0$ and parameterization coefficients
     &\lambda_1=0.9, ~~\lambda_2=0.22, ~~\lambda_3=0.9, ~~\lambda_4=0.25, \\
     &T_0 = 0.18 \text{ GeV}, ~~T_a = 0.995\, T_0, ~~T_b = 1.05\, T_0.
 \end{align*}
-The $(\zeta/s)(T)$ curve in Eq.~\eqref{zetas} is then rescaled by an overall normalization factor $(\zeta/s)_\text{norm}$ which is a free parameter to be constrained by data. 
+The $(\zeta/s)(T)$ curve in Eq.~\eqref{zetas} is then rescaled by an overall normalization factor $(\zeta/s)_\text{norm}$ which is a free parameter to be constrained by data.
+The normalization factor used in this work is thus equal to unity when the rescaled $(\zeta/s)(T)$ parameterization in Eq.~\eqref{zetas} equals the approximate best fit parameterization determined in Ref.~\cite{Ryu:2015vwa}.
 
 The hybrid model used in the present analysis switches from hydrodynamic field equations to a microscopic kinetic description of the medium once the fluid expands, cools and hadronizes. Kinetic descriptions are well suited to describe late stages of the collision where the inter-particle mean free path approaches the system size and approximate local thermal equilibirum breaks down.
 Kinetic models also naturally describe species dependent kinetic freezeout and hadronic feed down dynamics which are difficult to incorporate in purely hydrodynamic models.
 More detailed discussion of the advantages of hybrid models can be found in references \ref{?}.
 
-The transition from viscous hydrodynamics to a hadronic cascade is performed along a constant isotherm $T_\text{sw}$ using the iSS particle sampler according to the Cooper-Frye prescription,
+The transition from viscous hydrodynamics to a hadronic cascade is performed along a constant isotherm $T_\text{sw}$ using the iSS particle sampler \cite{Shen:2014vra, Qiu:2013wca} according to the Cooper-Frye prescription \cite{Cooper:1974mv},
 \begin{equation}
     \label{cooper_frye}
     \frac{dN}{dy p_T dp_T d\phi_p} = \int_\Sigma \frac{g}{(2\pi)^3} (f_0(x,p) + \delta f(x,p)) p^\mu d^3 \sigma_\mu,
@@ -163,10 +167,10 @@ The shear correction to the distribution function is given by,
     \delta f_\text{shear}(x^\mu, p^\mu) = f_0(x^\mu, p^\mu)(1 \pm f_0(x^\mu, p^\mu))\frac{\pi_{\mu\nu}p^\mu p^\nu}{2(e+P)T^2}
 \end{equation}
 where $f_0$ is the ideal distribution function, $\pi_{\mu\nu}$ the shear stress tensor, $p^\mu$ the particle momentum and $e$, $P$ and $T$ the fluid's energy density, pressure and temperature.
-The bulk viscous correction, on the other hand, is described by multiple formulations in the literature which predict significantly different behavior when either the bulk viscosity $\zeta$ or the transverse momentum $p_T$ are large.
-We note, however, that since the bulk parameterization $(\zeta/s)(T)$ in Eq.~\eqref{zetas} is small in the allowed hydro-to-micro transition region $135 \le T_\text{sw} \le 165$~MeV used in this study, the bulk viscous corrections to the distribution function $\delta f_\text{bulk} \propto (\zeta/s)\vert_{T_\text{sw}}$ are also expected to be small and are neglected in the present work.
+The bulk viscous correction, on the other hand, is described by multiple formulations in the literature which predict significantly different behavior when either the bulk viscosity $\zeta$ or the transverse momentum $p_T$ are large \cite{Dusling:2011fd, Noronha-Hostler:2013gga}.
+\textcolor{red}{We note, however, that since the bulk parameterization $(\zeta/s)(T)$ in Eq.~\eqref{zetas} is small in the allowed hydro-to-micro transition region $135 \le T_\text{sw} \le 165$~MeV used in this study, the bulk viscous corrections to the distribution function $\delta f_\text{bulk} \propto (\zeta/s)\vert_{T_\text{sw}}$ are also expected to be small and are neglected in the present work.}
 
-Once the fluid is converted into hadrons, the subsequent microscopic dynamics are modeled using the UrQMD hadronic afterburner.
+Once the fluid is converted into hadrons, the subsequent microscopic dynamics are modeled using the UrQMD hadronic afterburner \cite{Bass:1998ca, Bleicher:1999xi}.
 The UrQMD model propagates all produced hadrons along classical trajectories, samples their stochastic binary collisions and simulates their resonance decays until the system becomes too dilute to continue interacting.
 The calculation is performed using a Monte Carlo realization of the Boltzmann equation
 \begin{equation}
@@ -219,7 +223,7 @@ at the desired beam energy. The collision cross sections thus enter through the 
     \label{fig:thickness}
 \end{figure}
 
-At this point it becomes necessary to specify the function $f$ in Eq~\eqref{mapping} which maps participant matter to local entropy deposition. In general, the function $f(\T_A, \T_B)$ is assumed to be symmetric, monotonically increasing and smooth. In this work we employ a parameterization for $f$ motivated in Ref.~\ref{?} based on a functional form known as the generalized mean,
+At this point it becomes necessary to specify the function $f$ in Eq~\eqref{mapping} which maps participant matter to local entropy deposition. In general, the function $f(\T_A, \T_B)$ is assumed to be symmetric, monotonically increasing and smooth. In this work we employ a parameterization for $f$ motivated in Ref.~\cite{Moreland:2014oya} based on a functional form known as the generalized mean,
 \begin{align}
     \label{entropy_propto}
     s \propto \left( \frac{\T_A^p + \T_B^p}{2} \right)^{1/p}.

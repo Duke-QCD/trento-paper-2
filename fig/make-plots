@@ -506,7 +506,8 @@ def observables_plot():
     finish(h_pad=0, w_pad=0.3)
 
 
-def posterior(dataset, **kwargs):
+@plot
+def posterior(**kwargs):
     design = 'data/bayesian/model/design.hdf'
     calibration_identified = 'data/bayesian/calibration/results_err10.hdf'
     calibration_integrated = 'data/bayesian/calibration/results_err10_dNch_deta_only.hdf'
@@ -532,9 +533,17 @@ def posterior(dataset, **kwargs):
     assert nxy == len(labels)
 
 
-    cmap1 = truncate_colormap(plt.cm.RdBu, 0.5, 1)
-    cmap2 = truncate_colormap(plt.cm.RdBu_r, 0.5, 1)
-    
+    #cmap1 = truncate_colormap(plt.cm.coolwarm, 0.5, 1)
+    #cmap_list = cmap1(np.linspace(0, 1, 8))
+    #cmap_list[0] = [1, 1, 1, 1]
+    #cmap1 = cmap1.from_list('coolwarm_w', cmap_list, cmap1.N)
+    #cmap2 = truncate_colormap(plt.cm.coolwarm_r, 0.5, 1)
+    #cmap_list = cmap2(np.linspace(0, 1, 8))
+    #cmap_list[0] = [1, 1, 1, 1]
+    #cmap2 = cmap2.from_list('coolwarm_w', cmap_list, cmap2.N)
+    cmap1 = plt.cm.Blues
+    cmap2 = plt.cm.PuRd
+ 
     fig, axes = plt.subplots(
         nrows=nxy, ncols=nxy,
         sharex='col', sharey='row',
@@ -615,86 +624,74 @@ def posterior(dataset, **kwargs):
     finish(h_pad=0.3, w_pad=0.3, rect=[0, 0.0, 0.98, 0.98])
 
 
-@plot
-def posterior_identified():
-    filename = 'data/bayesian/calibration/results_err10.hdf'
-    posterior(filename)
-
-
-@plot
-def posterior_integrated():
-    filename = 'data/bayesian/calibration/results_err10_dNch_deta_only.hdf'
-    posterior(filename)
-
-
-@plot
-def posterior_compare():
-    design = 'data/bayesian/model/design.hdf'
-    calibrations = 'data/bayesian/calibration/results_err10.hdf', \
-        'data/bayesian/calibration/results_err10_dNch_deta_only.hdf'
-
-    with h5py.File(design, 'r') as f:
-        labels = list(f['labels'])
-        etas_hrg_index = 4
-        etas_slope_index = 5
-        indices = np.arange(len(labels)) != etas_hrg_index
-        del labels[etas_hrg_index]
-        labels[etas_slope_index] += '$^\dagger$'
-        ranges = np.array(f['range'])[indices]
-        nxy = len(labels)
-
-    fig, axes = plt.subplots(
-        ncols=nxy, figsize=(textwidth, 2*aspect*textwidth/nxy)
-    )
-
-    zorders = 2, 1
-    colors = plt.cm.Blues, plt.cm.Oranges
-    clabels = 'identified $dN/dy$', '$dN_\mathrm{ch}/d\eta$'
-
-    axes[0].plot(0, 0, label='Calibrated to:', alpha=0)
-
-    for calibration, cmap, order, clabel in \
-            zip(calibrations, colors, zorders, clabels):
-        with h5py.File(calibration, 'r') as f:
-            chain = np.array(f['chain']).T[indices]
-            # chain = f['chain'][:1000000].T[indices]
-
-        for n, (ax, c, lim, label) in \
-                enumerate(zip(axes, chain, ranges, labels)):
-            line_color = cmap(.8)
-            fill_color = cmap(.5, alpha=.2)
-
-            # override range for norm
-            if n == 0:
-                lim = 100, 150
-
-            counts, edges = np.histogram(c, bins=100, range=lim, density=True)
-            x = (edges[1:] + edges[:-1]) / 2
-            y = counts
-            ax.plot(x, y, lw=0.8, color=line_color, zorder=order,
-                    label=clabel if n == 0 else '')
-            ax.fill_between(x, 0, y, color=fill_color, zorder=order)
-            ax.get_yaxis().set_visible(False)
-            ax.spines['left'].set_visible(False)
-
-            ticks = [0.14, 0.15, 0.16] \
-                if n == 7 else [lim[0], (lim[0] + lim[1])/2, lim[1]]
-
-            ax.set_xlim(lim)
-            ax.set_xticks(ticks)
-            ax.set_xticklabels([fmt_tick(i) for i in ticks])
-            ax.set_xlabel(label)
-
-            if n != 7:
-                for t, justify in zip(ax.get_xaxis().get_major_ticks(),
-                                      ['left', 'center', 'right']):
-                    t.label1.set_horizontalalignment(justify)
-            if n == 0:
-                ax.legend(bbox_to_anchor=(0.5, 1.09), ncol=3,
-                          fontsize=textiny, columnspacing=1,
-                          bbox_transform=fig.transFigure, loc='upper center')
-
-    finish(w_pad=0.5, rect=[0, 0, 1, 0.85])
+#@plot
+#def posterior_compare():
+#    design = 'data/bayesian/model/design.hdf'
+#    calibrations = 'data/bayesian/calibration/results_err10.hdf', \
+#        'data/bayesian/calibration/results_err10_dNch_deta_only.hdf'
+#
+#    with h5py.File(design, 'r') as f:
+#        labels = list(f['labels'])
+#        etas_hrg_index = 4
+#        etas_slope_index = 5
+#        indices = np.arange(len(labels)) != etas_hrg_index
+#        del labels[etas_hrg_index]
+#        labels[etas_slope_index] += '$^\dagger$'
+#        ranges = np.array(f['range'])[indices]
+#        nxy = len(labels)
+#
+#    fig, axes = plt.subplots(
+#        ncols=nxy, figsize=(textwidth, 2*aspect*textwidth/nxy)
+#    )
+#
+#    zorders = 2, 1
+#    colors = plt.cm.Blues, plt.cm.Oranges
+#    clabels = 'identified $dN/dy$', '$dN_\mathrm{ch}/d\eta$'
+#
+#    axes[0].plot(0, 0, label='Calibrated to:', alpha=0)
+#
+#    for calibration, cmap, order, clabel in \
+#            zip(calibrations, colors, zorders, clabels):
+#        with h5py.File(calibration, 'r') as f:
+#            chain = np.array(f['chain']).T[indices]
+#            # chain = f['chain'][:1000000].T[indices]
+#
+#        for n, (ax, c, lim, label) in \
+#                enumerate(zip(axes, chain, ranges, labels)):
+#            line_color = cmap(.8)
+#            fill_color = cmap(.5, alpha=.2)
+#
+#            # override range for norm
+#            if n == 0:
+#                lim = 100, 150
+#
+#            counts, edges = np.histogram(c, bins=100, range=lim, density=True)
+#            x = (edges[1:] + edges[:-1]) / 2
+#            y = counts
+#            ax.plot(x, y, lw=0.8, color=line_color, zorder=order,
+#                    label=clabel if n == 0 else '')
+#            ax.fill_between(x, 0, y, color=fill_color, zorder=order)
+#            ax.get_yaxis().set_visible(False)
+#            ax.spines['left'].set_visible(False)
+#
+#            ticks = [0.14, 0.15, 0.16] \
+#                if n == 7 else [lim[0], (lim[0] + lim[1])/2, lim[1]]
+#
+#            ax.set_xlim(lim)
+#            ax.set_xticks(ticks)
+#            ax.set_xticklabels([fmt_tick(i) for i in ticks])
+#            ax.set_xlabel(label)
+#
+#            if n != 7:
+#                for t, justify in zip(ax.get_xaxis().get_major_ticks(),
+#                                      ['left', 'center', 'right']):
+#                    t.label1.set_horizontalalignment(justify)
+#            if n == 0:
+#                ax.legend(bbox_to_anchor=(0.5, 1.09), ncol=3,
+#                          fontsize=textiny, columnspacing=1,
+#                          bbox_transform=fig.transFigure, loc='upper center')
+#
+#    finish(w_pad=0.5, rect=[0, 0, 1, 0.85])
 
 
 def mode_observables(model_data, **kwargs):

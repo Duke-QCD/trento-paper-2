@@ -1,5 +1,6 @@
 \documentclass[aps,prc,reprint,amsmath,nofootinbib,superscriptaddress]{revtex4-1}
 
+
 \usepackage{hyperref}
 \usepackage{graphicx}
 \usepackage{lipsum}
@@ -267,7 +268,7 @@ This property of the generalized mean is known as scale invariance or homogeneit
 \end{figure*}
 
 
-\subsection{Reproducing existing models}
+\subsection{Reproducing existing I.C.\ models}
 
 The aforementioned procedure defines the \trento\ initial condition model proposed in Ref.~\ref{?}. The model is purposefully constructed to achieve maximal flexibility using a minimal number of parameters and can mimic a wide range initial condition models proposed in the literature. To demonstrate the efficacy of the generalized mean ansatz, we now show that the mapping can reproduce different theory calculations using suitably chosen values of the generalized mean parameter $p$.
 
@@ -449,10 +450,10 @@ Bayes' theorem, ensemble sampling, uncertainty
     \caption{Emulator validation for pion yield $dN/dy_{\pi^\pm}$ (left), average transverse momentum ${\langle p_T \rangle}_{\pi^\pm}$ (middle) and flow cumulant $v_2\{2\}$ (right) for centralities 0--5\% (blue) and 30--40\% (orange). The horizontal axis shows predictions by the emulator at untested regions of parameter space, and the vertical axis shows the same quantity after it has been calculated directly from the model. The gray line indicates perfect model and emulator agreement.} 
 \end{figure*}
 
-\begin{figure*}
-    \includegraphics{posterior_compare}
-    \caption{Comparison of the posterior distributions obtained when the model is calibrated to fit identified pion, kaon and proton yields $dN/dy$ (blue lines), and when the model is calibrated to fit integrated charged particles $d\nch/d\eta$ (orange lines). $^\dagger$The units for $\eta/s$ slope are [GeV$^{-1}$].}
-\end{figure*}
+%\begin{figure*}
+%    \includegraphics{posterior_compare}
+%    \caption{Comparison of the posterior distributions obtained when the model is calibrated to fit identified pion, kaon and proton yields $dN/dy$ (blue lines), and when the model is calibrated to fit integrated charged particles $d\nch/d\eta$ (orange lines). $^\dagger$The units for $\eta/s$ slope are [GeV$^{-1}$].}
+%\end{figure*}
 
 \begin{figure*}
     \includegraphics{observables_plot}
@@ -460,7 +461,7 @@ Bayes' theorem, ensemble sampling, uncertainty
 \end{figure*}
 
 \begin{figure*}
-    \includegraphics{posterior_identified}
+    \includegraphics{posterior}
     \caption{Diagonal and lower-diagonal: posterior marginal and joint distributions of the calibration parameters described in section \ref{?}. Diagonal entries show the posterior likelihood distribution of each parameter marginalized over remaining parameters, while lower-diagonal entries show the joint distribution of parameter pairs. Upper diagonal: the Pearson product-moment correlation coefficient $\rho_{X,Y}=\text{cov}(X,Y)/(\sigma_X \sigma_Y)$ for each pair of parameters $X$, $Y$. Red (blue) tiles indicate Pearson coefficients close to $1$ ($-1$) corresponding to strong linear correlation (anti-correlation). $^\dagger$The units for $\eta/s$ slope are [GeV$^{-1}$].}
     \label{fig:posterior_identified}
 \end{figure*}
@@ -535,10 +536,10 @@ The authors thank Ulrich Heinz, Scott Pratt, Harri Niemi and Bj\"orn Schenke for
     \label{fig:mode_observables}
 \end{figure*}
 
-\begin{figure*}
-    \includegraphics{posterior_integrated}
-    \caption{Presentation is identical to Fig.~\ref{fig:posterior_identified}, but with charged particle yields replacing identified pion, kaon and proton yields in the calibration process. The resulting posterior distributions are generally less constrained, and several marginal distributions along the diagonal are affected noticeably (see Fig.~\ref{fig:posterior_comparison} for a direct comparison). For example, the initial condition normalization increases significantly (top-left panel) and the hydro-to-urqmd switching temperature is completely washed out (bottom-right panel). $^\dagger$The units for $\eta/s$ slope are [GeV$^{-1}$]. }
-\end{figure*}
+%\begin{figure*}
+%    \includegraphics{posterior_integrated}
+%    \caption{Presentation is identical to Fig.~\ref{fig:posterior_identified}, but with charged particle yields replacing identified pion, kaon and proton yields in the calibration process. The resulting posterior distributions are generally less constrained, and several marginal distributions along the diagonal are affected noticeably (see Fig.~\ref{fig:posterior_comparison} for a direct comparison). For example, the initial condition normalization increases significantly (top-left panel) and the hydro-to-urqmd switching temperature is completely washed out (bottom-right panel). $^\dagger$The units for $\eta/s$ slope are [GeV$^{-1}$]. }
+%\end{figure*}
 
 
 \bibliography{trento2}

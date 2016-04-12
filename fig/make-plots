@@ -8,6 +8,7 @@ from scipy import optimize
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import matplotlib.ticker as tick
+import matplotlib.colors as colors
 from matplotlib import patches
 from matplotlib.colors import LinearSegmentedColormap
 from matplotlib import lines
@@ -66,7 +67,6 @@ plt.rcParams.update({
 
 
 plot_functions = {}
-
 
 def plot(f):
     def wrapper(*args, **kwargs):
@@ -127,6 +127,12 @@ def desaturate(color, fraction=0.5):
     h, l, s = colorsys.rgb_to_hls(*color[:3])
     return colorsys.hls_to_rgb(h, l, fraction*s)
 
+
+def truncate_colormap(cmap, minval=0.0, maxval=1.0, n=100):
+    new_cmap = colors.LinearSegmentedColormap.from_list(
+        'trunc({n},{a:.2f},{b:.2f})'.format(n=cmap.name, a=minval, b=maxval),
+        cmap(np.linspace(minval, maxval, n)))
+    return new_cmap
 
 def gen_mean(x, y, p):
     #x, y = npart(x, y, 6.4)
@@ -502,7 +508,8 @@ def observables_plot():
 
 def posterior(dataset, **kwargs):
     design = 'data/bayesian/model/design.hdf'
-    calibration = dataset
+    calibration_identified = 'data/bayesian/calibration/results_err10.hdf'
+    calibration_integrated = 'data/bayesian/calibration/results_err10_dNch_deta_only.hdf'
 
     with h5py.File(design, 'r') as f:
         labels = list(f['labels'])
@@ -513,35 +520,42 @@ def posterior(dataset, **kwargs):
         labels[etas_slope_index] += '$^\dagger$'
         ranges = np.array(f['range'])[indices]
 
-    with h5py.File(calibration, 'r') as f:
+    with h5py.File(calibration_identified, 'r') as f:
         chain = np.array(f['chain']).T[indices]
-        # chain = f['chain'][:1000000].T[indices]
+        #chain = f['chain'][:1000000].T[indices]
+    
+    with h5py.File(calibration_integrated, 'r') as f:
+        chain_int = np.array(f['chain']).T[indices]
+         #chain_int = f['chain'][:1000000].T[indices]
 
     nxy = chain.shape[0]
     assert nxy == len(labels)
 
-    normal_cmap, highlight_cmap = plt.cm.Blues, plt.cm.Blues
 
+    cmap1 = truncate_colormap(plt.cm.RdBu, 0.5, 1)
+    cmap2 = truncate_colormap(plt.cm.RdBu_r, 0.5, 1)
+    
     fig, axes = plt.subplots(
         nrows=nxy, ncols=nxy,
         sharex='col', sharey='row',
         figsize=(textwidth, textwidth)
     )
-
-    for n, (ax, c, lim) in enumerate(zip(axes.diagonal(), chain, ranges)):
-        cmap = highlight_cmap if n in [1, 6] else normal_cmap
-        line_color = cmap(.8)
-        fill_color = cmap(.5, alpha=.2)
+    
+    for n, (ax, lim) in enumerate(zip(axes.diagonal(), ranges)):
+        (counts1, edges), (counts2, edges) = [np.histogram(c[n], bins=100, range=lim, density=True) for c in [chain, chain_int]]
 
         # override range for norm
         if n == 0:
             lim = 100, 150
 
-        counts, edges = np.histogram(c, bins=100, range=lim)
         x = (edges[1:] + edges[:-1]) / 2
-        y = .84 * (lim[1] - lim[0]) * counts / counts.max() + lim[0]
-        ax.plot(x, y, lw=0.8, color=line_color)
-        ax.fill_between(x, lim[0], y, color=fill_color, zorder=-10)
+        y1 = .84 * (lim[1] - lim[0]) * counts1 / max(counts1.max(), counts2.max()) + lim[0]
+        ax.plot(x, y1, lw=0.8, color=cmap1(.8))
+        ax.fill_between(x, lim[0], y1, color=cmap1(.5, alpha=0.2), zorder=-10)
+        
+        y2 = .84 * (lim[1] - lim[0]) * counts2 / max(counts1.max(), counts2.max()) + lim[0]
+        ax.plot(x, y2, lw=0.8, color=cmap2(.8))
+        ax.fill_between(x, lim[0], y2, color=cmap2(.5, alpha=.2), zorder=-10)
 
         ticks = [0.14, 0.15, 0.16] \
             if n == 7 else [lim[0], (lim[0] + lim[1])/2, lim[1]]
@@ -562,22 +576,24 @@ def posterior(dataset, **kwargs):
         ax = axes[ny][nx]
         H, xedges, yedges = hist(bins=100)
         H[H == 0] = None
-        cmap = highlight_cmap if (ny, nx) == (5, 4) else normal_cmap
-        ax.pcolorfast(xedges, yedges, H.T, cmap=cmap)
+        ax.pcolorfast(xedges, yedges, H.T, cmap=cmap1)
 
         ax = axes[nx][ny]
-        ax.get_xaxis().set_visible(False)
-        ax.get_yaxis().set_visible(False)
-        for side in 'left', 'right', 'top', 'bottom':
-            ax.spines[side].set_visible(False)
-        corrcoef = np.corrcoef(x, y)[1, 0]
-        color = 0.5 * (1 + corrcoef)
-        ax.patch.set_facecolor(plt.cm.coolwarm(color))
-        ax.patch.set_alpha(0.4)
-        ax.annotate("{0:.2f}".format(corrcoef).replace('-', u'\u2212'),
-                    xy=(0.5, 0.5),
-                    ha='center', va='center', xycoords='axes fraction',
-                    fontsize=texnormal)
+        H, xedges, yedges = hist(bins=100)
+        H[H == 0] = None
+        ax.pcolorfast(yedges, xedges, H, cmap=cmap2)
+        #ax.get_xaxis().set_visible(False)
+        #ax.get_yaxis().set_visible(False)
+        #for side in 'left', 'right', 'top', 'bottom':
+        #    ax.spines[side].set_visible(False)
+        #corrcoef = np.corrcoef(x, y)[1, 0]
+        #color = 0.5 * (1 + corrcoef)
+        #ax.patch.set_facecolor(plt.cm.coolwarm(color))
+        #ax.patch.set_alpha(0.4)
+        #ax.annotate("{0:.2f}".format(corrcoef).replace('-', u'\u2212'),
+        #            xy=(0.5, 0.5),
+        #            ha='center', va='center', xycoords='axes fraction',
+        #            fontsize=texnormal)
 
     for n, label in enumerate(labels):
         axes[-1][n].set_xlabel(label)

@@ -169,8 +169,7 @@ The shear correction to the distribution function is given by,
     \delta f_\text{shear}(x^\mu, p^\mu) = f_0(x^\mu, p^\mu)(1 \pm f_0(x^\mu, p^\mu))\frac{\pi_{\mu\nu}p^\mu p^\nu}{2(e+P)T^2}
 \end{equation}
 where $f_0$ is the ideal distribution function, $\pi_{\mu\nu}$ the shear stress tensor, $p^\mu$ the particle momentum and $e$, $P$ and $T$ the fluid's energy density, pressure and temperature.
-The bulk viscous correction, on the other hand, is described by multiple formulations in the literature which predict significantly different behavior when either the bulk viscosity $\zeta$ or the transverse momentum $p_T$ are large \cite{Dusling:2011fd, Noronha-Hostler:2013gga}.
-\textcolor{red}{We note, however, that since the bulk parameterization $(\zeta/s)(T)$ in Eq.~\eqref{zetas} is small in the allowed hydro-to-micro transition region $135 \le T_\text{sw} \le 165$~MeV used in this study, the bulk viscous corrections to the distribution function $\delta f_\text{bulk} \propto (\zeta/s)\vert_{T_\text{sw}}$ are also expected to be small and are neglected in the present work.}
+The bulk viscous correction, on the other hand, is described by multiple formulations in the literature which predict significantly different behavior when either the bulk viscosity $\zeta$ or the transverse momentum $p_T$ are large \cite{Dusling:2011fd, Noronha-Hostler:2013gga}. The present study neglects bulk viscous corrections to the distribution function $\delta f_\text{bulk}$ at particlization, based on the expectation that the corrections are small for the specific $(\zeta/s)(T)$ curve Eq.~\eqref{zetas} used in this analysis. The approximation, admittedly, is not great and leads to, e.g.\ order 10\% errors in the magnitude of mean $p_T$ at particlization. We thus refrain from making any quantitative statements regarding the magnitude of bulk viscosity preferred by the analysis and emphasize that a more realistic $(\zeta/s)(T)$ curve and careful treatment of $\delta f_\text{bulk}$ are necessary to constrain the QGP bulk viscosity with precision. 
 
 Once the fluid is converted into hadrons, the subsequent microscopic dynamics are modeled using the UrQMD hadronic afterburner \cite{Bass:1998ca, Bleicher:1999xi}.
 The UrQMD model propagates all produced hadrons along classical trajectories, samples their stochastic binary collisions and simulates their resonance decays until the system becomes too dilute to continue interacting.
@@ -499,8 +498,11 @@ Bayes' theorem, ensemble sampling, uncertainty
 
 \section{Summary and conclusions}
 
-We have determined initial condition and transport properties of the QGP medium produced in relativistic heavy-ion collisions using Bayesian methodology. The primary contribution of the present work is the application of the recently developed \trento\ model to parameterize entropy deposition in relativistic nuclear collisions and extract high likelihood parameters for the QGP initial conditions while asserting minimal theoretical assumptions. We show that the parameterized initial conditions are highly constrained by bulk observables and that the constraints are robust to the presence of correlated model uncertainties such as the temperature dependent shear and bulk viscosities.
+We have determined initial condition and transport properties of the QGP medium produced in relativistic heavy-ion collisions using Bayesian methodology. The primary contribution of the present work is the application of the recently developed \trento\ model to parameterize entropy deposition in relativistic nuclear collisions and extract high likelihood parameters for the QGP initial conditions while asserting minimal theoretical assumptions. We show that the parameterized initial conditions are highly constrained by bulk observables and that the constraints are robust to the presence of correlated model uncertainties such as the temperature dependent shear and bulk viscosities. 
 
+The study demonstrates that ab initio understanding of QGP initial conditions is not required to extract properties of the QGP medium and constrain 
+
+The Bayesian analysis reveals a number of interesting features
 \begin{enumerate}
     \item The QGP initial conditions are well described by entropy deposition proportional to the geometric mean of local participant nucleon density \eqref{means}. 
 

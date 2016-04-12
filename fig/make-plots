@@ -17,6 +17,8 @@ import h5py
 import functools
 import glob
 
+import seaborn as sns
+
 aspect = 1/1.618
 resolution = 72.27
 columnwidth = 246/resolution
@@ -532,18 +534,22 @@ def posterior(**kwargs):
     nxy = chain.shape[0]
     assert nxy == len(labels)
 
-
-    #cmap1 = truncate_colormap(plt.cm.coolwarm, 0.5, 1)
-    #cmap_list = cmap1(np.linspace(0, 1, 8))
-    #cmap_list[0] = [1, 1, 1, 1]
-    #cmap1 = cmap1.from_list('coolwarm_w', cmap_list, cmap1.N)
-    #cmap2 = truncate_colormap(plt.cm.coolwarm_r, 0.5, 1)
-    #cmap_list = cmap2(np.linspace(0, 1, 8))
-    #cmap_list[0] = [1, 1, 1, 1]
-    #cmap2 = cmap2.from_list('coolwarm_w', cmap_list, cmap2.N)
+    #cmap1 = sns.light_palette((260, 75, 40), n_colors=4, input="husl")
+    #cmap1[0] = [1, 1, 1, 1]
+    #cmap1[3] = [13/256, 4/256, 30/256, 1]
+    #cmap1 = sns.blend_palette(cmap1, as_cmap=True)
     cmap1 = plt.cm.Blues
-    cmap2 = plt.cm.PuRd
- 
+
+    #cmap2 = sns.light_palette((15.9, 95, 39.4), n_colors=4, input="husl")
+    #cmap2[0] = [1, 1, 1, 1]
+    #cmap2[3] = [80/256, 21/256, 0/256, 1]
+    #cmap2 = sns.blend_palette(cmap2, as_cmap=True)
+    cmap2 = truncate_colormap(plt.cm.bone_r, 0, 0.8)
+    #cmap2 = plt.cm.Greys
+    #cmap2 = plt.cm.gist_gray_r
+    #cmap2 = plt.cm.gist_yarg
+    #cmap2 = plt.cm.gray_r
+
     fig, axes = plt.subplots(
         nrows=nxy, ncols=nxy,
         sharex='col', sharey='row',
@@ -693,97 +699,105 @@ def posterior(**kwargs):
 #
 #    finish(w_pad=0.5, rect=[0, 0, 1, 0.85])
 
-
-def mode_observables(model_data, **kwargs):
-    batch_obs_mode = 'data/bayesian/model/batch-observables-mode.hdf'
+@plot
+def mode_observables(**kwargs):
+    batch_obs_list = ['data/bayesian/model/batch-observables-mode.hdf',
+                      'data/bayesian/model/batch-observables-mode-dNch_deta.hdf']
     exp_data = 'data/bayesian/exp/data.hdf'
-    id_parts = [
-        ('pion',   r'$\pi^{\!\pm}$', 'Blues'),
-        ('kaon',   r'$K^{\!\pm}$', 'Greens'),
-        ('proton', r'$p\bar p$', 'Reds')
-    ]
 
-    flows = [(str(n), '$v_{}$'.format(n), c)
-             for n, c in enumerate(['GnBu', 'Purples', 'Oranges'], start=2)]
-
-    labelinfo = [
-        ((2.5, 3500), (2.5, 500), (2.5, 40)),
-        ((2.5, 0.45), (2.5, 0.8), (2.5, 1.25)),
-        ((72, 0.06), (47, 0.035), (47, 0.021)),
-    ]
-
-    plots = [
-        ('dN_dy', 'Yields $dN/dy$', r'$dN/dy$', (1, 3e3),
-         id_parts, labelinfo[0]),
-        ('mean_pT', 'Mean $p_T$ [GeV]',
-         r'$p_T$ [GeV]', (0, 1.5), id_parts, labelinfo[1]),
-        ('vn', 'Flow cumulants $v_n\{2\}$', r'$v_n\{2\}$', (0, 0.11),
-         flows, labelinfo[2]),
-    ]
 
     fig = plt.figure(figsize=(textwidth, 1.2*aspect*columnwidth))
-    gs = plt.GridSpec(12, len(plots))
+    gs = plt.GridSpec(12, 3)
 
-    with \
-            h5py.File(batch_obs_mode, 'r') as mode, \
-            h5py.File(exp_data, 'r') as exp:
-        for n, (obs, title, ylabel,
-                ylim, subplots, labelpos) in enumerate(plots):
-            ax = fig.add_subplot(gs[:8, n])
-            ratio_ax = fig.add_subplot(gs[8:, n])
+    for m, batch_obs_mode in enumerate(batch_obs_list):
 
-            ax.set_xlim(0, 76)
-            ax.set_ylim(ylim)
-            # ax.set_ylabel(ylabel, position=(0,1),
-            #              ha='right', va='baseline', labelpad=5)
-            ax.set_title(title)
+        id_parts = [
+            ('pion',   r'$\pi^{\!\pm}$', 'Blues'),
+            ('kaon',   r'$K^{\!\pm}$', 'Greens'),
+            ('proton', r'$p\bar p$', 'Reds')
+        ]
 
-            for (subobs, label, cmap), labelxy in zip(subplots, labelpos):
-                color = desaturate(getattr(plt.cm, cmap)(0.6), 0.8)
-                ncent = min(i[obs][subobs]['x'].size for i in [mode, exp])
+        flows = [(str(n), '$v_{}$'.format(n), c)
+                 for n, c in enumerate(['GnBu', 'Purples', 'Oranges'], start=2)]
 
-                x = mode[obs][subobs]['x'][:ncent]
-                y = mode[obs][subobs]['Y'][0, :ncent]
-                ax.plot(x, y, color=color, lw=0.8)
+        labelinfo = [
+            ((2.5, 3500), (2.5, 500), (2.5, 40)),
+            ((2.5, 0.45), (2.5, 0.8), (2.5, 1.25)),
+            ((72, 0.06), (47, 0.035), (47, 0.021)),
+        ]
 
-                yexp, yexperr = (exp[obs][subobs][k][:ncent]
-                                 for k in ['y', 'yerr'])
-                ax.errorbar(x, yexp, yerr=yexperr, fmt='o', ms=2.5,
-                            mfc=offblack, mew=0, capsize=0,
-                            color=offblack, zorder=1000)
+        plots = [
+            ('dN_dy', 'Yields $dN/dy$', r'$dN/dy$', (1, 3e3),
+             id_parts, labelinfo[0]),
+            ('mean_pT', 'Mean $p_T$ [GeV]',
+             r'$p_T$ [GeV]', (0, 1.5), id_parts, labelinfo[1]),
+            ('vn', 'Flow cumulants $v_n\{2\}$', r'$v_n\{2\}$', (0, 0.11),
+             flows, labelinfo[2]),
+        ]
 
-                ax.text(labelxy[0], labelxy[1], label, ha='left', va='top',
-                        size=texnormal)
+        if m == 0:
+            dashes = ()
 
-                ratio_ax.plot(x, y/yexp, color=color, lw=0.8)
+        else:
+            dashes = (4,2)
 
-            if obs == 'dN_dy':
-                ax.set_yscale('log')
-                ax.minorticks_off()
-            else:
-                set_loc(ax, 'y', nbins=4)
-            ax.get_xaxis().set_ticklabels([])
+        with \
+                h5py.File(batch_obs_mode, 'r') as mode, \
+                h5py.File(exp_data, 'r') as exp:
+            for n, (obs, title, ylabel,
+                    ylim, subplots, labelpos) in enumerate(plots):
+                ax = fig.add_subplot(gs[:8, n])
+                ratio_ax = fig.add_subplot(gs[8:, n])
 
-            ratio_ax.axhline(1, color='0.4', lw=0.5, zorder=-100)
-            ratio_ax.axhspan(0.9, 1.1, color=grey, alpha=0.7, zorder=-200)
+                ax.set_xlim(0, 76)
+                ax.set_ylim(ylim)
+                # ax.set_ylabel(ylabel, position=(0,1),
+                #              ha='right', va='baseline', labelpad=5)
+                ax.set_title(title)
 
-            ratio_ax.set_xlabel('Centrality %')
-            ratio_ax.set_ylim(0.8, 1.2)
-            ratio_ax.set_yticks([0.8, 1, 1.2])
-            ratio_ax.set_ylabel('Model/Exp' if n is 0 else '', labelpad=4)
-            ratio_ax.set_xlim(0, 76)
+                for (subobs, label, cmap), labelxy in zip(subplots, labelpos):
+                    color = desaturate(getattr(plt.cm, cmap)(0.6), 0.8)
+                    ncent = min(i[obs][subobs]['x'].size for i in [mode, exp])
+
+                    x = mode[obs][subobs]['x'][:ncent]
+                    if (n == 0) and (m == 1) and (subobs == 'pion'):
+                        y = mode['dNch_deta']['Y'][0, :ncent]
+                        ax.plot(x, y, color=offblack, lw=0.8, dashes=dashes)
+                    elif (n == 0) and (m == 1):
+                        continue
+                    else:
+                        y = mode[obs][subobs]['Y'][0, :ncent]
+                        ax.plot(x, y, color=color, lw=0.8, dashes=dashes)
+
+                    yexp, yexperr = (exp[obs][subobs][k][:ncent]
+                                     for k in ['y', 'yerr'])
+                    ax.errorbar(x, yexp, yerr=yexperr, fmt='o', ms=2.5,
+                                mfc=offblack, mew=0, capsize=0,
+                                color=offblack, zorder=1000)
+
+                    ax.text(labelxy[0], labelxy[1], label, ha='left', va='top',
+                            size=texnormal)
+
+                    ratio_ax.plot(x, y/yexp, color=color, lw=0.8, dashes=dashes)
+
+                if obs == 'dN_dy':
+                    ax.set_yscale('log')
+                    ax.minorticks_off()
+                else:
+                    set_loc(ax, 'y', nbins=4)
+                ax.get_xaxis().set_ticklabels([])
+
+                ratio_ax.axhline(1, color='0.4', lw=0.5, zorder=-100)
+                ratio_ax.axhspan(0.9, 1.1, color=grey, alpha=0.7, zorder=-200)
+
+                ratio_ax.set_xlabel('Centrality %')
+                ratio_ax.set_ylim(0.8, 1.2)
+                ratio_ax.set_yticks([0.8, 1, 1.2])
+                ratio_ax.set_ylabel('Model/Exp' if n is 0 else '', labelpad=4)
+                ratio_ax.set_xlim(0, 76)
 
     finish(pad=0.0, h_pad=0, w_pad=0.3)
 
-@plot
-def mode_observables_identified():
-    batch_obs_mode = 'data/bayesian/model/batch-observables-mode.hdf'
-    mode_observables(batch_obs_mode)
-
-@plot
-def mode_observables_integrated():
-    batch_obs_mode = 'data/bayesian/model/batch-observables-mode-dNch_deta.hdf'
-    mode_observables(batch_obs_mode)
 
 @plot
 def posterior_p_arrows(n=1, **kwargs):

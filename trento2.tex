@@ -1,14 +1,12 @@
 \documentclass[aps,prc,reprint,amsmath,nofootinbib,superscriptaddress]{revtex4-1}
 
-
-\usepackage{hyperref}
-\usepackage{graphicx}
-\usepackage{lipsum}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{hyperref}
 \usepackage{multirow}
 \usepackage[inline]{enumitem}
-\usepackage[dvipsnames]{color}
+
+\usepackage{graphicx}
 \graphicspath{{fig/}}
 
 \newcommand{\trento}{T\raisebox{-0.5ex}{R}ENTo}
@@ -42,27 +40,31 @@
 
 \begin{document}
 
+
 \title{Determining quark-gluon plasma initial conditions and medium \\ properties from model-to-data simulations with minimal bias}
+
 \author{J.\ Scott Moreland}
 \author{Jonah E.\ Bernhard}
+\affiliation{Department of Physics, Duke University, Durham, NC 27708-0305}
+
+\author{Jia Liu}
+\affiliation{Department of Physics, The Ohio State University, Columbus, OH 43210-1117}
+
 \author{Steffen A.\ Bass}
 \affiliation{Department of Physics, Duke University, Durham, NC 27708-0305}
-\author{Jia Liu}
-\affiliation{Department of Physics, Ohio State University, Columbus, OH 43210-1117}
-\date{\today}
 
+\date{\today}
 
 \begin{abstract}
 We aim to determine the quark-gluon-plasma initial conditions created in ultra-relativistic heavy-ion collisions and its temperature dependent transport coefficients utilizing Bayesian statistics and a multi-parameter model-to-data comparison.
-The study is performed using \trento , a recently developed parametric initial condition model for relativistic nuclear collisions which is able to interpolate among a general class of saturation based particle production scenarios.
+The study is performed using \trento, a recently developed parametric initial condition model for relativistic nuclear collisions which is able to interpolate among a general class of saturation based particle production scenarios.
 The parameterization is compared to explicit calculations in Color-Glass Condensate (CGC) effective field theory and embedded in a realistic hybrid model which couples event-by-event viscous hydrodynamics to a hadronic cascade.
 We find that the parameterized initial conditions are highly constrained by bulk observables and provide a first set of constraints on the temperature dependence of the specific shear- and bulk-viscosities of the quark-gluon plasma.
 \end{abstract}
 
-
 \maketitle
 
-% Introduction
+
 \section{Introduction}
 
 Simulations based on relativistic viscous hydrodynamics have been highly successful describing a wealth of bulk observables in heavy-ion collisions at the Relativistic Heavy-Ion Collider (RHIC) in Brookhaven, NY and the Large Hadron Collider (LHC) in Geneva, Switzerland.
@@ -71,26 +73,26 @@ Initially, the success of hydrodynamic simulations was primarily qualitative. Th
 Modern hydrodynamic simulations have greatly improved upon the successes of first-generation models.
 The addition of dissipative corrections to ideal hydrodynamics \cite{Muronga:2004sf, Chaudhuri:2006jd, Romatschke:2007mq, Dusling:2007gi, Song:2007ux, Luzum:2008cw}, event-by-event fluctuations in the colliding nuclei \cite{Alver:2008zza, Alver:2010gr} and modern lattice quantum chromodynamics (QCD) calculations for the quark-gluon plasma (QGP) equation of state \cite{Bazavov:2009zn, Borsanyi:2013bia, Bazavov:2014pvz} are just a few examples of developments which have dramatically improved the agreement of hydrodynamic models with experiment.
 
-These developments have positioned hydrodynamic modeling to evolve beyond a qualitative science and extract intrinsic properties of hot and dense QCD matter with quantitative uncertainties. A primary goal of the ongoing effort is to determine the temperature dependence of the QGP transport coefficients such as the specific shear viscosity $\eta/s$ which is theorized to reach a lower bound ${(\eta/s)(T) \ge 1/4\pi}$ near the QGP phase transition temperature \cite{Policastro:2001yc, Kovtun:2004de}. 
+These developments have positioned hydrodynamic modeling to evolve beyond a qualitative science and extract intrinsic properties of hot and dense QCD matter with quantitative uncertainties. A primary goal of the ongoing effort is to determine the temperature dependence of the QGP transport coefficients such as the specific shear viscosity $\eta/s$ which is theorized to reach a lower bound ${(\eta/s)(T) \ge 1/4\pi}$ near the QGP phase transition temperature \cite{Policastro:2001yc, Kovtun:2004de}.
 
 A prominent source of uncertainty in determining QGP transport coefficients from hydrodynamic model-to-data comparison is in modeling the initial stages of the collision.
 Model predictions vary with the choice of initial conditions and hence prefer hydrodynamic transport coefficients, e.g.\ QGP shear and bulk viscosities, which differ from calculation to calculation.
-For example, an estimate of the effective (constant) QGP shear viscosity $(\eta/s)_\text{QGP}$ needed to fit spectra and flows at RHIC found ${1 \le 4 \pi(\eta/s)_\text{QGP} \le 2.5}$, where the uncertainty was attributable to discrepancies in $(\eta/s)_\text{QGP}$ extracted with two different hydrodynamic initial condition models \cite{Song:2010mg}. 
+For example, an estimate of the effective (constant) QGP shear viscosity $(\eta/s)_\text{QGP}$ needed to fit spectra and flows at RHIC found ${1 \le 4 \pi(\eta/s)_\text{QGP} \le 2.5}$, where the uncertainty was attributable to discrepancies in $(\eta/s)_\text{QGP}$ extracted with two different hydrodynamic initial condition models \cite{Song:2010mg}.
 
 The ongoing effort to constrain current bounds on the QGP shear viscosity typically focuses on improving theoretical descriptions of the initial conditions \cite{Schenke:2012wb, Niemi:2015qia} as well as the addition of new sensitive observables to assess the validity of each model's inherent assumptions and approximations.
 The process thus defines an iterative cycle in which theory calculations are embedded in hydrodynamic transport simulations and analyzed against a comprehensive list of bulk observables to determine the likelihood distributions of the model parameters.
 
 Model optimization and comparison is complicated by the high-dimensional nature of the underconstrained parameter space.
-In addition to free parameters which describe the QGP transport coefficients, hydrodynamic simulations depend on a number of auxiliary parameters such as an effective nucleon width, QGP thermalization time and chemical freezeout temperature which require simultaneous optimization.
-Evaluating hydrodynamic models at a single point in parameter space may require tens of thousand of hydrodynamic simulations and thus brute force optimization techniques quickly become intractable. 
+In addition to free parameters which describe the QGP transport coefficients, hydrodynamic simulations depend on a number of auxiliary parameters such as an effective nucleon width, QGP thermalization time, and chemical freeze-out temperature which require simultaneous optimization.
+Evaluating hydrodynamic models at a single point in parameter space may require tens of thousand of hydrodynamic simulations and thus brute force optimization techniques quickly become intractable.
 
 One solution to the model optimization problem is the use of modern Bayesian methods designed to tune computationally intensive models which depend on free parameters that live in large and highly correlated parameter spaces \cite{OHagan:2006ba, Higdon:2008cmc, Higdon:2014tva,Wesolowski:2015fqa}.
 A given model is first evaluated using a relatively small number of parameter configurations corresponding to discrete points in parameter space, and the model evaluations are used to train a Gaussian process emulator which interpolates model predictions between the training points \cite{Rasmussen:2006gp}.
-A standard Markov chain Monte Carlo algorithm is then be used to explore the parameter space interpolated by the emulator and isolate regions of parameter space which optimally replicate experiment. 
+A standard Markov chain Monte Carlo algorithm is then be used to explore the parameter space interpolated by the emulator and isolate regions of parameter space which optimally replicate experiment.
 
 Bayesian methods have been applied to heavy-ion collisions in several previous studies \cite{Novak:2013bqa, Pratt:2015zsa, Bernhard:2015hxa, Sangaline:2015isa}, including simulations initialized with a two-component Monte Carlo Glauber (MC-Glb.) model and Color-Glass Condensate (CGC) initial conditions described by the Kharzeev-Levin-Nardi (MC-KLN) model \cite{Bernhard:2015hxa}.
 Future studies might expand this coverage to more modern calculations of the QGP initial conditions in order to systematically constrain hydrodynamic transport coefficients and auxiliary parameters for each initialization model described in the literature.
-Once the models are appropriately optimized, the accuracy of the different theory calculations can be assessed using an appropriately chosen goodness of fit measure or, as typically used in Bayesian methodology, an integrated likelihood that a given model describes experiment. 
+Once the models are appropriately optimized, the accuracy of the different theory calculations can be assessed using an appropriately chosen goodness of fit measure or, as typically used in Bayesian methodology, an integrated likelihood that a given model describes experiment.
 
 An alternative approach to this method of direct model validation is to parameterize the QGP initial conditions and apply Bayesian parameter estimation to determine systematic constraints on the initial energy (or entropy) deposited by competing models, as employed in \cite{Novak:2013bqa, Pratt:2015zsa, Sangaline:2015isa}.
 The authors parameterized the initial conditions using a saturation inspired mapping similar to an optical wounded nucleon model but with additional parameters to incorporate modifications to particle production expected in Color-Glass Condensate effective field theory.
@@ -98,97 +100,104 @@ Bayesian analysis was then used to constrain parameterized forms of the event-av
 
 In this work we extend previous efforts to parameterize and constrain the QGP initial conditions using \trento , a recently developed parametric initial condition model designed to interpolate a subspace of all initialization models, including, but not limited to, parameterizations that mimic specific calculations in Color-Glass Condensate effective field theory \cite{Moreland:2014oya}.
 The parametric model generalizes trivially to incorporate fluctuations of the nucleon coordinates and minimum bias proton-proton yields and is used to conduct the first Bayesian analysis of QGP initial conditions which parameterizes both the magnitude of event-by-event fluctuations and the strength of saturation effects which modulate average particle production.
-We show that the experimental data imparts simultaneous constraints on the QGP initial conditions and medium properties, and compare these constraints to specific calculations in the literature.  
+We show that the experimental data imparts simultaneous constraints on the QGP initial conditions and medium properties, and compare these constraints to specific calculations in the literature.
 
-% Modeling the QGP evolution
+
 \section{Modeling the QGP evolution}
 
+The heavy-ion collision transport dynamics are modeled in a multi-stage approach which uses relativistic viscous hydrodynamics for the time-evolution of the QGP medium and a microscopic Boltzmann equation to simulate the dynamics of the system after hadronization.
 
-The heavy-ion collision transport dynamics are modeled in a multi-stage approach which uses relativistic viscous hydrodynamics for the time-evolution of the QGP medium and a microscopic Boltzmann equation to simulate the dynamics of the system after hadronization. 
-
-% Hydrodynamics and Boltzmann transport
 \subsection{Hydrodynamics and Boltzmann transport}
 
 The hydrodynamic evolution is solved using an improved version of VISH2+1 \cite{Song:2007ux}, a stable, extensively tested implementation of boost-invariant viscous hydrodynamics which has been updated to handle fluctuating event-by-event initial conditions \cite{Shen:2014vra} and incorporate bulk viscous corrections with shear and bulk coupling \cite{Denicol:2014vaa}.
 The equations of motion are described by the second-order Israel-Stewart equations in the 14-moment approximation \cite{Stewart59, Israel43, ISRAEL1976213} which yields a set of relaxation equations
 \begin{subequations}
-    \label{relaxation}
-    \begin{align}
-        \tau_\Pi \Pi + \dot{\Pi} =& -\zeta \theta - \delta_{\Pi\Pi} \Pi\theta + \phi_1 \Pi^2 + \lambda_{\Pi\pi} \pi^{\mu\nu} \sigma_{\mu\nu} \nonumber \\ 
-        &+\phi_3 \pi^{\mu\nu}\pi_{\mu\nu}, \\
-        \tau_\pi \dot{\pi}^{\langle \mu\nu \rangle} + \pi^{\mu\nu} =& ~2\eta\sigma^{\mu\nu} + 2\pi_\alpha^{\langle \mu} w^{\nu \rangle \alpha} - \delta_{\pi\pi} \pi^{\mu\nu} \theta \phi_7    \pi_\alpha^{\langle \mu} \pi^{\nu \rangle \alpha} \nonumber \\
-&-\tau_{\pi\pi} \pi_\alpha^{\langle \mu}\sigma^{\nu \rangle \alpha} + \lambda_{\pi\Pi} \Pi \sigma^{\mu\nu} + \phi_6 \Pi \pi^{\mu\nu},
-    \end{align}
+  \begin{align}
+    \tau_\Pi \Pi + \dot{\Pi} &=
+      -\zeta \theta - \delta_{\Pi\Pi} \Pi\theta + \phi_1 \Pi^2
+      + \lambda_{\Pi\pi} \pi^{\mu\nu} \sigma_{\mu\nu} \nonumber \\
+      &\qquad + \phi_3 \pi^{\mu\nu}\pi_{\mu\nu}, \\
+    \tau_\pi \dot{\pi}^{\langle \mu\nu \rangle} + \pi^{\mu\nu} &=
+      2\eta\sigma^{\mu\nu} + 2\pi_\alpha^{\langle \mu} w^{\nu \rangle \alpha}
+      - \delta_{\pi\pi} \pi^{\mu\nu} \theta \phi_7 \pi_\alpha^{\langle \mu}
+        \pi^{\nu \rangle \alpha} \nonumber \\
+      &\qquad - \tau_{\pi\pi} \pi_\alpha^{\langle \mu}\sigma^{\nu \rangle \alpha}
+      + \lambda_{\pi\Pi} \Pi \sigma^{\mu\nu} + \phi_6 \Pi \pi^{\mu\nu},
+  \end{align}
+  \label{eq:relaxation}
 \end{subequations}
 for the bulk viscous pressure $\Pi$ and shear-stress tensor $\pi^{\mu\nu}$.
 The terms $\zeta$ and $\eta$ are the first-order bulk and shear transport coefficients, and the parameters $\tau_\Pi$ and $\tau_\pi$ their second-order bulk and shear relaxation times.
 The remaining transport coefficients multiplying shear and bulk terms on the right can then be expressed as functions of the relaxation times and other thermodynamic quantities and have been determined in the limit of small but finite masses in reference \cite{Denicol:2014vaa}.
 
-The relaxation equations in Eq.~\eqref{relaxation} are then used to solve the hydrodynamic evolution equations,
+The relaxation equations in Eq.~\eqref{eq:relaxation} are then used to solve the hydrodynamic evolution equations,
 \begin{equation}
-    \label{conservation}
-    \partial_\mu T^{\mu\nu} = 0, \quad T^{\mu\nu} = e u^\mu u^\nu  - \Delta^{\mu\nu} (P_0 + \Pi) + \pi^{\mu\nu},
+  \partial_\mu T^{\mu\nu} = 0, \quad T^{\mu\nu} = e u^\mu u^\nu  - \Delta^{\mu\nu} (P_0 + \Pi) + \pi^{\mu\nu},
+  \label{eq:conservation}
 \end{equation}
-for the energy-momentum tensor $T^{\mu\nu}$, provided a set of initial conditions for the energy density $e(x,y)$ and four-velocity $u^\mu(x,y)$ as well as an equation of state to interrelate the energy density $e$, ideal pressure $P_0$ and temperature $T$ of each fluid cell in local thermal equilibrium.
+for the energy-momentum tensor $T^{\mu\nu}$, provided a set of initial conditions for the energy density $e(x,y)$ and four-velocity $u^\mu(x,y)$ as well as an equation of state to interrelate the energy density $e$, ideal pressure $P_0$, and temperature $T$ of each fluid cell in local thermal equilibrium.
 
 We use a modern QCD equation of state (EoS) based on continuum extrapolated lattice calculations at zero baryon density published by the HotQCD collaboration \cite{Bazavov:2014pvz} and blended into a hadron resonance gas EoS in the interval $110 \le T \le 130$~MeV using a smoothstep interpolation function \cite{Moreland:2015dvc}.
 The HotQCD EoS, characterized by the parameterized interaction measure $\theta^{\mu\mu}(T) = (e - 3p)/T^4$, has been compared to additional state-of-the-art calculations by the Wuppertal-Budapest collaboration and shown to agree within published errors \cite{Bazavov:2014pvz}.
 The two parameterizations were also studied in a recent error analysis at RHIC energies which quantified the effect of systematic lattice EoS discrepancies and statistical continuum extrapolation errors on hydrodynamic observables \cite{Moreland:2015dvc}.
-The effect of these errors on mean $p_T$, elliptic flow $v_2$ and triangular flow $v_3$ was found to be order 1\% and hence is expected to be negligible in the present analysis.
+The effect of these errors on mean $p_T$, elliptic flow $v_2$, and triangular flow $v_3$ was found to be order 1\% and hence is expected to be negligible in the present analysis.
 
-We seek to constrain, among other quantities, the temperature dependence of the shear and bulk transport coefficients $\eta(T)$ and $\zeta(T)$ in Eq.~\eqref{relaxation}.
+We seek to constrain, among other quantities, the temperature dependence of the shear and bulk transport coefficients $\eta(T)$ and $\zeta(T)$ in Eq.~\eqref{eq:relaxation}.
 The QGP specific shear viscosity $\eta/s$ is qualitatively expected to reach a global minimum near the QGP phase transition temperature and hence is parameterized using a simple form,
 \begin{equation}
-    (\eta/s)(T) = 
-    \begin{cases}
-        (\eta/s)_\text{min} + (\eta/s)_\text{slope} (T - T_c) &T > T_c \\
-        (\eta/s)_\text{hrg} &T \le T_c
-    \end{cases}
-    \label{eq:etas}
+  (\eta/s)(T) =
+  \begin{cases}
+    (\eta/s)_\text{min} + (\eta/s)_\text{slope} (T - T_c) & T > T_c \\
+    (\eta/s)_\text{hrg}                                   & T \le T_c
+  \end{cases}
+  \label{eq:etas}
 \end{equation}
-where we fix $T_c = 0.155$~GeV using the approximate pseudo-critical phase transition temperature of the HotQCD equation of state, and $(\eta/s)_\text{min}$, $(\eta/s)_\text{slope}$ and $(\eta/s)_\text{hrg}$ are constants which we wish to determine.
+where we fix $T_c = 0.155$~GeV using the approximate pseudo-critical phase transition temperature of the HotQCD equation of state, and $(\eta/s)_\text{min}$, $(\eta/s)_\text{slope}$, and $(\eta/s)_\text{hrg}$ are constants which we wish to determine.
 For the temperature dependent bulk viscosity, we use the parameterization constructed in Ref.~\cite{Denicol:2009am, Ryu:2015vwa},
 \begin{equation}
-    \label{eq:zetas}
-    (\zeta/s)(T) = 
-    \begin{cases}
-        \begin{aligned}
-            C_1 &+ \lambda_1 \exp [(x-1)/\sigma_1]  \\ &+ \lambda_2 \exp [ (x-1)/\sigma_2]
-        \end{aligned}
-        &T < T_a \\[3ex]
-        A_0 + A_1 x + A_2 x^2 &T_a \le T \le T_b \\[2ex]
-        \begin{aligned}
-            C_2 &+ \lambda_3 \exp [-(x-1)/\sigma_3]  \\ &+ \lambda_4 \exp [-(x-1)/\sigma_4]
-        \end{aligned}
-        &T > T_b
-    \end{cases}
+  (\zeta/s)(T) =
+  \begin{cases}
+    \begin{aligned}
+      C_1 &+ \lambda_1 \exp [(x-1)/\sigma_1]  \\ &+ \lambda_2 \exp [ (x-1)/\sigma_2]
+    \end{aligned}
+    &T < T_a \\[3ex]
+    A_0 + A_1 x + A_2 x^2 &T_a \le T \le T_b \\[2ex]
+    \begin{aligned}
+      C_2 &+ \lambda_3 \exp [-(x-1)/\sigma_3]  \\ &+ \lambda_4 \exp [-(x-1)/\sigma_4]
+    \end{aligned}
+    &T > T_b
+  \end{cases}
+  \label{eq:zetas}
 \end{equation}
 with dimensionless parameter $x = T/T_0$ and parameterization coefficients
 \begin{align*}
-    &C_1=0.03, ~~C_2=0.001, \\ 
-    &A_0=-13.45, ~~A_1=27.55, ~~A_2=-13.77, \\
-    &\sigma_1=0.0025, ~~\sigma_2=0.022, ~~\sigma_3=0.025, ~~\sigma_4=0.13, \\
-    &\lambda_1=0.9, ~~\lambda_2=0.22, ~~\lambda_3=0.9, ~~\lambda_4=0.25, \\
-    &T_0 = 0.18 \text{ GeV}, ~~T_a = 0.995\, T_0, ~~T_b = 1.05\, T_0.
+  &C_1=0.03, ~~C_2=0.001, \\
+  &A_0=-13.45, ~~A_1=27.55, ~~A_2=-13.77, \\
+  &\sigma_1=0.0025, ~~\sigma_2=0.022, ~~\sigma_3=0.025, ~~\sigma_4=0.13, \\
+  &\lambda_1=0.9, ~~\lambda_2=0.22, ~~\lambda_3=0.9, ~~\lambda_4=0.25, \\
+  &T_0 = 0.18 \text{ GeV}, ~~T_a = 0.995\, T_0, ~~T_b = 1.05\, T_0.
 \end{align*}
 The $(\zeta/s)(T)$ curve in Eq.~\eqref{eq:zetas} is then rescaled by an overall normalization factor $(\zeta/s)_\text{norm}$ which is a free parameter to be constrained by data.
 The normalization factor used in this work is thus equal to unity when the rescaled $(\zeta/s)(T)$ parameterization in Eq.~\eqref{eq:zetas} equals the approximate best fit parameterization determined in Ref.~\cite{Ryu:2015vwa}.
 
-The hybrid model used in the present analysis switches from hydrodynamic field equations to a microscopic kinetic description of the medium once the fluid expands, cools and hadronizes. Kinetic descriptions are well suited to describe late stages of the collision where the inter-particle mean free path approaches the system size and approximate local thermal equilibirum breaks down.
-Kinetic models also naturally describe species dependent kinetic freezeout and hadronic feed down dynamics which are difficult to incorporate in purely hydrodynamic models.
+The hybrid model used in the present analysis switches from hydrodynamic field equations to a microscopic kinetic description of the medium once the fluid expands, cools, and hadronizes. Kinetic descriptions are well suited to describe late stages of the collision where the inter-particle mean free path approaches the system size and approximate local thermal equilibrium breaks down.
+Kinetic models also naturally describe species dependent kinetic freeze-out and hadronic feed down dynamics which are difficult to incorporate in purely hydrodynamic models.
 More detailed discussion of the advantages of hybrid models can be found in references \ref{?}.
 
 The transition from viscous hydrodynamics to a hadronic cascade is performed along a constant isotherm $T_\text{sw}$ using the iSS particle sampler \cite{Shen:2014vra, Qiu:2013wca} according to the Cooper-Frye prescription \cite{Cooper:1974mv},
 \begin{equation}
-    \label{cooper_frye}
-    \frac{dN}{dy p_T dp_T d\phi_p} = \int_\Sigma \frac{g}{(2\pi)^3} (f_0(x,p) + \delta f(x,p)) p^\mu d^3 \sigma_\mu,
+  \frac{dN}{dy p_T dp_T d\phi_p} =
+    \int_\Sigma \frac{g}{(2\pi)^3} (f_0(x,p) + \delta f(x,p)) p^\mu d^3 \sigma_\mu,
+  \label{eq:cooper_frye}
 \end{equation}
-where $E$ and $p$ are the energy and momentum of the sampled particle, $f_0$ the ideal distribution function, $\delta f$ its viscous corrections and where $d^3\sigma_\mu$ is an element of the isothermal freezeout surface $\Sigma$.
+where $E$ and $p$ are the energy and momentum of the sampled particle, $f_0$ the ideal distribution function, $\delta f$ its viscous corrections, and $d^3\sigma_\mu$ is an element of the isothermal freeze-out surface $\Sigma$.
 
-In general, the viscous corrections to the distribution function $\delta f(x, p)$ in Eq.~\eqref{cooper_frye} include both shear and bulk contributions.
+In general, the viscous corrections to the distribution function $\delta f(x, p)$ in Eq.~\eqref{eq:cooper_frye} include both shear and bulk contributions.
 The shear correction to the distribution function is given by,
 \begin{equation}
-    \delta f_\text{shear}(x^\mu, p^\mu) = f_0(x^\mu, p^\mu)(1 \pm f_0(x^\mu, p^\mu))\frac{\pi_{\mu\nu}p^\mu p^\nu}{2(e+P)T^2}
+  \delta f_\text{shear}(x^\mu, p^\mu) =
+    f_0(x^\mu, p^\mu)(1 \pm f_0(x^\mu, p^\mu))
+    \frac{\pi_{\mu\nu}p^\mu p^\nu}{2(e+P)T^2}
 \end{equation}
 where $f_0$ is the ideal distribution function, $\pi_{\mu\nu}$ the shear stress tensor, $p^\mu$ the particle momentum and $e$, $P$ and $T$ the fluid's energy density, pressure and temperature.
 The bulk viscous correction, on the other hand, is described by multiple formulations in the literature which predict significantly different behavior when either the bulk viscosity $\zeta$ or the transverse momentum $p_T$ are large \cite{Dusling:2011fd, Noronha-Hostler:2013gga}. The present study neglects bulk viscous corrections to the distribution function $\delta f_\text{bulk}$ at particlization, based on the expectation that the corrections are small for the specific $(\zeta/s)(T)$ curve Eq.~\eqref{eq:zetas} used in this analysis. The approximation, admittedly, is not great and leads to, e.g.\ order 10\% errors in the magnitude of mean $p_T$ at particlization. We thus refrain from making any quantitative statements regarding the magnitude of bulk viscosity preferred by the analysis and emphasize that a more realistic $(\zeta/s)(T)$ curve and careful treatment of $\delta f_\text{bulk}$ are necessary to constrain the QGP bulk viscosity with precision.
@@ -197,63 +206,63 @@ Once the fluid is converted into hadrons, the subsequent microscopic dynamics ar
 The UrQMD model propagates all produced hadrons along classical trajectories, samples their stochastic binary collisions and simulates their resonance decays until the system becomes too dilute to continue interacting.
 The calculation is performed using a Monte Carlo realization of the Boltzmann equation
 \begin{equation}
-    \frac{df_i(x,p)}{dt} = \mathcal{C}_i(x, p)
+  \frac{df_i(x,p)}{dt} = \mathcal{C}_i(x, p)
 \end{equation}
 where $f_i(x,p)$ represents the phase space density of species $i$ and $\mathcal{C}_i$ is its corresponding collision kernel.
-Once the particles cease interacting, the position, momentum and particle type is saved to file.
+Once the particles cease interacting, the position, momentum, and particle type is saved to file.
 
-
-% Parametric initial conditions
 \subsection{Parametric initial conditions}
 
-The hydrodynamic equations of motion necessitate initial conditions for the energy density $e$, four-velocity $u^\mu$, bulk pressure $\Pi$ and shear stress tensor $\pi^{\mu\nu}$ at the thermalization time $\tau_0$ when the fluid attains local thermal equillibrium. The initial conditions are typically procured using one of two types of models:
+The hydrodynamic equations of motion necessitate initial conditions for the energy density $e$, four-velocity $u^\mu$, bulk pressure $\Pi$, and shear stress tensor $\pi^{\mu\nu}$ at the thermalization time $\tau_0$ when the fluid attains local thermal equilibrium. The initial conditions are typically procured using one of two types of models:
 \begin{enumerate*}[label={\arabic*)}]
-    \item dynamical models derived from approximations of QCD or related quantum field theories which describe the full time evolution of the system as it approaches local thermal equilibrium \cite{Schenke:2012wb, vanderSchee:2013pia, Wang:1991hta}, and 
-    \item simpler non-dynamical models which map the state of the system at time $\tau=0^+$ directly to time $\tau=\tau_0$ when the system thermalizes \cite{}.
+  \item dynamical models derived from approximations of QCD or related quantum field theories which describe the full time evolution of the system as it approaches local thermal equilibrium \cite{Schenke:2012wb, vanderSchee:2013pia, Wang:1991hta}, and
+  \item simpler non-dynamical models which map the state of the system at time $\tau=0^+$ directly to time $\tau=\tau_0$ when the system thermalizes \cite{}.
 \end{enumerate*}
 
 The importance of pre-equilibrium dynamics was quantified in a recent study by initializing hydrodynamic simulations with a free streaming phase (zero coupling) and switching to hydrodynamics (strong coupling) after different periods of time \cite{Liu:2015nwa}. The authors showed that although free streaming never leads to thermalization, it can be used to bracket the influence of pre-equilibrium dynamics on the medium evolution as the pre-equilibrium coupling strength is expected to fall between the free streaming and hydrodynamic limits. The analysis found a preference for a brief free streaming phase ${\tau_\text{fs} \lesssim 1}$~fm/c, but the effect on hydrodynamic bulk observables was small and modifications to the preferred value of the QGP specific shear viscosity $\eta/s$ were less than 10\%. In reality, the magnitude of the effect is expected to be even smaller as the pre-equilibrium coupling strength is necessarily non-zero.
 
 We choose to neglect pre-equilibrium dynamics in the present study, and set the fluid four-velocity to zero ${u^\mu = (1,0,0,0)}$ as well as the shear and bulk viscous tensors $\pi^{\mu\nu}$ and $\Pi$ which quickly relax to their Navier-Stokes values. This reduces the initial conditions to a thermal energy density $e(\tau_0, x, y, \eta)$ which can be expressed as an entropy density via the QCD EoS. The initial conditions in boost-invariant hydrodynamics can thus described by an entropy density profile
 \begin{equation}
-    \label{mapping}
-    s(\tau_0, x, y)\vert_{\eta=0} = f(\T_A, \T_B)
+  s(\tau_0, x, y)\vert_{\eta=0} = f(\T_A, \T_B)
+  \label{eq:mapping}
 \end{equation}
 where the mapping $f$ is some static function of the density of nuclear matter in each nucleus which participates in inelastic collisions denoted $\T$, constructed by summing over the participant proton thicknesses
 \begin{equation}
-    \label{participant}
-    \T(x, y) = \sum\limits_{i=1}^{N_\text{part}} \gamma_i\, T_p(x - x_i, y - y_i),
+  \T(x, y) = \sum\limits_{i=1}^{N_\text{part}} \gamma_i\, T_p(x - x_i, y - y_i),
+  \label{eq:participant}
 \end{equation}
 where the relative nucleon coordinates of each nucleus are shifted by a random impact parameter such that ${\T_{A,B}(x, y) = \T(x \pm b/2, y)}$. For the proton thickness function we use a Gaussian
 \begin{equation}
-    T_p(\vec{x}) = \frac{1}{2\pi w^2} \exp\bigg(\!-\frac{x^2 + y^2}{2 w^2}\bigg). 
-\end{equation}    
-with nucleon width $w$ taken as a free parameter. The random weight factor $\gamma_i$ multiplying each nucleon in Eq.~\eqref{participant} is added to account for minimum bias proton-proton multiplicity fluctuations and is sampled from a Gamma distribution with unit mean and variance $1/k$, where $k$ is a tunable shape parameter.
+  T_p(\vec{x}) = \frac{1}{2\pi w^2} \exp\bigg(\!-\frac{x^2 + y^2}{2 w^2}\bigg).
+\end{equation}
+with nucleon width $w$ taken as a free parameter. The random weight factor $\gamma_i$ multiplying each nucleon in Eq.~\eqref{eq:participant} is added to account for minimum bias proton-proton multiplicity fluctuations and is sampled from a Gamma distribution with unit mean and variance $1/k$, where $k$ is a tunable shape parameter.
 
 The inelastic nucleon-nucleon participation probability, and hence the density of participant matter, can be calculated from a standard Glauber formalism,
 \begin{equation}
-    P_\text{coll}(b) = 1 - \exp \bigg[ -\sigma_{gg} \int d^2x_\perp T_p(|\vec{x}|) T_p(|\vec{x} - \vec{b}|) \bigg ] 
+  P_\text{coll}(b) =
+    1 - \exp\biggl[
+      -\sigma_{gg} \int d^2x_\perp T_p(|\vec{x}|) T_p(|\vec{x} - \vec{b}|)
+    \biggr]
 \end{equation}
 where $b$ is the impact parameter between two nucleons and the partonic cross section $\sigma_{gg}$ is tuned to fit the inelastic nucleon-nucleon cross section
 \begin{equation}
-    \int 2 \pi b\, db\, P_\text{coll}(b) = \sigma_\text{NN}^\text{inel} 
+  \int 2 \pi b\, db\, P_\text{coll}(b) = \sigma_\text{NN}^\text{inel}
 \end{equation}
 at the desired beam energy. The collision cross sections thus enter through the calculation of $\T_A$ and $\T_B$ which are determined \emph{independently} of the function $f$ used to convert local participant density into entropy deposition.
 
-\begin{figure}[t]
-    \includegraphics{thickness}
-    \caption{Cross section of the participant nucleon density in a mid-central Pb+Pb collision at $\sqrts=2.76$ TeV as a function of the transverse coordinate $x$ parallel to impact parameter $\vec{b}$. The gray band indicates the region bounded by the minimum and maximum values of the local participant thickness functions $T_A$ and $T_B$, while the blue band indicates the region spanned by the generalized mean of $T_A$ and $T_B$ with parameter $-1<p<1$. The solid blue line shows an example of a discrete mapping specified by a generalized mean with $p=0$.} 
-    \label{fig:thickness}
-\end{figure}
+\fig{thickness}{
+  Cross section of the participant nucleon density in a mid-central Pb+Pb collision at $\sqrts=2.76$ TeV as a function of the transverse coordinate $x$ parallel to impact parameter $\vec{b}$.
+  The gray band indicates the region bounded by the minimum and maximum values of the local participant thickness functions $T_A$ and $T_B$, while the blue band indicates the region spanned by the generalized mean of $T_A$ and $T_B$ with parameter $-1<p<1$.
+  The solid blue line shows an example of a discrete mapping specified by a generalized mean with $p=0$.
+}
 
-At this point it becomes necessary to specify the function $f$ in Eq~\eqref{mapping} which maps participant matter to local entropy deposition. In general, the function $f(\T_A, \T_B)$ is assumed to be symmetric, monotonically increasing and smooth. In this work we employ a parameterization for $f$ motivated in Ref.~\cite{Moreland:2014oya} based on a functional form known as the generalized mean,
+At this point it becomes necessary to specify the function $f$ in Eq~\eqref{eq:mapping} which maps participant matter to local entropy deposition. In general, the function $f(\T_A, \T_B)$ is assumed to be symmetric, monotonically increasing and smooth. In this work we employ a parameterization for $f$ motivated in Ref.~\cite{Moreland:2014oya} based on a functional form known as the generalized mean,
 \begin{align}
-    \label{eq:genmean}
-    s \propto \left( \frac{\T_A^p + \T_B^p}{2} \right)^{1/p}.
+  s \propto \left( \frac{\T_A^p + \T_B^p}{2} \right)^{1/p}.
+  \label{eq:genmean}
 \end{align}
 The parameterization introduces two free parameters, a normalization prefactor and a continuous entropy deposition parameter $p\in(-\infty, \infty)$ which interpolates between different types of entropy deposition schemes. For ${p=(1, 0, -1)}$, the generalized mean reduces to the well known arithmetic, geometric and harmonic means, and for $p\rightarrow \pm\infty$ it asymptotes to minimum and maximum functions,
 \begin{equation}
-  \label{means}
   \newlength{\extraspace}
   \setlength{\extraspace}{0.5ex}
   s \propto
@@ -264,30 +273,27 @@ The parameterization introduces two free parameters, a normalization prefactor a
     2\, \T_A \T_B/(\T_A + \T_B) & p = -1, \hfill \text{ (harmonic)} \\[\extraspace]
     \min(\T_A, \T_B) & p \rightarrow -\infty.
   \end{cases}
+  \label{eq:means}
 \end{equation}
 
 In Ref.~\ref{?} we motivate the generalized mean ansatz using basic physical constraints and phenomenological observations, but perhaps the simplest explanation of the ansatz is to examine the effect of the mapping on a realistic event. Fig.~\ref{fig:thickness} shows a cut-away of a lead-lead collision at $\sqrts=2.76$~TeV, sliced along the direction of impact parameter $\hat{b}$. At each point in the transverse plane there are two relevant scales of interest, the minimum participant density $\T_\text{min}$ and the maximum participant density $\T_\text{max}$. The gray band marks the region spanned by $\T_\text{min}$ and $\T_\text{max}$, while the blue band/line show the generalized mean acting on the participant density of each nucleus with different values of the parameter $p$. The figure shows that decreasing $p$ pulls the generalized mean towards the minimum of $\T_A$ and $\T_B$ while increasing $p$ pushes it to the maximum of the two. The generalized mean ansatz thus parameterizes asymmetric entropy deposition, or in the parlance of Color-Glass Condensate theory, the intensity of saturation effects on local gluon production.
 
-At this point the reader may complain that while the generalized mean parameterizes entropy deposition in asymmetric regions of the collision $\T_\text{min} < \T_\text{max}$, it asserts a particular scaling law for entropy deposition in symmetric regions of the collision where $\T_\text{min} = \T_\text{max}$. In particular, 
+At this point the reader may complain that while the generalized mean parameterizes entropy deposition in asymmetric regions of the collision $\T_\text{min} < \T_\text{max}$, it asserts a particular scaling law for entropy deposition in symmetric regions of the collision where $\T_\text{min} = \T_\text{max}$. In particular,
 \begin{equation}
-    \label{homogenous}
-    f(p; \alpha \T, \alpha \T) = \alpha \T. 
+  f(p; \alpha \T, \alpha \T) = \alpha \T.
+  \label{eq:homogenous}
 \end{equation}
-This property of the generalized mean is known as scale invariance or homogeneity. While it is difficult to empirically prove or disprove exact scale invariance, multiple experimental observations indicate that it holds to very good approximation. For example, it was demonstrated that collisions of highly deformed uranium nuclei exhibit elliptic flow patterns which are incompatible with a scale-violating binary collision term postulated by the two-component Glauber ansatz. Measurements of central copper-copper, gold-gold and uranium-uranium particle production at RHIC also exhibit approximate participant scaling in agreement with Eq.~\eqref{homogenous}. Moreover, the scale invariant constraint serves as a reasonable approximation for a number of calculations of the mapping $f$ in Eq.~\eqref{mapping} derived from CGC effective field theory as we show momentarily. At present we thus assert the scale invariant constraint as a simplifying postulate although future work may relax this constraint to further reduce bias in the chosen parameterization.  
+This property of the generalized mean is known as scale invariance or homogeneity. While it is difficult to empirically prove or disprove exact scale invariance, multiple experimental observations indicate that it holds to very good approximation. For example, it was demonstrated that collisions of highly deformed uranium nuclei exhibit elliptic flow patterns which are incompatible with a scale-violating binary collision term postulated by the two-component Glauber ansatz. Measurements of central copper-copper, gold-gold and uranium-uranium particle production at RHIC also exhibit approximate participant scaling in agreement with Eq.~\eqref{eq:homogenous}. Moreover, the scale invariant constraint serves as a reasonable approximation for a number of calculations of the mapping $f$ in Eq.~\eqref{eq:mapping} derived from CGC effective field theory as we show momentarily. At present we thus assert the scale invariant constraint as a simplifying postulate although future work may relax this constraint to further reduce bias in the chosen parameterization.
 
-\begin{figure}
-    \includegraphics{trento_events}
-    \caption{Several \protect\trento\ Pb+Pb initial condition events for the transverse entropy density $dS/(d^2r_\perp dy)$ calculated using generalized mean parameter $p=0$, nucleon width $w=0.5$~fm and gamma fluctuation factor $k=1.4$.}
-    \label{fig:trento_events}
-\end{figure}
+\fig{trento_events}{
+  Several \protect\trento\ Pb+Pb initial condition events for the transverse entropy density $dS/(d^2r_\perp dy)$ calculated using generalized mean parameter $p=0$, nucleon width $w=0.5$~fm, and gamma fluctuation factor $k=1.4$.
+}
 
-\begin{figure*}
-    \includegraphics{cgc_compare}
-    \caption{Profiles of the initial thermal distribution predicted by the KLN (left), EKRT (middle) and wounded nucleon (right) models (dashed black lines) compared to a generalized mean with different values of the parameter $p$ (solid blue lines).
-    Staggered lines show different cross sections of the initial entropy density $dS/(d^2r_\perp dy)$ as a function of the participant nucleon density $\T_A$ for several values of $\T_B = 1, 2, 3$ [fm$^{-2}$]. Entropy normalization is arbitrary.}
-    \label{fig:cgc_compare}
-\end{figure*}
-
+\fig*{cgc_compare}{
+  Profiles of the initial thermal distribution predicted by the KLN (left), EKRT (middle), and wounded nucleon (right) models (dashed black lines) compared to a generalized mean with different values of the parameter $p$ (solid blue lines).
+  Staggered lines show different cross sections of the initial entropy density $dS/(d^2r_\perp dy)$ as a function of the participant nucleon density $\T_A$ for several values of $\T_B = 1, 2, 3$ [fm$^{-2}$].
+  Entropy normalization is arbitrary.
+}
 
 \subsection{Reproducing existing I.C.\ models}
 
@@ -295,43 +301,49 @@ The aforementioned procedure defines the \trento\ initial condition model propos
 
 Perhaps the simplest and oldest model of heavy-ion initial conditions is the so called participant or wounded nucleon model which deposits a blob of entropy for each nucleon in the nucleus that engages in one or more inelastic collisions. In its Monte Carlo formulation, the wounded nucleon model is described by
 \begin{equation}
-    \label{wn}
-    s \propto \T_A + \T_B
+  s \propto \T_A + \T_B
+  \label{eq:wn}
 \end{equation}
-where $\T_A$ and $\T_B$ denote the event-by-event participant densities defined in Eq.~\eqref{participant}. Quick examination of Eqs.~\eqref{means} and \eqref{wn} shows that the wounded nucleon model describes a subcase of the generalized mean ansatz for $p=1$ up to an arbitrary factor which can be absorbed by the normalization constant.
+where $\T_A$ and $\T_B$ denote the event-by-event participant densities defined in Eq.~\eqref{eq:participant}. Quick examination of Eqs.~\eqref{eq:means} and \eqref{eq:wn} shows that the wounded nucleon model describes a subcase of the generalized mean ansatz for $p=1$ up to an arbitrary factor which can be absorbed by the normalization constant.
 
-More sophisticated calculations of the mapping $f$ in Eq.~\eqref{mapping} can be derived from Color-Glass Condensate effective field theory. A common implementation of a CGC based saturation picture is provided by the KLN model where entropy deposition at the QGP thermalization time can be determined from the produced gluon density $s \propto N_g$ where,
+More sophisticated calculations of the mapping $f$ in Eq.~\eqref{eq:mapping} can be derived from Color-Glass Condensate effective field theory. A common implementation of a CGC based saturation picture is provided by the KLN model where entropy deposition at the QGP thermalization time can be determined from the produced gluon density $s \propto N_g$ where,
 \begin{equation}
-    \label{kln}
-    \frac{dN_g}{dy\,d^2r_\perp} \sim \Qs{min}^2 \biggl[ 2 + \log \biggr(\frac{\Qs{max}^2}{\Qs{min}^2} \biggr) \biggr]
+  \frac{dN_g}{dy\,d^2r_\perp} \sim \Qs{min}^2 \biggl[
+    2 + \log \biggl(\frac{\Qs{max}^2}{\Qs{min}^2} \biggr)
+  \biggr]
+  \label{eq:kln}
 \end{equation}
 and $\Qs{max}$ and $\Qs{min}$ denote the larger and smaller values of the two saturation scales in opposite nuclei at any fixed position in the transverse plane.
-In the original formulation of the KLN model, the two saturation scales are proportional to the local participant nucleon density in each nucleus $Q^2_{s,A} \propto \T_A$, and Eq.~\eqref{kln} can be recast as,
+In the original formulation of the KLN model, the two saturation scales are proportional to the local participant nucleon density in each nucleus $Q^2_{s,A} \propto \T_A$, and Eq.~\eqref{eq:kln} can be recast as,
 \begin{equation}
-    s \sim \min(\T_A, \T_B)\biggr[2 + \log \biggr(\frac{\max(\T_A,\T_B)}{\min(\T_A,\T_B)}\biggr) \biggr]
+  s \sim \min(\T_A, \T_B) \biggl[
+    2 + \log \biggl(\frac{\max(\T_A,\T_B)}{\min(\T_A,\T_B)}\biggr)
+  \biggr]
 \end{equation}
 to put it in a form which can be directly compared with the wounded nucleon model.
 
 Another CGC model which has attracted recent interest after it successfully described an extensive list of experimental particle multiplicity and flow observables is the EKRT model which combines collinearly factorized pQCD minijet production with a simple conjecture for gluon saturation. The energy density predicted by the model after a pre-thermal Bjorken free streaming stage is given by
 \begin{equation}
-    \label{ekrt_energy}
-    e(\tau_0, x, y) \sim \frac{K_\text{sat}}{\pi} p_\text{sat}^3(T_A, T_B).
+  e(\tau_0, x, y) \sim \frac{K_\text{sat}}{\pi} p_\text{sat}^3(T_A, T_B).
+  \label{eq:ekrt_energy}
 \end{equation}
-where the saturation momentum $p_\text{sat}$, defined in Ref.~\ref{?}, is a function of phenomenological model parameters $K_\text{sat}$ and $\beta$. The energy density in Eq.~\eqref{ekrt_energy} can then be recast as an entropy density using the thermodynamic relation ${s \sim e^{3/4}}$ to compare it with the previous models.
+where the saturation momentum $p_\text{sat}$, defined in Ref.~\ref{?}, is a function of phenomenological model parameters $K_\text{sat}$ and $\beta$. The energy density in Eq.~\eqref{eq:ekrt_energy} can then be recast as an entropy density using the thermodynamic relation ${s \sim e^{3/4}}$ to compare it with the previous models.
 
-Note that Eq.~\eqref{ekrt_energy} is expressed as a function of nuclear thickness $T$ which includes contributions from \emph{all} nucleons inside the nucleus and is different than the participant density $\T$ used previously. In order to express initial condition mappings as functions of a common variable one could, e.g.\ relate $\T$ and $T$ using an analytic wounded nucleon model. The effect of this substitution on the EKRT model, however, is small as the mapping deposits zero entropy if nucleons are non-overlapping effectively removing them from the participant thickness function. We thus replace $T$ with $\T$ in the EKRT model and note that similar results are obtained by recasting the wounded nucleon, KLN and \trento\ models as functions of $T$ using standard Glauber relations.
+Note that Eq.~\eqref{eq:ekrt_energy} is expressed as a function of nuclear thickness $T$ which includes contributions from \emph{all} nucleons inside the nucleus and is different than the participant density $\T$ used previously. In order to express initial condition mappings as functions of a common variable one could, e.g.\ relate $\T$ and $T$ using an analytic wounded nucleon model. The effect of this substitution on the EKRT model, however, is small as the mapping deposits zero entropy if nucleons are non-overlapping effectively removing them from the participant thickness function. We thus replace $T$ with $\T$ in the EKRT model and note that similar results are obtained by recasting the wounded nucleon, KLN and \trento\ models as functions of $T$ using standard Glauber relations.
 
 In Fig.~\ref{fig:cgc_compare} we plot one-dimensional slices of the entropy deposition mapping predicted by the KLN, EKRT and wounded nucleon (WN) models for characteristic values of the participant nucleon density sampled in lead-lead collisions at $\sqrts=2.76$~TeV. The vertically staggered lines in each panel show the change in entropy density deposited as a function of $\T_A$ for several constant values of $\T_B$, while the superimposed dashed lines show the generalized mean ansatz after it has been tuned to fit each model. The figure illustrates the flexibility of the ansatz to reproduce different initial condition calculations and quantify differences between the models in terms of the generalized mean parameter $p$. The KLN model, for example, is described by $p\sim-0.67$ while the EKRT model corresponds to $p \sim 0$ and the WN model $p=1$. Smaller, more negative values of $p$ pull the generalized mean toward a minimum function and hence correspond to models with more extreme gluon saturation effects.
 
 The three models shown in Fig.~\ref{fig:cgc_compare} are by no means an exhaustive list of initial condition models proposed in the literature. Notably absent, for instance, is the highly successful IP-Glasma model which combines IP-Sat CGC initial conditions with classical Yang-Mills dynamics to describe the full pre-equilibrium evolution of produced glasma fields. The dynamical nature of IP-Glasma is difficult to characterize as a mapping ${dS/dy \sim f(\T_A,\T_B)}$, but nevertheless, can be classified according its predicted eccentricity harmonics $\varepsilon_n$ which serve as a unique signature of the model.
 
-Fig.~\ref{fig:ipglasma} compares the eccentricity harmonics predicted by IP-Glasma with \trento\ using a geometric mean ${p=0}$ which was previously shown to reproduce the eccentricity hierarchy of $\varepsilon_2$ and $\varepsilon_3$ in IP-Glasma. Each \trento\ initial condition event is free streamed for $\tau=0.4$~fm/c \ref{?} to mimic the weakly coupled pre-equilibrium dynamics of IP-Glasma and match the evolution time of both models. Both calculations are performed using a nucleon width $w=0.43$~fm and identical Woods-Saxon parameters. The result shows a striking similarity in the eccentricity harmonics predicted by both models out to large values of the impact parameter $b$ where the sub-nucleonic structure of the IP-Glasma model starts to have significant effect. The simularity suggests that \trento\ can effectively reproduce the scaling behavior of the IP-Glasma model, although a more detailed comparison of the two models would be necessary to establish the strength of correspondence illustrated in Fig.~\ref{fig:cgc_compare}. 
-\begin{figure}[t]
-    \centering
-    \includegraphics{ipglasma}
-    \caption{Eccentricity harmonics $\varepsilon_2$ and $\varepsilon_3$ as a function of impact parameter $b$ for Pb+Pb collisions at ${\sqrts=2.76}$~TeV. IP-Glasma events are evaluated after $\tau=0.4$~fm/c CYM evolution and \protect\trento\ events after $\tau=0.4$~fm/c free streaming. \protect\trento\ specific parameters are $p=0$ and $k=1.4$. Both models use nucleon-nucleon cross section $\sigma_\text{NN}=6.4$~fm$^2$, nucleon width $w=0.43$~fm and correlated lead nuclei from Ref.~\ref{?}. The eccentricity calculation is performed using the energy density of the IP-Glasma model and $T^{00}$ component of the \protect\trento\ stress energy tensor after free streaming.}
-    \label{fig:ipglasma}
-\end{figure}
+Fig.~\ref{fig:ipglasma} compares the eccentricity harmonics predicted by IP-Glasma with \trento\ using a geometric mean ${p=0}$ which was previously shown to reproduce the eccentricity hierarchy of $\varepsilon_2$ and $\varepsilon_3$ in IP-Glasma. Each \trento\ initial condition event is free streamed for $\tau=0.4$~fm/c \ref{?} to mimic the weakly coupled pre-equilibrium dynamics of IP-Glasma and match the evolution time of both models. Both calculations are performed using a nucleon width $w=0.43$~fm and identical Woods-Saxon parameters. The result shows a striking similarity in the eccentricity harmonics predicted by both models out to large values of the impact parameter $b$ where the sub-nucleonic structure of the IP-Glasma model starts to have significant effect. The simularity suggests that \trento\ can effectively reproduce the scaling behavior of the IP-Glasma model, although a more detailed comparison of the two models would be necessary to establish the strength of correspondence illustrated in Fig.~\ref{fig:cgc_compare}.
+
+\fig{ipglasma}{
+  Eccentricity harmonics $\varepsilon_2$ and $\varepsilon_3$ as a function of impact parameter $b$ for Pb+Pb collisions at ${\sqrts=2.76}$~TeV.
+  IP-Glasma events are evaluated after $\tau=0.4$~fm/c CYM evolution and \protect\trento\ events after $\tau=0.4$~fm/c free streaming.
+  \protect\trento\ specific parameters are $p=0$ and $k=1.4$.
+  Both models use nucleon-nucleon cross section $\sigma_\text{NN}=6.4$~fm$^2$, nucleon width $w=0.43$~fm, and correlated lead nuclei from Ref.~\ref{?}.
+  The eccentricity calculation is performed using the energy density of the IP-Glasma model and $T^{00}$ component of the \protect\trento\ stress energy tensor after free streaming.
+}
 
 
 \section{Parameter estimation}
@@ -343,7 +355,6 @@ But, it is not feasible to do this directly, since simulating observables at eve
 To overcome this limitation, we employ a Bayesian method for parameter estimation with computationally expensive models \cite{OHagan:2006ba,Higdon:2008cmc,Higdon:2014tva,Wesolowski:2015fqa}.
 Briefly, the model is evaluated at a relatively small \order 2 number of parameter points, the output is interpolated by a Gaussian process emulator, and the emulator is used to systematically explore parameter space with Markov chain Monte Carlo.
 This section summarizes the methodology; see Ref.~\cite{Bernhard:2015hxa} for a complete treatment.
-
 
 \subsection{Model parameters and observables}
 
@@ -426,7 +437,6 @@ When computing simulated observables, we strive to replicate experimental method
 We selected the same centrality classes as the corresponding experimental data by sorting each design point's minimum-bias events by charged-particle multiplicity $d\nch/d\eta$ at mid-rapidity ($|\eta| < 0.5$) and dividing the events into the desired percentile bins.
 We computed identified $dN/dy$ and $\avg{p_T}$ by simple counting and averaging of the desired species at mid-rapidity ($|y| < 0.5$); no additional steps are necessary since the experimental data are corrected and extrapolated to zero $p_T$ \cite{Abelev:2013vea}.
 Finally, we calculated flow coefficients for charged particles within the kinematic range of the ALICE detector using the direct $Q$-cumulant method \cite{Bilandzic:2010jr}.
-
 
 \subsection{Gaussian process emulators}
 
@@ -516,7 +526,6 @@ The predictions need not agree perfectly at every point; ideally the residuals w
   each in centrality bins 0--5\% (blue) and 30--40\% (orange).
 }
 
-
 \subsection{Bayesian calibration}
 
 \newcommand{\z}{\mathbf z}
@@ -557,111 +566,96 @@ MCMC algorithms generate random walks through parameter space by accepting or re
 We use the affine-invariant ensemble sampler \cite{Goodman:2010en,FM:2013mc}, an efficient MCMC algorithm that uses a large ensemble of interdependent walkers.
 We first run \order 6 steps to allow the chain to equilibrate, discard these ``burn-in'' samples, then generate \order 7 posterior samples.
 
-
-\begin{table}[h]
-    \caption{High likelihood parameters selected from the posterior distribution in Fig.~\ref{fig:posterior_identified} used to generate Fig.~\ref{fig:mode_observables}}
-    \begin{ruledtabular}
-        \begin{tabular}{llll}
-            \multicolumn{2}{c}{Initial condition} & \multicolumn{2}{c}{QGP medium} \\
-            \noalign{\smallskip}\hline\noalign{\smallskip}
-            norm & 120.          &  $\eta/s$ min   & 0.08       \\
-            $p$  & 0.0           &  $\eta/s$ slope & 0.85 GeV$^{-1}$   \\
-            $k$  & 1.5           &  $\zeta/s$ norm & 1.25       \\
-            $w$  & 0.43 fm       &  $T_\text{sw}$  & 0.148 GeV  \\
-        \end{tabular}
-    \end{ruledtabular}
-    \label{table:likely_param}
+\begin{table}
+  \caption{
+    \label{tab:likely_param}
+    High likelihood parameters selected from the posterior distribution in Fig.~\ref{fig:posterior} used to generate Fig.~\ref{fig:mode_observables}
+  }
+  \begin{ruledtabular}
+    \begin{tabular}{llll}
+      \multicolumn{2}{c}{Initial condition} & \multicolumn{2}{c}{QGP medium} \\
+      \noalign{\smallskip}\hline\noalign{\smallskip}
+      norm & 120.          &  $\eta/s$ min   & 0.08       \\
+      $p$  & 0.0           &  $\eta/s$ slope & 0.85 GeV$^{-1}$   \\
+      $k$  & 1.5           &  $\zeta/s$ norm & 1.25       \\
+      $w$  & 0.43 fm       &  $T_\text{sw}$  & 0.148 GeV  \\
+    \end{tabular}
+  \end{ruledtabular}
 \end{table}
 
-%\begin{figure*}
-%    \includegraphics{posterior_compare}
-%    \caption{Comparison of the posterior distributions obtained when the model is calibrated to fit identified pion, kaon and proton yields $dN/dy$ (blue lines), and when the model is calibrated to fit integrated charged particles $d\nch/d\eta$ (orange lines). $^\dagger$The units for $\eta/s$ slope are [GeV$^{-1}$].}
-%\end{figure*}
+\fig*{observables_plot}{
+  Identified yields (left column), mean $p_T$ (middle column), and flow cumulants $v_n\{2\}$ (right column).
+  The top row shows results obtained from the training data used to condition the emulator.
+  from 100 random samples drawn from the Bayesian posterior.
+}
 
-\begin{figure*}
-    \includegraphics{observables_plot}
-    \caption{Identified yields (left column), mean $p_T$ (middle column) and flow cumulants $v_n\{2\}$ (right column). The top row shows results obtained from the training data used to condition the emulator. from 100 random samples drawn from the Bayesian posterior.}
-\end{figure*}
+\fig*{posterior}{
+  Diagonal and lower-diagonal: posterior marginal and joint distributions of the calibration parameters described in section \ref{?}.
+  Diagonal entries show the posterior likelihood distribution of each parameter marginalized over remaining parameters, while lower-diagonal entries show the joint distribution of parameter pairs.
+  Upper diagonal: the Pearson product-moment correlation coefficient $\rho_{X,Y}=\text{cov}(X,Y)/(\sigma_X \sigma_Y)$ for each pair of parameters $X$, $Y$.
+  Red (blue) tiles indicate Pearson coefficients close to $1$ ($-1$) corresponding to strong linear correlation (anti-correlation).
+  $^\dagger$The units for $\eta/s$ slope are [GeV$^{-1}$].
+}
 
-\begin{figure*}
-    \includegraphics{posterior}
-    \caption{Diagonal and lower-diagonal: posterior marginal and joint distributions of the calibration parameters described in section \ref{?}. Diagonal entries show the posterior likelihood distribution of each parameter marginalized over remaining parameters, while lower-diagonal entries show the joint distribution of parameter pairs. Upper diagonal: the Pearson product-moment correlation coefficient $\rho_{X,Y}=\text{cov}(X,Y)/(\sigma_X \sigma_Y)$ for each pair of parameters $X$, $Y$. Red (blue) tiles indicate Pearson coefficients close to $1$ ($-1$) corresponding to strong linear correlation (anti-correlation). $^\dagger$The units for $\eta/s$ slope are [GeV$^{-1}$].}
-    \label{fig:posterior_identified}
-\end{figure*}
 
-% Results
 \section{Results}
 
 Figure~\ref{fig:mode_observables} includes an additional centrality bin (70--80\%) that was used in parameter estimation.
 
+\fig*{mode_observables}{
+  Top row: model calculations of identified yields $dN/dy$, mean $p_T$, and flow cumulants $v_n\{2\}$ as a function of collision centrality using high-likelihood parameters (listed in table \ref{tab:likely_param}) determined from the posterior in Fig.~\ref{fig:posterior}.
+  Symbols with error bars show data from ALICE and lines show results of the model.
+  Bottom row: ratio of the model divided by experiment.
+  Gray band indicates 10\% discrepancy between the model and experiment.
+}
 
-\begin{figure*}
-    \includegraphics{mode_observables}
-    \caption{Top row: model calculations of identified yields $dN/dy$, mean $p_T$ and flow cumulants $v_n\{2\}$ as a function of collision centrality using high-likelihood parameters (listed in table \ref{table:likely_param}) determined from the posterior in Fig.~\ref{fig:posterior_identified}. Symbols with error bars show data from ALICE and lines show results of the model. Bottom row: ratio of the model divided by experiment. Gray band indicates 10\% discrepancy between the model and experiment.}
-    \label{fig:mode_observables}
-\end{figure*}
+\fig{nch_per_npart}{
+  Average charged particle density per participant pair $(d\nch/d\eta)/(\npart/2)$ as a function of participant number for Pb+Pb and p+Pb collisions at $\sqrts=5.02$ TeV.
+  Symbols are data from ALICE and lines are model calculations from \protect\trento\ using parameters selected by the Bayesian analysis.
+}
 
+\fig{posterior_p_arrows}{
+  Posterior on the generalized mean parameter $p$ which modulates the intensity of saturation effects in the initial conditions compared to the effective $p$-values needed to fit the KLN, EKRT, and wounded nucleon (WN) models.
+}
 
-\begin{figure}
-    \includegraphics{nch_per_npart}
-    \caption{Average charged particle density per participant pair $(d\nch/d\eta)/(\npart/2)$ as a function of participant number for Pb+Pb and p+Pb collisions at $\sqrts=5.02$ TeV.
-    Symbols are data from ALICE and lines are model calculations from \protect\trento\ using parameters selected by the Bayesian analysis.}
-\end{figure}
+\fig{viscosity_samples}{
+  Posterior constraints on the temperature dependent shear viscosity $(\eta/s)(T)$ (top panel) and temperature dependent bulk viscosity $(\zeta/s)(T)$ (bottom panel).
+  The gray shaded regions mark the allowable values of $\eta/s$ and $\zeta/s$ used in the design while blue lines represent sample curves drawn from the posterior distributions of $\eta/s$ min, $\eta/s$ slope and $\zeta/s$ norm in Fig.~\ref{fig:posterior}.
+  The unscaled bulk viscosity curve with unit norm (black line) used by the authors in \ref{?} is shown for reference.
+}
 
-\begin{figure}
-    \centering
-    \includegraphics{posterior_p_arrows}
-    \caption{Posterior on the generalized mean parameter $p$ which modulates the intensity of saturation effects in the initial conditions compared to the effective p-values needed to fit
-    the KLN, EKRT and wounded nucleon (WN) models.}
-    \label{posterior_p_arrows}
-\end{figure}
-
-
-\begin{figure}
-    \includegraphics{viscosity_samples}
-    \caption{Posterior constraints on the temperature dependent shear viscosity $(\eta/s)(T)$ (top panel) and temperature dependent bulk viscosity $(\zeta/s)(T)$ (bottom panel). The gray shaded regions mark the allowable values of $\eta/s$ and $\zeta/s$ used in the design while blue lines represent sample curves drawn from the posterior distributions of $\eta/s$ min, $\eta/s$ slope and $\zeta/s$ norm in Fig.~\ref{fig:posterior_identified}. unscaled bulk viscosity curve with unit norm (black line) used by the authors in \ref{?} is shown for reference.}
-\end{figure}
 
 \section{Summary and conclusions}
 
-We have determined initial condition and transport properties of the QGP medium produced in relativistic heavy-ion collisions using Bayesian methodology. The primary contribution of the present work is the application of the recently developed \trento\ model to parameterize entropy deposition in relativistic nuclear collisions and extract high likelihood parameters for the QGP initial conditions while asserting minimal theoretical assumptions. We show that the parameterized initial conditions are highly constrained by bulk observables and that the constraints are robust to the presence of correlated model uncertainties such as the temperature dependent shear and bulk viscosities. 
+We have determined initial condition and transport properties of the QGP medium produced in relativistic heavy-ion collisions using Bayesian methodology. The primary contribution of the present work is the application of the recently developed \trento\ model to parameterize entropy deposition in relativistic nuclear collisions and extract high likelihood parameters for the QGP initial conditions while asserting minimal theoretical assumptions. We show that the parameterized initial conditions are highly constrained by bulk observables and that the constraints are robust to the presence of correlated model uncertainties such as the temperature dependent shear and bulk viscosities.
 
-The study demonstrates that ab initio understanding of QGP initial conditions is not required to extract properties of the QGP medium and constrain 
+The study demonstrates that ab initio understanding of QGP initial conditions is not required to extract properties of the QGP medium and constrain
 
 The Bayesian analysis reveals a number of interesting features
 \begin{enumerate}
-    \item The QGP initial conditions are well described by entropy deposition proportional to the geometric mean of local participant nucleon density \eqref{means}. 
+    \item The QGP initial conditions are well described by entropy deposition proportional to the geometric mean of local participant nucleon density \eqref{eq:means}.
 
     \item We see very little sensitivity of the model to variations in the strength of proton-proton multiplicity fluctuations.
-     
+
     \item We find a preferred nucleon width $w\approx0.43$~fm that is in remarkable agreement with values extracted from experiment \ref{blah}.
 
     \item The data is unable to individually constrain $(\eta/s)_\text{min}$ and $(\eta/s)_\text{slope}$ at a single beam energy, but it does constrain a linear combination of the two.
 
     \item The simulation prefers a non-zero bulk viscosity which corroborates the findings in Ref.~\ref{}.
 
-    \item We find a tight constraint on the hydro-to-micro switching temperature ${T_\text{sw} \approx 149}$~MeV which vanishes if identified pion, kaon and proton yields are replaced with species-blind charged particle yield.
+    \item We find a tight constraint on the hydro-to-micro switching temperature ${T_\text{sw} \approx 149}$~MeV which vanishes if identified pion, kaon, and proton yields are replaced with species-blind charged particle yield.
 \end{enumerate}
 
-We've selected a set of high likelihood model parameters from the Bayesian analysis and used them to analyze the optimal performance of the model. The resulting discrepancy between model and experiment is less than $\pm10\%$ for mean $p_T$, flow cumulants, and charged particle yields while we observe significant $\sim\!10$--$30\%$ tension in the relative abundances of pions, kaons and protons when the model is tuned to fit identified yields.
-
-
-
+We've selected a set of high likelihood model parameters from the Bayesian analysis and used them to analyze the optimal performance of the model. The resulting discrepancy between model and experiment is less than $\pm10\%$ for mean $p_T$, flow cumulants, and charged particle yields while we observe significant $\sim\!10$--$30\%$ tension in the relative abundances of pions, kaons, and protons when the model is tuned to fit identified yields.
 
 \medskip
+
 All models use in this study are open source. The \trento\ model and free streaming package are available at \url{github.com/Duke-QCD/trento}, the iEBE-VISHNU hybrid model at \url{u.osu.edu/vishnu} and latest version of UrQMD can be downloaded from \url{urqmd.org}.
 
-\acknowledgements
+\begin{acknowledgments}
 The authors thank Ulrich Heinz, Scott Pratt, Harri Niemi and Bj\"orn Schenke for helpful discussions and clarifications in the production of the manuscript.
-\appendix
-
-%\begin{figure*}
-%    \includegraphics{posterior_integrated}
-%    \caption{Presentation is identical to Fig.~\ref{fig:posterior_identified}, but with charged particle yields replacing identified pion, kaon and proton yields in the calibration process. The resulting posterior distributions are generally less constrained, and several marginal distributions along the diagonal are affected noticeably (see Fig.~\ref{fig:posterior_comparison} for a direct comparison). For example, the initial condition normalization increases significantly (top-left panel) and the hydro-to-urqmd switching temperature is completely washed out (bottom-right panel). $^\dagger$The units for $\eta/s$ slope are [GeV$^{-1}$]. }
-%\end{figure*}
-
+\end{acknowledgments}
 
 \bibliography{trento2}
-
 
 \end{document}

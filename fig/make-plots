@@ -385,7 +385,7 @@ def validation():
         'data/bayesian/model/batch-observables-validation.hdf'
 
     observables = [
-        ('dN_dy/pion', r'$dN/dy_{\pi^\pm}$', (0, 3500)),
+        ('dN_dy/pion', r'$dN_{\pi^\pm}/dy$', (0, 3500)),
         ('mean_pT/pion', r'$\langle p_T \rangle_{\pi^\pm}$', (0.4, 0.75)),
         ('vn/2', r'$v_2\{2\}$', (0, 0.13)),
     ]

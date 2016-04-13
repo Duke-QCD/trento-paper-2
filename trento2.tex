@@ -6,6 +6,7 @@
 \usepackage{lipsum}
 \usepackage{amsmath}
 \usepackage{amssymb}
+\usepackage{multirow}
 \usepackage[inline]{enumitem}
 \usepackage[dvipsnames]{color}
 \graphicspath{{fig/}}
@@ -17,8 +18,27 @@
 \newcommand{\sqrts}{\sqrt{s_{NN}}}
 \newcommand{\T}{\tilde{T}}
 \newcommand{\Qs}[1]{Q_{s,\text{#1}}}
+\newcommand{\vnk}[2]{v_#1\{#2\}}
 \newcommand{\paddedhline}{\noalign{\smallskip}\hline\noalign{\smallskip}}
 \newcommand{\order}[1]{$\mathcal O(10^{#1})$}
+
+% Convenient figure macro.  Usage:
+%
+%   \fig[placement specifier = t]{filename}{caption}
+%
+% This creates a figure environment, includes the given filename as graphics,
+% puts the given caption below the graphics, and labels it 'fig:filename'.
+% The optional placement specifier defaults to 't' and is passed directly to
+% the figure environment.
+% Use \fig* to make a figure* environment, i.e. a wide figure.
+\usepackage{xparse}
+\NewDocumentCommand\fig{sO{t}mm}{
+  \begin{figure\IfBooleanT{#1}{*}}[#2]
+    \includegraphics{#3}
+    \caption{\label{fig:#3}#4}
+  \end{figure\IfBooleanT{#1}{*}}
+}
+
 
 \begin{document}
 
@@ -64,7 +84,7 @@ Model optimization and comparison is complicated by the high-dimensional nature 
 In addition to free parameters which describe the QGP transport coefficients, hydrodynamic simulations depend on a number of auxiliary parameters such as an effective nucleon width, QGP thermalization time and chemical freezeout temperature which require simultaneous optimization.
 Evaluating hydrodynamic models at a single point in parameter space may require tens of thousand of hydrodynamic simulations and thus brute force optimization techniques quickly become intractable. 
 
-One solution to the model optimization problem is the use of modern Bayesian methods designed to tune computationally intensive models which depend on free parameters that live in large and highly correlated parameter spaces \cite{OHagan:2006ba, Higdon:2008cmc, Higdon:2014tva}. 
+One solution to the model optimization problem is the use of modern Bayesian methods designed to tune computationally intensive models which depend on free parameters that live in large and highly correlated parameter spaces \cite{OHagan:2006ba, Higdon:2008cmc, Higdon:2014tva,Wesolowski:2015fqa}.
 A given model is first evaluated using a relatively small number of parameter configurations corresponding to discrete points in parameter space, and the model evaluations are used to train a Gaussian process emulator which interpolates model predictions between the training points \cite{Rasmussen:2006gp}.
 A standard Markov chain Monte Carlo algorithm is then be used to explore the parameter space interpolated by the emulator and isolate regions of parameter space which optimally replicate experiment. 
 
@@ -124,11 +144,12 @@ The QGP specific shear viscosity $\eta/s$ is qualitatively expected to reach a g
         (\eta/s)_\text{min} + (\eta/s)_\text{slope} (T - T_c) &T > T_c \\
         (\eta/s)_\text{hrg} &T \le T_c
     \end{cases}
+    \label{eq:etas}
 \end{equation}
 where we fix $T_c = 0.155$~GeV using the approximate pseudo-critical phase transition temperature of the HotQCD equation of state, and $(\eta/s)_\text{min}$, $(\eta/s)_\text{slope}$ and $(\eta/s)_\text{hrg}$ are constants which we wish to determine.
 For the temperature dependent bulk viscosity, we use the parameterization constructed in Ref.~\cite{Denicol:2009am, Ryu:2015vwa},
 \begin{equation}
-    \label{zetas}
+    \label{eq:zetas}
     (\zeta/s)(T) = 
     \begin{cases}
         \begin{aligned}
@@ -150,8 +171,8 @@ with dimensionless parameter $x = T/T_0$ and parameterization coefficients
     &\lambda_1=0.9, ~~\lambda_2=0.22, ~~\lambda_3=0.9, ~~\lambda_4=0.25, \\
     &T_0 = 0.18 \text{ GeV}, ~~T_a = 0.995\, T_0, ~~T_b = 1.05\, T_0.
 \end{align*}
-The $(\zeta/s)(T)$ curve in Eq.~\eqref{zetas} is then rescaled by an overall normalization factor $(\zeta/s)_\text{norm}$ which is a free parameter to be constrained by data.
-The normalization factor used in this work is thus equal to unity when the rescaled $(\zeta/s)(T)$ parameterization in Eq.~\eqref{zetas} equals the approximate best fit parameterization determined in Ref.~\cite{Ryu:2015vwa}.
+The $(\zeta/s)(T)$ curve in Eq.~\eqref{eq:zetas} is then rescaled by an overall normalization factor $(\zeta/s)_\text{norm}$ which is a free parameter to be constrained by data.
+The normalization factor used in this work is thus equal to unity when the rescaled $(\zeta/s)(T)$ parameterization in Eq.~\eqref{eq:zetas} equals the approximate best fit parameterization determined in Ref.~\cite{Ryu:2015vwa}.
 
 The hybrid model used in the present analysis switches from hydrodynamic field equations to a microscopic kinetic description of the medium once the fluid expands, cools and hadronizes. Kinetic descriptions are well suited to describe late stages of the collision where the inter-particle mean free path approaches the system size and approximate local thermal equilibirum breaks down.
 Kinetic models also naturally describe species dependent kinetic freezeout and hadronic feed down dynamics which are difficult to incorporate in purely hydrodynamic models.
@@ -170,7 +191,7 @@ The shear correction to the distribution function is given by,
     \delta f_\text{shear}(x^\mu, p^\mu) = f_0(x^\mu, p^\mu)(1 \pm f_0(x^\mu, p^\mu))\frac{\pi_{\mu\nu}p^\mu p^\nu}{2(e+P)T^2}
 \end{equation}
 where $f_0$ is the ideal distribution function, $\pi_{\mu\nu}$ the shear stress tensor, $p^\mu$ the particle momentum and $e$, $P$ and $T$ the fluid's energy density, pressure and temperature.
-The bulk viscous correction, on the other hand, is described by multiple formulations in the literature which predict significantly different behavior when either the bulk viscosity $\zeta$ or the transverse momentum $p_T$ are large \cite{Dusling:2011fd, Noronha-Hostler:2013gga}. The present study neglects bulk viscous corrections to the distribution function $\delta f_\text{bulk}$ at particlization, based on the expectation that the corrections are small for the specific $(\zeta/s)(T)$ curve Eq.~\eqref{zetas} used in this analysis. The approximation, admittedly, is not great and leads to, e.g.\ order 10\% errors in the magnitude of mean $p_T$ at particlization. We thus refrain from making any quantitative statements regarding the magnitude of bulk viscosity preferred by the analysis and emphasize that a more realistic $(\zeta/s)(T)$ curve and careful treatment of $\delta f_\text{bulk}$ are necessary to constrain the QGP bulk viscosity with precision. 
+The bulk viscous correction, on the other hand, is described by multiple formulations in the literature which predict significantly different behavior when either the bulk viscosity $\zeta$ or the transverse momentum $p_T$ are large \cite{Dusling:2011fd, Noronha-Hostler:2013gga}. The present study neglects bulk viscous corrections to the distribution function $\delta f_\text{bulk}$ at particlization, based on the expectation that the corrections are small for the specific $(\zeta/s)(T)$ curve Eq.~\eqref{eq:zetas} used in this analysis. The approximation, admittedly, is not great and leads to, e.g.\ order 10\% errors in the magnitude of mean $p_T$ at particlization. We thus refrain from making any quantitative statements regarding the magnitude of bulk viscosity preferred by the analysis and emphasize that a more realistic $(\zeta/s)(T)$ curve and careful treatment of $\delta f_\text{bulk}$ are necessary to constrain the QGP bulk viscosity with precision.
 
 Once the fluid is converted into hadrons, the subsequent microscopic dynamics are modeled using the UrQMD hadronic afterburner \cite{Bass:1998ca, Bleicher:1999xi}.
 The UrQMD model propagates all produced hadrons along classical trajectories, samples their stochastic binary collisions and simulates their resonance decays until the system becomes too dilute to continue interacting.
@@ -227,7 +248,7 @@ at the desired beam energy. The collision cross sections thus enter through the 
 
 At this point it becomes necessary to specify the function $f$ in Eq~\eqref{mapping} which maps participant matter to local entropy deposition. In general, the function $f(\T_A, \T_B)$ is assumed to be symmetric, monotonically increasing and smooth. In this work we employ a parameterization for $f$ motivated in Ref.~\cite{Moreland:2014oya} based on a functional form known as the generalized mean,
 \begin{align}
-    \label{entropy_propto}
+    \label{eq:genmean}
     s \propto \left( \frac{\T_A^p + \T_B^p}{2} \right)^{1/p}.
 \end{align}
 The parameterization introduces two free parameters, a normalization prefactor and a continuous entropy deposition parameter $p\in(-\infty, \infty)$ which interpolates between different types of entropy deposition schemes. For ${p=(1, 0, -1)}$, the generalized mean reduces to the well known arithmetic, geometric and harmonic means, and for $p\rightarrow \pm\infty$ it asymptotes to minimum and maximum functions,
@@ -319,93 +340,30 @@ With the full evolution model in hand, a number of important model parameters---
 These parameters typically correlate among each other and affect multiple observables, hence, if we wish to describe a wide variety of experimental observables, the only option is a simultaneous fit of all parameters.
 But, it is not feasible to do this directly, since simulating observables at even a single set of parameter values requires thousands of individual events and significant computation time.
 
-To overcome this limitation, we employ a Bayesian method for parameter estimation with computationally expensive models \cite{OHagan:2006ba,Higdon:2008cmc,Higdon:2014tva}.
+To overcome this limitation, we employ a Bayesian method for parameter estimation with computationally expensive models \cite{OHagan:2006ba,Higdon:2008cmc,Higdon:2014tva,Wesolowski:2015fqa}.
 Briefly, the model is evaluated at a relatively small \order 2 number of parameter points, the output is interpolated by a Gaussian process emulator, and the emulator is used to systematically explore parameter space with Markov chain Monte Carlo.
 This section summarizes the methodology; see Ref.~\cite{Bernhard:2015hxa} for a complete treatment.
-
-\subsection{Intro to Gaussian process emulators}
-
-\newcommand{\x}{\mathbf x}
-\newcommand{\y}{\mathbf y}
-\newcommand{\N}{\mathcal N}
-\newcommand{\muvec}{\boldsymbol\mu}
-
-Central to the method is a statistical surrogate model that interpolates parameter space and provides fast predictions of model output at arbitrary inputs.
-We use a Gaussian process emulator \cite{Rasmussen:2006gp} as a flexible, non-parametric interpolator.
-Essentially, this amounts to assuming that the model follows a multivariate normal distribution with mean and covariance functions determined by conditioning on actual model calculations.
-
-Suppose a generic model takes a vector of $n$ input parameters $\x$ and produces a single output $y$.
-If the model is evaluated at a set of $m$ points $X = \{\x_1, \ldots, \x_m\}$, it analogously produces $m$ outputs $\y = \{y_1, \ldots, y_m\}$.
-Those outputs may be assumed to have a multivariate normal distribution
-\begin{equation}
-  \y \sim \N(\muvec, \Sigma),
-\end{equation}
-where
-\begin{equation}
-  \muvec = \mu(X) = \{\mu(\x_1), \mu(\x_2), \ldots, \mu(\x_m)\} \\
-\end{equation}
-is the $m$-dimensional mean vector from applying the mean function $\mu$ to each input, and
-\begin{equation}
-  \Sigma = \sigma(X, X) =
-  \begin{pmatrix}
-    \sigma(\x_1, \x_1) & \cdots & \sigma(\x_1, \x_m) \\
-    \vdots & \ddots & \vdots \\
-    \sigma(\x_m, \x_1) & \cdots & \sigma(\x_m, \x_m) \\
-  \end{pmatrix}
-\end{equation}
-is the $m \times m$ covariance matrix from applying the covariance function $\sigma$ to each pair of inputs.
-
-Now, given the training data $(X, \y)$, the predictive distribution for the model outputs $\y_*$ at another set of input points $X_*$ is
-\begin{equation}
-  \begin{aligned}
-    \y_* &\sim \N(\muvec, \Sigma), \\
-    \muvec &= \sigma(X_*, X)\sigma(X, X)^{-1}\y, \\
-    \Sigma &= \sigma(X_*,X_*) - \sigma(X_*,X)\sigma(X,X)^{-1}\sigma(X,X_*).
-  \end{aligned}
-\end{equation}
-Thus, by assuming only that the model follows a certain covariance function $\sigma$, we obtain both the mean predicted output and corresponding uncertainty at any desired point.
-Generally, the uncertainty is small near explicitly calculated points and wide in gaps, reflecting the true state of knowledge of the interpolation.
-
-The covariance function $\sigma$ quantifies the correlation between pairs of input points.
-We use a typical Gaussian function
-\begin{equation}
-  \sigma(\x, \x') = \sigma_\text{GP}^2 \exp\Biggl[ -\sum_{k=1}^n \frac{(x_k - x'_k)^2}{2\ell_k^2} \Biggr] + \sigma_n^2\delta_{\x\x'},
-\end{equation}
-which yields smoothly-varying processes with continuous derivatives, making it a common choice for well-behaved models.
-This form has several \emph{hyperparameters} to be estimated from the training data:
-the overall variance of the Gaussian process $\sigma_\text{GP}^2$,
-the correlation lengths for each input parameter $\ell_k$,
-and the noise variance $\sigma_n^2$ which allows for statistical error.
-
-While Gaussian processes are fundamentally scalar functions, computer models may produce multiple outputs---the present QGP evolution model certainly does.
-This is readily solved by transforming the output data into orthogonal and uncorrelated linear combinations called principal components, then emulating each component with an individual Gaussian process.
-
-\newcommand{\tran}{^\intercal}
-
-Suppose a model has $p$-dimensional output, that is, given an $m \times n$ input matrix $X$, it produces $m \times p$ output $Y$.
-The principal components are then computed by the linear transformation
-\begin{equation}
-  Z = \sqrt m \, Y U
-\end{equation}
-where $U$ are the eigenvectors of the sample covariance matrix $Y\tran Y$.
-The Gaussian processes predict principal components $Z_*$ at input points $X_*$ which are then transformed back to physical space as
-\begin{equation}
-  Y_* = \frac{1}{\sqrt m} Z_* U\tran.
-\end{equation}
-
-Often, the $p$ model outputs are strongly correlated and so a much smaller number of principal components $q~\ll~p$ account for nearly all of the model's variance.
-Thus one can consider only $q$ components, thereby reducing a high-dimensional output space to a few one-dimensional problems with negligible error.
 
 
 \subsection{Model parameters and observables}
 
-Latin hypercube, postprocessing, validation
-
-
-\subsection{Calibration with MCMC}
-
-Bayes' theorem, ensemble sampling, uncertainty
-
+We choose a set of nine model parameters for estimation.
+Four control the parametric initial state:
+\begin{enumerate}
+  \item the overall normalization factor,
+  \item entropy deposition parameter $p$ from the generalized mean ansatz Eq.~\eqref{eq:genmean},
+  \item multiplicity fluctuation gamma shape parameter $k$, and
+  \item Gaussian nucleon width $w$, which determines initial-state granularity;
+\end{enumerate}
+the remaining five are related to the QGP medium:
+\begin{enumerate}
+  \item[5--7.] the three parameters ($\eta/s$ hrg, min, and slope) in Eq.~\eqref{eq:etas} that set the temperature dependence of shear viscosity,
+  \setcounter{enumi}{7}
+  \item normalization prefactor for the temperature dependence of bulk viscosity Eq.~\eqref{eq:zetas}, and
+  \item hydro-to-UrQMD switching temperature $T_\text{switch}$.
+\end{enumerate}
+This parameter set will enable simultaneous characterization of the initial state and medium, including any correlations.
+Table~\ref{tab:design} summarizes the parameters and their corresponding ranges, which are intentionally wide to ensure that the optimal values are bracketed.
 
 \begin{table}
   \caption{
@@ -429,10 +387,180 @@ Bayes' theorem, ensemble sampling, uncertainty
   \end{ruledtabular}
 \end{table}
 
+\begin{table*}
+  \caption{
+    \label{tab:observables}
+    Experimental data to be compared with model calculations.
+  }
+  \begin{ruledtabular}
+  \begin{tabular}{lcccc}
+    Observable & Particle species & Kinematic cuts & Centrality classes & Ref. \\
+    \paddedhline
+    Yields $dN/dy$                       & $\pi^\pm$, $K^\pm$, $p\bar p$ &
+    $|y| < 0.5$ & 0--5, 5--10, 10--20, \ldots, 60--70 & \cite{Abelev:2013vea} \\
+    \noalign{\smallskip}
+    Mean transverse momentum $\avg{p_T}$ & $\pi^\pm$, $K^\pm$, $p\bar p$ &
+    $|y| < 0.5$ & 0--5, 5--10, 10--20, \ldots, 60--70 & \cite{Abelev:2013vea} \\
+    \noalign{\smallskip}
+    Two-particle flow cumulants $\vnk n 2$ & \multirow{2}{*}{all charged} &
+    $|\eta| < 1$ & 0--5, 5--10, 10--20, \ldots, 40--50 &
+    \multirow{2}{*}{\cite{ALICE:2011ab}} \\
+    $n = 2$, 3, 4 & & $0.2 < p_T < 5.0$ GeV & $n = 2$ only: 50--60, 60--70 & \\
+  \end{tabular}
+  \end{ruledtabular}
+\end{table*}
+
+Having designated the model parameters and ranges, we generated a 300 point maximin Latin hypercube design \cite{Morris:1995lh} in the nine-dimensional space and executed \order 4 minimum-bias Pb+Pb events at each of the 300 points.
+Each event consists of a single initial condition and hydro simulation followed by multiple samples of the freeze-out hypersurface.
+The number of samples is roughly inversely proportional to the event's particle multiplicity so that total particle production is constant across all events---typically ${\sim}$5 samples for central events and up to 100 for peripheral events.
+This strategy leads to consistent statistical uncertainties across all parameter points and centrality classes.
+
+Parameter estimation relies on observables that are sensitive to varying the model inputs.
+For example, bulk viscosity suppresses radial expansion, so a meaningful estimate of the $(\zeta/s)(T)$ normalization parameter requires some measure of radial flow such as the mean transverse momentum.
+Indeed, previous work has shown that finite bulk viscosity is necessary to simultaneously fit both mean transverse momentum and anisotropic flow \cite{Ryu:2015vwa}.
+
+For the present study we compare to the centrality dependence of identified particle yields $dN/dy$ and mean transverse momenta $\avg{p_T}$ for charged pions, kaons, and protons as well as two-particle anisotropic flow coefficients $\vnk n 2$ for $n = 2$, 3, 4.
+Table~\ref{tab:observables} summarizes the observables including kinematic cuts, centrality classes, and experimental data, which are all from the ALICE experiment, Pb+Pb collisions at 2.76 TeV \cite{Abelev:2013vea,ALICE:2011ab}.
+
+When computing simulated observables, we strive to replicate experimental methods as closely as possible.
+We selected the same centrality classes as the corresponding experimental data by sorting each design point's minimum-bias events by charged-particle multiplicity $d\nch/d\eta$ at mid-rapidity ($|\eta| < 0.5$) and dividing the events into the desired percentile bins.
+We computed identified $dN/dy$ and $\avg{p_T}$ by simple counting and averaging of the desired species at mid-rapidity ($|y| < 0.5$); no additional steps are necessary since the experimental data are corrected and extrapolated to zero $p_T$ \cite{Abelev:2013vea}.
+Finally, we calculated flow coefficients for charged particles within the kinematic range of the ALICE detector using the direct $Q$-cumulant method \cite{Bilandzic:2010jr}.
+
+
+\subsection{Gaussian process emulators}
+
+\newcommand{\x}{\mathbf x}
+\newcommand{\y}{\mathbf y}
+\newcommand{\N}{\mathcal N}
+\newcommand{\muvec}{\boldsymbol\mu}
+\newcommand{\tran}{^\intercal}
+
+Central to the parameter estimation method is a statistical surrogate model that interpolates the model input parameter space and provides fast predictions of the output observables at arbitrary inputs.
+We use Gaussian process emulators \cite{Rasmussen:2006gp} as flexible, non-parametric interpolators.
+Essentially, this amounts to assuming that the model follows a multivariate normal distribution with mean and covariance functions determined by conditioning on actual model calculations.
+
+The full evolution model takes vectors $\x$ of $n = 9$ inputs and produces a number of outputs (each centrality bin of each observable is an output).
+For the moment consider only a single output, e.g.\ pion $dN/dy$ in \mbox{20--30\%} centrality (the specific observable does not matter), and call it $y$.
+We have already evaluated the model at $m = 300$ design points, i.e.\ an $m \times n$ design matrix $X = \{\x_1, \ldots, \x_m\}$, and obtained the corresponding $m$ outputs $\y = \{y_1, \ldots, y_m\}$.
+Now, we assume that the model is a Gaussian process with some covariance function $\sigma$ and condition it on the training data $(X, \y)$, yielding predictions for the outputs $\y_*$ at some other points $X_*$ within the design range.
+The predictive distribution for $\y_*$ is the multivariate normal distribution
+\begin{equation}
+  \begin{aligned}
+    \y_* &\sim \N(\muvec, \Sigma), \\
+    \muvec &= \sigma(X_*, X)\sigma(X, X)^{-1}\y, \\
+    \Sigma &= \sigma(X_*,X_*) - \sigma(X_*,X)\sigma(X,X)^{-1}\sigma(X,X_*),
+  \end{aligned}
+\end{equation}
+where $\muvec$ is the mean vector and $\Sigma$ the covariance matrix, and the notation $\sigma(\cdot, \cdot)$ indicates a matrix from applying the covariance function to each pair of inputs, e.g.
+\begin{equation}
+  \sigma(X, X) =
+  \begin{pmatrix}
+    \sigma(\x_1, \x_1) & \cdots & \sigma(\x_1, \x_m) \\
+    \vdots & \ddots & \vdots \\
+    \sigma(\x_m, \x_1) & \cdots & \sigma(\x_m, \x_m) \\
+  \end{pmatrix}.
+\end{equation}
+Thus, we obtain both the mean predicted output and corresponding uncertainty at any desired input point.
+Generally, the uncertainty is small near explicitly calculated points and wide in gaps, reflecting the true state of knowledge of the interpolation.
+
+The covariance function $\sigma$ quantifies the correlation between pairs of input points.
+We use a typical Gaussian function
+\begin{equation}
+  \sigma(\x, \x') = \sigma_\text{GP}^2 \exp\Biggl[ -\sum_{k=1}^n \frac{(x_k - x'_k)^2}{2\ell_k^2} \Biggr] + \sigma_n^2\delta_{\x\x'},
+\end{equation}
+which yields smoothly-varying processes with continuous derivatives, making it a common choice for well-behaved models.
+This form has several \emph{hyperparameters} to be estimated from the training data:
+the overall variance of the Gaussian process $\sigma_\text{GP}^2$,
+the correlation lengths for each input parameter $\ell_k$,
+and the noise variance $\sigma_n^2$ which allows for statistical error.
+These hyperparameters may be estimated from the training data by numerically maximizing the likelihood function
+\begin{equation}
+  \log P = -\frac{1}{2} \y\tran \Sigma^{-1} \y - \frac{1}{2} \log |\Sigma| - \frac{m}{2} \log 2\pi,
+\end{equation}
+with $\Sigma = \sigma(X, X)$, i.e.\ the covariance function applied to the inputs.
+This form consists of a least-squares fit to the data (first term), a complexity penalty to prevent overfitting (second term), and a normalization constant (third term).
+
+To this point we have considered only a single output.
+Gaussian processes are fundamentally scalar functions, but the model produces many outputs, all of which must be emulated.
+This is readily solved by transforming the output data into orthogonal and uncorrelated linear combinations called principal components, then emulating each component with an individual Gaussian process.
+
+Let $p$ be the number of model outputs, that is, given an $m \times n$ design matrix $X$, the model produces an $m \times p$ output matrix $Y$.
+The principal components $Z$ are then computed by the linear transformation
+\begin{equation}
+  Z = \sqrt m \, Y U
+\end{equation}
+where $U$ are the eigenvectors of the sample covariance matrix $Y\tran Y$.
+The Gaussian processes predict principal components $Z_*$ at input points $X_*$ which are then transformed back to physical space as
+\begin{equation}
+  Y_* = \frac{1}{\sqrt m} Z_* U\tran.
+\end{equation}
+
+Often, the $p$ model outputs are strongly correlated and so a much smaller number of principal components $q~\ll~p$ account for most of the model's variance.
+Thus one can use only $q$ components, reducing a high-dimensional output space to a few one-dimensional problems with negligible loss of information.
+We use $q = 8$ principal components, retaining over 99.5\% of the variance from the original $p = 68$ outputs.
+
+To validate the performance of the emulators, we generated an independent 50 point Latin hypercube design from the original design space, evaluated the full model at each validation point, and compared the explicit model calculations to emulator predictions.
+Figure~\ref{fig:validation} confirms that the emulators faithfully predict true model calculations.
+The predictions need not agree perfectly at every point; ideally the residuals would be normally distributed with mean zero and variance predicted by the Gaussian processes.
+
+\fig*{validation}{
+  Validation of Gaussian process emulator predictions.
+  Each panel shows predictions compared to explicit model calculations at the 50 validation design points.
+  The horizontal location and error bar of each point indicates the predicted value and uncertainty,
+  vertical indicates the explicitly calculated value and statistical uncertainty,
+  and the diagonal gray line represents perfect agreement.
+  Left: charged pion yields $dN_{\pi^\pm}/dy$,
+  middle: mean pion transverse momenta $\avg{p_T}_{\pi^\pm}$,
+  right: flow cumulant $\vnk 2 2$;
+  each in centrality bins 0--5\% (blue) and 30--40\% (orange).
+}
+
+
+\subsection{Bayesian calibration}
+
+\newcommand{\z}{\mathbf z}
+\newcommand{\st}{_\star}
+\newcommand{\ex}{_\text{exp}}
+
+The final step in the parameter estimation method is to calibrate the model parameters to optimally reproduce experimental observables, thereby extracting probability distributions for the true values of the parameters.
+According to Bayes' theorem, the probability for the true parameters $\x\st$is
+\begin{equation}
+  P(\x\st|X,Y,\y\ex) \propto P(X,Y,\y\ex|\x\st) P(\x\st).
+  \label{eq:bayes}
+\end{equation}
+The left-hand side is the \emph{posterior}: the probability of $\x\st$ given the design $X$, computed observables $Y$, and experimental data $\y\ex$.
+On the right-hand side, $P(\x\st)$ is the \emph{prior} probability---encapsulating initial knowledge of $\x\st$---and $P(X,Y,\y\ex|\x\st)$ is the likelihood: the probability of observing $(X, Y, \y\ex)$ given a proposal $\x\st$.
+
+The likelihood may be quickly computed using the principal component Gaussian process emulators constructed in the previous subsection:
+\begin{align}
+  P &= P(X,Y,\y\ex|\x\st) \nonumber \\
+    &= P(X,Z,\z\ex|\x\st) \nonumber \\
+    &\propto\exp\biggl\{
+      -\frac{1}{2} (\z\st - \z\ex)\tran \Sigma_z^{-1} (\z\st - \z\ex)
+    \biggr\},
+  \label{eq:likelihood}
+\end{align}
+where $\z\st = \z\st(\x\st)$ are the principal components predicted by the emulators, $\z\ex$ is the principal component transform of the experimental data $\y\ex$, and $\Sigma_z$ is the covariance (uncertainty) matrix.
+As in previous work \cite{Novak:2013bqa,Bernhard:2015hxa}, we assume a simple fractional uncertainty on the principal components, so that the covariance matrix is
+\begin{equation}
+  \Sigma_z = \text{diag}(\sigma^2_z\,\z\ex),
+\end{equation}
+with $\sigma_z = 0.10$ in the present study.
+
+We place a uniform prior on the model parameters, i.e.\ the prior is constant within the design range and zero outside.
+Combined with the likelihood \eqref{eq:likelihood} and Bayes' theorem \eqref{eq:bayes}, we can easily evaluate the posterior probability at any point in parameter space.
+
+The canonical method for constructing the posterior distribution is Markov chain Monte Carlo (MCMC).
+MCMC algorithms generate random walks through parameter space by accepting or rejecting proposal points based on the posterior probability; after many steps the chain converges to the desired posterior.
+
+We use the affine-invariant ensemble sampler \cite{Goodman:2010en,FM:2013mc}, an efficient MCMC algorithm that uses a large ensemble of interdependent walkers.
+We first run \order 6 steps to allow the chain to equilibrate, discard these ``burn-in'' samples, then generate \order 7 posterior samples.
+
 
 \begin{table}[h]
     \caption{High likelihood parameters selected from the posterior distribution in Fig.~\ref{fig:posterior_identified} used to generate Fig.~\ref{fig:mode_observables}}
-    \begin{ruledtabular}    
+    \begin{ruledtabular}
         \begin{tabular}{llll}
             \multicolumn{2}{c}{Initial condition} & \multicolumn{2}{c}{QGP medium} \\
             \noalign{\smallskip}\hline\noalign{\smallskip}
@@ -444,11 +572,6 @@ Bayes' theorem, ensemble sampling, uncertainty
     \end{ruledtabular}
     \label{table:likely_param}
 \end{table}
-
-\begin{figure*}
-    \includegraphics{validation}
-    \caption{Emulator validation for pion yield $dN/dy_{\pi^\pm}$ (left), average transverse momentum ${\langle p_T \rangle}_{\pi^\pm}$ (middle) and flow cumulant $v_2\{2\}$ (right) for centralities 0--5\% (blue) and 30--40\% (orange). The horizontal axis shows predictions by the emulator at untested regions of parameter space, and the vertical axis shows the same quantity after it has been calculated directly from the model. The gray line indicates perfect model and emulator agreement.} 
-\end{figure*}
 
 %\begin{figure*}
 %    \includegraphics{posterior_compare}
@@ -468,6 +591,8 @@ Bayes' theorem, ensemble sampling, uncertainty
 
 % Results
 \section{Results}
+
+Figure~\ref{fig:mode_observables} includes an additional centrality bin (70--80\%) that was used in parameter estimation.
 
 
 \begin{figure*}

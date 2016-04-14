@@ -16,6 +16,7 @@ import colorsys
 import h5py
 import functools
 import glob
+import husl
 
 
 aspect = 1/1.618
@@ -508,101 +509,107 @@ def observables_plot():
 
 
 @plot
-def posterior(**kwargs):
-    design = 'data/bayesian/model/design.hdf'
-    calibration_identified = 'data/bayesian/calibration/results_err10.hdf'
-    calibration_integrated = 'data/bayesian/calibration/results_err10_dNch_deta_only.hdf'
-
-    with h5py.File(design, 'r') as f:
+def posterior():
+    with h5py.File('data/bayesian/model/design.hdf', 'r') as f:
         labels = list(f['labels'])
         etas_hrg_index = 4
-        etas_slope_index = 5
         indices = np.arange(len(labels)) != etas_hrg_index
         del labels[etas_hrg_index]
-        labels[etas_slope_index] += '$^\dagger$'
+        labels[5] += '$^\dagger$'
         ranges = np.array(f['range'])[indices]
+        # reset upper limit for norm
+        ranges[0, 1] = 160
 
-    with h5py.File(calibration_identified, 'r') as f:
-        chain = np.array(f['chain']).T[indices]
-        #chain = f['chain'][:1000000].T[indices]
-    
-    with h5py.File(calibration_integrated, 'r') as f:
-        chain_int = np.array(f['chain']).T[indices]
-        #chain_int = f['chain'][:1000000].T[indices]
+    def load_chains():
+        for arg in ['', '_dNch_deta_only']:
+            with h5py.File('data/bayesian/calibration/results_err10{}.hdf'
+                           .format(arg), 'r') as f:
+                yield np.array(f['chain']).T[indices]
 
-    nxy = chain.shape[0]
+    chains = list(load_chains())
+
+    nxy = chains[0].shape[0]
     assert nxy == len(labels)
 
-    cmap1 = plt.cm.Blues
-#    cmap2_list = [desaturate(c, .8) for c in plt.cm.Reds(np.linspace(0, 1, 9))]
-#    print(cmap2_list[0])
-    cmap2 = colors.ListedColormap([(1, 1, 1)] + [desaturate(c, .8) for c in plt.cm.Reds(np.linspace(0, 1,9))], name='my_cmap')
+    def recolor(rgb):
+        h, s, l = husl.rgb_to_husl(*rgb)
+        return husl.husl_to_rgb(h, .75*s, min(1.02*l, 100))
 
+    cmaps = [
+        plt.cm.Blues,
+        LinearSegmentedColormap.from_list(
+            'Reds_mod',
+            [recolor(rgba[:3]) for rgba in plt.cm.Reds(np.linspace(0, 1, 9))]
+        ),
+    ]
+
+    assert len(cmaps) == len(chains)
+
+    Tswitch_index = 7
 
     fig, axes = plt.subplots(
         nrows=nxy, ncols=nxy,
         sharex='col', sharey='row',
         figsize=(textwidth, textwidth)
     )
-    
+
     for n, (ax, lim) in enumerate(zip(axes.diagonal(), ranges)):
-        (counts1, edges), (counts2, edges) = [np.histogram(c[n], bins=100, range=lim, density=True) for c in [chain, chain_int]]
+        counts, edges = zip(*[
+            np.histogram(c[n], bins=100, range=lim, density=True)
+            for c in chains
+        ])
 
-        # override range for norm
-        if n == 0:
-            lim = 100, 150
-
+        assert np.allclose(edges[0], edges[1])
+        edges = edges[0]
         x = (edges[1:] + edges[:-1]) / 2
-        y1 = .84 * (lim[1] - lim[0]) * counts1 / max(counts1.max(), counts2.max()) + lim[0]
-        ax.plot(x, y1, lw=0.8, color=cmap1(.8))
-        ax.fill_between(x, lim[0], y1, color=cmap1(.5, alpha=0.2), zorder=-10)
-        
-        y2 = .84 * (lim[1] - lim[0]) * counts2 / max(counts1.max(), counts2.max()) + lim[0]
-        ax.plot(x, y2, lw=0.8, color=cmap2(.8))
-        ax.fill_between(x, lim[0], y2, color=cmap2(.5, alpha=.2), zorder=-10)
 
-        ticks = [0.14, 0.15, 0.16] \
-            if n == 7 else [lim[0], (lim[0] + lim[1])/2, lim[1]]
+        cmax = max(c.max() for c in counts)
+
+        for c, cmap in zip(counts, cmaps):
+            y = .84 * (lim[1] - lim[0]) * c / cmax + lim[0]
+            ax.plot(x, y, lw=0.8, color=cmap(.8))
+            ax.fill_between(
+                x, lim[0], y, color=cmap(.5, alpha=0.2), zorder=-10
+            )
+
+        ticks = (
+            [0.14, 0.15, 0.16]
+            if n == Tswitch_index else
+            [lim[0], (lim[0] + lim[1])/2, lim[1]]
+        )
+
+        def fmt_tick(n):
+            s = str(float(n))
+            if abs(n) > 10 and s.endswith('.0'):
+                return s[:-2]
+            return s
 
         for xy in ['x', 'y']:
             getattr(ax, 'set_{}lim'.format(xy))(lim)
             getattr(ax, 'set_{}ticks'.format(xy))(ticks)
-            getattr(ax, 'set_{}ticklabels'.format(xy))([fmt_tick(i)
-                                                        for i in ticks])
+            getattr(ax, 'set_{}ticklabels'.format(xy))(
+                [fmt_tick(i) for i in ticks]
+            )
 
-    for ny, nx in zip(*np.tril_indices_from(axes, k=-1)):
-        x = chain[nx]
-        y = chain[ny]
-        hist = functools.partial(
-            np.histogram2d, x, y, range=(ranges[nx], ranges[ny])
-        )
-
-        ax = axes[ny][nx]
-        H, xedges, yedges = hist(bins=100)
-        H[H == 0] = None
-        ax.pcolorfast(xedges, yedges, H.T, cmap=cmap1)
-
-        x = chain_int[nx]
-        y = chain_int[ny]
-        hist = functools.partial(
-            np.histogram2d, x, y, range=(ranges[nx], ranges[ny])
-        )
-
-        ax = axes[nx][ny]
-        H, xedges, yedges = hist(bins=100)
-        H[H == 0] = None
-        ax.pcolorfast(yedges, xedges, H, cmap=cmap2)
+    for nyx in zip(*np.tril_indices_from(axes, k=-1)):
+        for c, cmap, (ny, nx) in zip(chains, cmaps, [nyx, reversed(nyx)]):
+            H, xedges, yedges = np.histogram2d(
+                c[nx], c[ny], bins=100, range=(ranges[nx], ranges[ny])
+            )
+            H[H == 0] = None
+            axes[ny][nx].pcolorfast(xedges, yedges, H.T, cmap=cmap)
 
     for n, label in enumerate(labels):
         axes[-1][n].set_xlabel(label)
         axes[n][0].set_ylabel(label)
 
-        axes[0][n].annotate(label, xy=(0.5, 1.01), xycoords='axes fraction',
+        # top and right axes labels
+        axes[0][n].annotate(label, xy=(0.5, 1.02), xycoords='axes fraction',
                             va='bottom', ha='center')
-        axes[n][-1].annotate(label, xy=(1.01, 0.5), xycoords='axes fraction',
+        axes[n][-1].annotate(label, xy=(1.04, 0.5), xycoords='axes fraction',
                              va='center', ha='left', rotation=-90)
 
-        if n != 7:
+        if n != Tswitch_index:
             for t, justify in zip(axes[-1][n].xaxis.get_major_ticks(),
                                   ['left', 'center', 'right']):
                 t.label1.set_horizontalalignment(justify)
@@ -610,7 +617,7 @@ def posterior(**kwargs):
                                   ['bottom', 'center', 'top']):
                 t.label1.set_verticalalignment(justify)
 
-    finish(h_pad=0.3, w_pad=0.3, rect=[0, 0.0, 0.98, 0.98])
+    finish(pad=0, h_pad=.3, w_pad=.3, rect=[0., 0., .97, .97])
 
 
 @plot

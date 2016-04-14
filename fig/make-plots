@@ -1,22 +1,18 @@
 #!/usr/bin/env python3
 
 import argparse
+import colorsys
+import glob
 
 import numpy as np
-from scipy.optimize import curve_fit
-from scipy import optimize
-import matplotlib.pyplot as plt
-import matplotlib.cm as cm
-import matplotlib.ticker as tick
-import matplotlib.colors as colors
-from matplotlib import patches
-from matplotlib.colors import LinearSegmentedColormap
-from matplotlib import lines
-import colorsys
 import h5py
-import functools
-import glob
 import husl
+import matplotlib.pyplot as plt
+from matplotlib import lines
+from matplotlib import patches
+from matplotlib import ticker
+from matplotlib.colors import LinearSegmentedColormap
+from scipy import optimize
 
 
 aspect = 1/1.618
@@ -112,17 +108,10 @@ def set_loc(ax, xy=None, nbins=5, steps=[1, 2, 3, 4, 10],
 
     for axis in axes:
         axis.set_major_locator(
-            tick.MaxNLocator(nbins=nbins, steps=steps, prune=prune)
+            ticker.MaxNLocator(nbins=nbins, steps=steps, prune=prune)
         )
         if minor:
-            axis.set_minor_locator(tick.AutoMinorLocator(minor))
-
-
-def fmt_tick(n):
-    s = str(float(n))
-    if abs(n) > 10 and s.endswith('.0'):
-        return s[:-2]
-    return s
+            axis.set_minor_locator(ticker.AutoMinorLocator(minor))
 
 
 def desaturate(color, fraction=0.5):
@@ -131,7 +120,7 @@ def desaturate(color, fraction=0.5):
 
 
 def truncate_colormap(cmap, minval=0.0, maxval=1.0, n=100):
-    new_cmap = colors.LinearSegmentedColormap.from_list(
+    new_cmap = LinearSegmentedColormap.from_list(
         'trunc({n},{a:.2f},{b:.2f})'.format(n=cmap.name, a=minval, b=maxval),
         cmap(np.linspace(minval, maxval, n)))
     return new_cmap
@@ -189,7 +178,9 @@ def pfit(model):
     T = np.linspace(0, 4, 100)
     TA, TB = np.meshgrid(T, T)
 
-    popt, pcov = curve_fit(func, np.meshgrid(T, T), np.ravel(model(TA, TB)))
+    popt, pcov = optimize.curve_fit(
+        func, np.meshgrid(T, T), np.ravel(model(TA, TB))
+    )
     p, norm = popt
 
     return [round(p, 2), round(norm, 5)]
@@ -425,7 +416,7 @@ def validation():
 
 
 @plot
-def observables_plot():
+def observables_samples():
     id_parts = [
         ('pion',   r'$\pi^{\!\pm}$', 'Blues'),
         ('kaon',   r'$K^{\!\pm}$', 'Greens'),
@@ -873,7 +864,7 @@ def trento_events():
     lim = (-8, 8)
     ticks = np.linspace(-5, 5, 3)
 
-    cdict = cm.get_cmap('Blues')._segmentdata
+    cdict = plt.cm.Blues._segmentdata.copy()
     cdict['red'][0] = (0, 1, 1)
     cdict['blue'][0] = (0, 1, 1)
     cdict['green'][0] = (0, 1, 1)
@@ -938,84 +929,6 @@ def ipglasma():
     labels = labels[0], 'p=0, k=1.4, w=0.43 fm', labels[1], 'w=0.43 fm'
     plt.legend(handles, labels, bbox_to_anchor=(0, 1.05), loc=2, handlelength=1.5)
     finish()
-
-@plot
-def ipglasma2():
-    fig, (ax1, ax2) = \
-        plt.subplots(2, 1, figsize=(columnwidth, 1.8*aspect*columnwidth),
-                     sharex=True)
-
-    # Event properties for IP-Glasma & Trento samples
-    models = ['data/ipglasma/ipglasma.dat']
-    models.extend(glob.glob('data/ipglasma/trento-samples/*.dat'))
-
-    for (i, f) in enumerate(models):
-
-        # plot style
-        if i == 0:
-            color = plt.cm.Oranges(0.4)
-            alpha = 1
-            lw = 1
-            zorder = 2
-            dashes = (4, 2)
-        else:
-            color = plt.cm.Blues(0.6)
-            alpha = 0.4
-            lw = 0.4
-            zorder = 1
-            dashes = []
-
-        # load model results
-        b, mult, e2, e3 = np.loadtxt(f, usecols=(1, 3, 4, 5)).T
-        if i > 0:
-            mult *= 5.1
-
-        # impact parameter bins
-        edges = np.linspace(0, 16, 16)
-
-        # plot multiplicity
-        mult = np.array([mult[(lo < b) & (b < hi)].mean()
-                         for lo, hi in zip(edges[:-1], edges[1:])])
-
-        if i == 0:
-            norm = mult[2]
-
-        ax1.plot((edges[:-1] + edges[1:])/2, norm*mult/mult[2], color=color, lw=lw,
-                 alpha=alpha, dashes=dashes, zorder=zorder)
-
-        # plot eccentricity
-        e2, e3 = [[np.nanmean(en[(lo < b) & (b < hi)])
-                   for lo, hi in zip(edges[:-1], edges[1:])]
-                  for en in [e2, e3]]
-        ax2.plot((edges[:-1] + edges[1:])/2, e2, color=color, lw=lw,
-                 alpha=alpha, dashes=dashes, zorder=zorder)
-        ax2.plot((edges[:-1] + edges[1:])/2, e3, color=color, lw=lw,
-                 alpha=alpha, dashes=dashes, zorder=zorder)
-
-    ax1.set_ylim(0, 2500)
-    ax1.set_yticks([0, 500, 1000, 1500, 2000, 2500])
-    ax1.set_ylabel('$dN_\mathrm{ch}/d\eta$')
-    ax1.set_title('Multiplicity', y=0.9)
-    ipglasma_handle = lines.Line2D([], [], dashes=(4, 2), color='0.7')
-    ipglasma_label = r'IP-Glasma$\vert_{\tau=0.4\mathrm{\ fm/c}}}$'
-    trento_handle = lines.Line2D([], [], lw=1, color=plt.cm.Blues(0.6))
-    trento_label = r'Trento & F.S.$\vert_{\tau=0.4\mathrm{\ fm/c}}}$'
-    ax1.legend([ipglasma_handle, trento_handle],
-               [ipglasma_label, trento_label],
-               bbox_to_anchor=(1.05, 0.875), handlelength=1.8)
-    ax1.text(1, 250, r'$\sqrt{s_{NN}} = 2.76$ TeV')
-
-    ax2.set_xlim(0, 16)
-    ax2.set_xticks([0, 4, 8, 12, 16])
-    ax2.set_yticks([0, 0.2, 0.4, 0.6])
-    ax2.set_ylim(0, 0.7)
-    ax2.set_xlabel('$b$ [fm]')
-    ax2.set_ylabel(r'$\varepsilon_n$')
-    ax2.set_title('Eccentricity', y=0.9)
-    ax2.text(11, 0.6, r'$\varepsilon_2$')
-    ax2.text(11, 0.36, r'$\varepsilon_3$')
-
-    finish(h_pad=1)
 
 
 def main():

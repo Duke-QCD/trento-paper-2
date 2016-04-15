@@ -219,7 +219,7 @@ def cgc_compare():
         ncols=3, figsize=(textwidth, 0.55*columnwidth), sharey=True
     )
 
-    labels = ['KLN model', 'EKRT model', 'WN model']
+    labels = ['KLN', 'EKRT', 'Wounded nucleon']
     functions = [kln, ekrt, lambda x, y: (x + y)/2]
     pvals = [pfit(kln), [0, 1.09], [1, 1]]
     #pvals = [pfit(kln), pfit(ekrt), [1, 1]]
@@ -229,7 +229,7 @@ def cgc_compare():
         X = np.linspace(0, 4, 1000)
         for Y in TB:
             ax.plot(X, norm*gen_mean(X, Y, p), lw=0.8, color=plt.cm.Blues(0.6),
-                 label='Gen. Mean; $p={}$'.format(p) if Y == 1 else '')
+                 label='Gen. mean, $p={}$'.format(p) if Y == 1 else '')
 
             ax.plot(X, func(X, Y), lw=0.8, dashes=(4, 3),
                  color='0.25', label=label if Y == 1 else '')
@@ -249,12 +249,12 @@ def cgc_compare():
         ax.set_yticks([0, 1, 2, 3])
 
         handles, labels = ax.get_legend_handles_labels()
-        ax.legend(handles, labels, bbox_to_anchor=(0, 1.05),
-                  loc=2, handlelength=1.5)
+        ax.legend(handles, labels, bbox_to_anchor=(-.01, 1.05),
+                  loc=2, handlelength=1.2, handletextpad=.6)
 
     axes[0].set_ylabel(r'Entropy density [fm$^{-3}$]')
 
-    finish()
+    finish(pad=0)
 
 
 @plot
@@ -972,13 +972,14 @@ def ipglasma():
     ipglasma = 'data/ipglasma/ipglasma.dat'
 
     models = trento, ipglasma
-    labels = TRENTO_LABEL + ' + FS, $p = 0 \pm 0.1$', 'IP-Glasma'
     colors = plt.cm.Blues(0.7), offblack
     dashes = (), (4,2)
 
     fig = plt.figure(figsize=(columnwidth, aspect*columnwidth))
 
-    for model, label, color, dash in zip(models, labels, colors, dashes):
+    handles = {}
+
+    for model, color, dash in zip(models, colors, dashes):
         b, e2, e3 = np.loadtxt(model, usecols=(1,4,5)).T
 
         edges = np.linspace(0, 14, 14)
@@ -987,9 +988,11 @@ def ipglasma():
                    for lo, hi in zip(edges[:-1], edges[1:])]
                   for en in [e2, e3]])
 
-        plt.plot((edges[:-1] + edges[1:])/2, e2_mean, color=color, dashes=dash, label=label)
-        plt.plot((edges[:-1] + edges[1:])/2, e3_mean, color=color, dashes=dash)
-
+        for y in [e2_mean, e3_mean]:
+            handles[model] = plt.plot(
+                (edges[:-1] + edges[1:])/2, y,
+                color=color, dashes=dash
+            )[0]
 
     b, e2, e3 = np.loadtxt(trento_low, usecols=(1,4,5)).T
     e2_mean_lo, e3_mean_lo = np.array([[np.nanmean(en[(lo < b) & (b < hi)])
@@ -1001,22 +1004,29 @@ def ipglasma():
                 for lo, hi in zip(edges[:-1], edges[1:])]
                 for en in [e2, e3]])
 
-    plt.fill_between((edges[:-1] + edges[1:])/2, e2_mean_lo, e2_mean_hi,
-                     color=plt.cm.Blues(0.2), lw=0)
-
-    plt.fill_between((edges[:-1] + edges[1:])/2, e3_mean_lo, e3_mean_hi,
-                     color=plt.cm.Blues(0.2), lw=0)
+    for lo, hi in [(e2_mean_lo, e2_mean_hi), (e3_mean_lo, e3_mean_hi)]:
+        fill_handle = plt.fill_between(
+            (edges[:-1] + edges[1:])/2, lo, hi,
+            color=plt.cm.Blues(0.2), lw=0
+        )
 
     plt.xlabel('Impact parameter $b$ [fm]')
     plt.ylabel(r'$\varepsilon_n$')
-    plt.ylim(0, 0.65)
+    plt.ylim(0, 0.6)
 
     plt.text(12.1, 0.48, r'$\varepsilon_2$', fontsize=texnormal)
     plt.text(12.1, 0.26, r'$\varepsilon_3$', fontsize=texnormal)
 
-    set_trento_label(plt.legend(loc='upper left', handlelength=1.1), 0)
+    set_trento_label(
+        plt.legend(
+            [(fill_handle, handles[trento]), handles[ipglasma]],
+            [TRENTO_LABEL + ' + FS, $p = 0 \pm 0.1$', 'IP-Glasma'],
+            loc='upper left', handlelength=1.1
+        ),
+        0
+    )
 
-    finish()
+    finish(pad=0)
 
 
 def main():

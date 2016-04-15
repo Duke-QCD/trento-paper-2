@@ -2,4 +2,4 @@
 *.png
 *.hdf
 build/
-data/
+fig/data

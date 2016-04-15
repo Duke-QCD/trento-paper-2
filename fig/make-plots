@@ -293,57 +293,76 @@ def split_cent_bins(array, bin_edges):
 
 @plot
 def nch_per_npart():
-    plt.figure(figsize=(columnwidth, aspect*columnwidth))
+    plt.figure(figsize=(columnwidth, 1.1*aspect*columnwidth))
 
-    clow, chigh, alice_nch, alice_error = \
-        np.loadtxt('data/nch_per_npart/ALICE_PbPb_5.02.dat',
-                   usecols=(0, 1, 2, 3)).T
-    bin_edges = np.append(clow, chigh[-1:])
+    data_list = ['phenix-130', 'phenix-200', 'alice-2760',
+                 'alice-5020']
 
-    trento_data = np.loadtxt('data/nch_per_npart/PbPb.dat', usecols=(2, 3))
-    npart, nch = trento_data[trento_data[:, 1].argsort()[::-1]].T
-    trento_npart = np.array(
-        [bin.mean() for bin in split_cent_bins(npart, bin_edges)])
-    trento_nch = np.array(
-        [bin.mean() for bin in split_cent_bins(nch, bin_edges)])
-    norm = alice_nch[5]/trento_nch[5]
+    model_list = ['trento-130', 'trento-200', 'trento-2760',
+                  'trento-5020']
 
-    plt.plot(trento_npart, norm*trento_nch/(trento_npart/2),
-             lw=1, zorder=1, color=plt.cm.Blues(0.6), label='Pb+Pb')
-    plt.errorbar(trento_npart, alice_nch/(trento_npart/2),
-                 yerr=alice_error/(trento_npart/2), fmt='o', capsize=0,
-                 color=offblack, mew=0, zorder=2, label='Pb+Pb')
+    color_list = ['Reds', 'Purples', 'Greens', 'Blues']
+    marker_list = ['D', 'D', 'o', 'o']
 
-    npart, nch = np.loadtxt('data/nch_per_npart/pPb.dat', usecols=(2, 3)).T
-    plt.errorbar(npart.mean(), norm*nch.mean()/(npart.mean()/2), fmt='s',
-                 capsize=0, zorder=1, mec=plt.cm.Blues(0.6), mfc='white',
-                 mew=1, label=r'p+Pb')
-    plt.errorbar(npart.mean(), 16.81/(npart.mean()/2),
-                 yerr=0.71/(npart.mean()/2), fmt='s', capsize=0,
-                 color=offblack, mew=0, zorder=2, label='p+Pb')
+    norm_points = [5, 5, 3, 5]
 
-    plt.xlim(-20, 420)
+    for model, data, cmap, marker,index in zip(model_list, data_list, color_list,
+                                        marker_list, norm_points):
+
+        clow, chigh, exp_nch, exp_error = \
+            np.loadtxt('data/nch_per_npart/{}.dat'.format(data),
+                    usecols=(0, 1, 2, 3)).T
+        bin_edges = np.append(clow, chigh[-1:])
+
+        trento_data = np.loadtxt('data/nch_per_npart/{}.dat'.format(model),
+                                 usecols=(2, 3))
+        model_npart, model_nch = trento_data[trento_data[:, 1].argsort()[::-1]].T
+
+        trento_npart = np.array(
+            [bin.mean() for bin in split_cent_bins(model_npart, bin_edges)])
+        trento_nch = np.array(
+            [bin.mean() for bin in split_cent_bins(model_nch, bin_edges)])
+        norm = exp_nch[index]/trento_nch[index]
+
+        plt.plot(trento_npart, norm*trento_nch/(trento_npart/2),
+                lw=1, zorder=1, color=getattr(plt.cm, cmap)(0.6), label='Pb+Pb')
+        plt.errorbar(trento_npart, exp_nch/(trento_npart/2),
+                    yerr=exp_error/(trento_npart/2), fmt=marker, capsize=0,
+                    color=offblack, mew=0, zorder=2, label='Pb+Pb')
+
+        pPb_norm = norm if model == 'trento-5020' else 1
+
+    npart, nch = np.loadtxt('data/nch_per_npart/trento-5020-pPb.dat', usecols=(2, 3)).T
+    plt.plot([-5, 5], pPb_norm*nch.mean()/(npart.mean()/2)*np.ones(2),
+                zorder=1, color=plt.cm.Blues(0.6), lw=1, label=r'p+Pb')
+    plt.errorbar(0, 16.81/(npart.mean()/2),
+                yerr=0.71/(npart.mean()/2), fmt='s', capsize=0,
+                color=offblack, mew=0, zorder=2, label='p+Pb')
+
+    plt.xlim(-20, 430)
     plt.xticks(np.arange(0, 500, 100))
     plt.xlabel(r'$N_\mathrm{part}$')
-    plt.ylim(3, 11)
-    plt.yticks(np.arange(4, 12, 2))
+    plt.ylim(0, 12)
+    plt.yticks(np.arange(0, 13, 4))
     plt.ylabel('$(dN_\mathrm{ch}/d\eta) / (N_\mathrm{part} / 2)$')
 
+    plt.text(430, 3.3, '$130$ GeV', fontsize=textiny, ha='right', va='top')
+    plt.text(430, 3.75, '$200$ GeV', fontsize=textiny, ha='right', va='bottom')
+    plt.text(430, 7.1, '$2.76$ TeV', fontsize=textiny, ha='right')
+    plt.text(430, 8.75, '$5.02$ TeV', fontsize=textiny, ha='right')
+    
+    #plt.text(275, 2.6, '$130$ GeV', fontsize=textiny, ha='left', va='top')
+    #plt.text(275, 3.8, '$200$ GeV', fontsize=textiny, ha='left', va='bottom')
+    #plt.text(300, 6.4, '$2.76$ TeV', fontsize=textiny, ha='left')
+    #plt.text(280, 9.9, '$5.02$ TeV', fontsize=textiny, ha='left')
+
     handles, labels = plt.gca().get_legend_handles_labels()
-    alice_handles = handles[1], handles[3]
-    alice_labels = labels[1], labels[3]
-    trento_handles = handles[0], handles[2]
-    trento_labels = labels[0], labels[2]
-    first_legend = plt.legend(alice_handles, alice_labels,
-                              bbox_to_anchor=(0.74, 0.4), handlelength=0.8,
-                              columnspacing=1.5, title='ALICE')
-    first_legend.get_title().set_fontsize(textiny)
-    plt.gca().add_artist(first_legend)
-    second_legend = plt.legend(trento_handles, trento_labels,
-                               bbox_to_anchor=(1, 0.4), handlelength=0.8,
-                               columnspacing=1.5, title='TRENTO')
-    second_legend.get_title().set_fontsize(textiny)
-    plt.text(15, 10, '$\sqrt{s_{NN}}$ = 5.02 TeV')
+    handles = handles[7], handles[9], handles[5], handles[0]
+    labels = ['Pb+Pb 2.76, 5.02 TeV', 'p+Pb 5.02 TeV',
+               'Au+Au 130, 200 GeV', 'TRENTO']
+    legend = plt.legend(handles, labels, bbox_to_anchor=(0.5, 1.05),
+                        handlelength=0.8, columnspacing=1.5, fontsize=textiny)
+    legend.legendHandles[3].set_color(offblack)
 
     finish()
 
@@ -718,8 +737,8 @@ def mode_observables(**kwargs):
                 ratio_ax.set_ylabel('Model/Exp' if n is 0 else '', labelpad=4)
                 ratio_ax.set_xlim(0, 76)
     
-    fig.axes[0].annotate('solid: identified\ndashed: integrated', xy=(1,0.8), ha='right',
-                         xycoords='axes fraction', fontsize=textiny)
+    fig.axes[0].annotate('solid: identified\ndashed: charged', xy=(1,0.8), ha='right',
+                         multialignment='left', xycoords='axes fraction', fontsize=textiny)
     #fig.axes[2].annotate('dashed: integrated', xy=(0.1,0.1),
     #                     xycoords='axes fraction', fontsize=textiny)
     finish(pad=0.0, h_pad=0, w_pad=0.3)
@@ -895,11 +914,15 @@ def trento_events():
 
 @plot
 def ipglasma():
-    trento = 'data/ipglasma/trento-fs.dat'
+    trento_low = 'data/ipglasma/trento-fs_-0.1.dat'
+    trento = 'data/ipglasma/trento-fs_0.0.dat'
+    trento_high = 'data/ipglasma/trento-fs_0.1.dat'
+
     ipglasma = 'data/ipglasma/ipglasma.dat'
+    
     models = trento, ipglasma
-    labels = r'Trento + F.S.', 'IP-Glasma'
-    colors = plt.cm.Blues(0.6), offblack
+    labels = 'Trento + FS, $p=0 \pm 0.1$', 'IP-Glasma'
+    colors = plt.cm.Blues(0.7), offblack
     dashes = (), (4,2)
 
     fig = plt.figure(figsize=(columnwidth, aspect*columnwidth))
@@ -915,19 +938,32 @@ def ipglasma():
         
         plt.plot((edges[:-1] + edges[1:])/2, e2_mean, color=color, dashes=dash, label=label)
         plt.plot((edges[:-1] + edges[1:])/2, e3_mean, color=color, dashes=dash)
-   
-    plt.xlabel('b [fm]')
+  
+    
+    b, e2, e3 = np.loadtxt(trento_low, usecols=(1,4,5)).T
+    e2_mean_lo, e3_mean_lo = np.array([[np.nanmean(en[(lo < b) & (b < hi)])
+                for lo, hi in zip(edges[:-1], edges[1:])]
+                for en in [e2, e3]])
+        
+    b, e2, e3 = np.loadtxt(trento_high, usecols=(1,4,5)).T
+    e2_mean_hi, e3_mean_hi = np.array([[np.nanmean(en[(lo < b) & (b < hi)])
+                for lo, hi in zip(edges[:-1], edges[1:])]
+                for en in [e2, e3]])
+
+    plt.fill_between((edges[:-1] + edges[1:])/2, e2_mean_lo, e2_mean_hi,
+                     color=plt.cm.Blues(0.2), lw=0)
+    
+    plt.fill_between((edges[:-1] + edges[1:])/2, e3_mean_lo, e3_mean_hi,
+                     color=plt.cm.Blues(0.2), lw=0)
+    
+    plt.xlabel('Impact parameter $b$ [fm]')
     plt.ylabel(r'$\varepsilon_n$')
     plt.ylim(0, 0.65)
    
     plt.text(12.1, 0.48, r'$\varepsilon_2$', fontsize=texnormal) 
     plt.text(12.1, 0.26, r'$\varepsilon_3$', fontsize=texnormal) 
 
-    handles, labels = plt.gca().get_legend_handles_labels()
-    none = patches.Rectangle((0, 0), 0, 0, alpha=0)
-    handles = handles[0], none, handles[1], none
-    labels = labels[0], 'p=0, k=1.4, w=0.43 fm', labels[1], 'w=0.43 fm'
-    plt.legend(handles, labels, bbox_to_anchor=(0, 1.05), loc=2, handlelength=1.5)
+    plt.legend(bbox_to_anchor=(0, 1.05), loc=2, handlelength=1.5)
     finish()
 
 

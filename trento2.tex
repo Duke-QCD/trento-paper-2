@@ -43,8 +43,8 @@
 
 \title{Determining quark-gluon plasma initial conditions and medium \\ properties from model-to-data simulations with minimal bias}
 
-\author{J.\ Scott Moreland}
 \author{Jonah E.\ Bernhard}
+\author{J.\ Scott Moreland}
 \affiliation{Department of Physics, Duke University, Durham, NC 27708-0305}
 
 \author{Jia Liu}
@@ -289,10 +289,16 @@ This property of the generalized mean is known as scale invariance or homogeneit
   Several \protect\trento\ Pb+Pb initial condition events for the transverse entropy density $dS/(d^2r_\perp dy)$ calculated using generalized mean parameter $p=0$, nucleon width $w=0.5$~fm, and gamma fluctuation factor $k=1.4$.
 }
 
+
 \fig*{cgc_compare}{
   Profiles of the initial thermal distribution predicted by the KLN (left), EKRT (middle), and wounded nucleon (right) models (dashed black lines) compared to a generalized mean with different values of the parameter $p$ (solid blue lines).
   Staggered lines show different cross sections of the initial entropy density $dS/(d^2r_\perp dy)$ as a function of the participant nucleon density $\T_A$ for several values of $\T_B = 1, 2, 3$ [fm$^{-2}$].
   Entropy normalization is arbitrary.
+}
+
+\fig[b]{nch_per_npart}{
+  Average charged particle density per participant pair $(d\nch/d\eta)/(\npart/2)$ as a function of participant number for Pb+Pb and p+Pb collisions at $\sqrts=5.02$ TeV.
+  Symbols are data from ALICE and lines are model calculations from \protect\trento\ using parameters selected by the Bayesian analysis.
 }
 
 \subsection{Reproducing existing I.C.\ models}
@@ -612,10 +618,6 @@ Figure~\ref{fig:mode_observables} includes an additional centrality bin (70--80\
   Gray band indicates 10\% discrepancy between the model and experiment.
 }
 
-\fig{nch_per_npart}{
-  Average charged particle density per participant pair $(d\nch/d\eta)/(\npart/2)$ as a function of participant number for Pb+Pb and p+Pb collisions at $\sqrts=5.02$ TeV.
-  Symbols are data from ALICE and lines are model calculations from \protect\trento\ using parameters selected by the Bayesian analysis.
-}
 
 \fig{posterior_p_arrows}{
   Posterior on the generalized mean parameter $p$ which modulates the intensity of saturation effects in the initial conditions compared to the effective $p$-values needed to fit the KLN, EKRT, and wounded nucleon (WN) models.
@@ -632,7 +634,7 @@ Figure~\ref{fig:mode_observables} includes an additional centrality bin (70--80\
 
 We have determined initial condition and transport properties of the QGP medium produced in relativistic heavy-ion collisions using Bayesian methodology. The primary contribution of the present work is the application of the recently developed \trento\ model to parameterize entropy deposition in relativistic nuclear collisions and extract high likelihood parameters for the QGP initial conditions while asserting minimal theoretical assumptions. We show that the parameterized initial conditions are highly constrained by bulk observables and that the constraints are robust to the presence of correlated model uncertainties such as the temperature dependent shear and bulk viscosities.
 
-The study demonstrates that ab initio understanding of QGP initial conditions is not required to extract properties of the QGP medium and constrain
+Although one ultimately seeks a first principles description for QGP energy deposition and thermalization, the present study demonstrates that such an understanding is not required to determine QGP medium parameters with quantitative uncertainty.
 
 The Bayesian analysis reveals a number of interesting features
 \begin{enumerate}

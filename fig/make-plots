@@ -125,6 +125,21 @@ def truncate_colormap(cmap, minval=0.0, maxval=1.0, n=100):
         cmap(np.linspace(minval, maxval, n)))
     return new_cmap
 
+
+TRENTO_LABEL = r'T\raisebox{-.5ex}{R}ENTo'
+
+
+def set_trento_label(legend, i):
+    """
+    Mark the `i`th label of a legend as containing the T_RENTo logo.
+
+    """
+    t = legend.get_texts()[i]
+    t.set_usetex(True)
+    t.set_y(-.18*t.get_size())
+    return legend
+
+
 def gen_mean(x, y, p):
     #x, y = npart(x, y, 6.4)
     if abs(p) < 1e-9:
@@ -359,10 +374,11 @@ def nch_per_npart():
     handles, labels = plt.gca().get_legend_handles_labels()
     handles = handles[7], handles[9], handles[5], handles[0]
     labels = ['Pb+Pb 2.76, 5.02 TeV', 'p+Pb 5.02 TeV',
-               'Au+Au 130, 200 GeV', 'TRENTO']
+               'Au+Au 130, 200 GeV', TRENTO_LABEL]
     legend = plt.legend(handles, labels, bbox_to_anchor=(0.5, 1.05),
                         handlelength=0.8, columnspacing=1.5, fontsize=textiny)
     legend.legendHandles[3].set_color(offblack)
+    set_trento_label(legend, -1)
 
     finish()
 
@@ -921,7 +937,7 @@ def ipglasma():
     ipglasma = 'data/ipglasma/ipglasma.dat'
     
     models = trento, ipglasma
-    labels = 'Trento + FS, $p=0 \pm 0.1$', 'IP-Glasma'
+    labels = TRENTO_LABEL + ' + FS, $p = 0 \pm 0.1$', 'IP-Glasma'
     colors = plt.cm.Blues(0.7), offblack
     dashes = (), (4,2)
 
@@ -963,7 +979,8 @@ def ipglasma():
     plt.text(12.1, 0.48, r'$\varepsilon_2$', fontsize=texnormal) 
     plt.text(12.1, 0.26, r'$\varepsilon_3$', fontsize=texnormal) 
 
-    plt.legend(bbox_to_anchor=(0, 1.05), loc=2, handlelength=1.5)
+    set_trento_label(plt.legend(loc='upper left', handlelength=1.1), 0)
+
     finish()
 
 

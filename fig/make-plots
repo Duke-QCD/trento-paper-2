@@ -310,77 +310,112 @@ def split_cent_bins(array, bin_edges):
 def nch_per_npart():
     plt.figure(figsize=(columnwidth, 1.1*aspect*columnwidth))
 
-    data_list = ['phenix-130', 'phenix-200', 'alice-2760',
-                 'alice-5020']
+    ax = plt.axes()
 
-    model_list = ['trento-130', 'trento-200', 'trento-2760',
-                  'trento-5020']
+    handles = {}
 
-    color_list = ['Reds', 'Purples', 'Greens', 'Blues']
-    marker_list = ['D', 'D', 'o', 'o']
+    for exp, energy, cmap in [
+            ('phenix', 130, 'Greens'),
+            ('phenix', 200, 'Purples'),
+            ('alice', 2760, 'Oranges'),
+            ('alice', 5020, 'Blues'),
+    ]:
+        cent_low, cent_high, exp_nch, exp_err = np.loadtxt(
+            'data/nch_per_npart/{}-{}.dat'.format(exp, energy),
+            usecols=range(4), unpack=True
+        )
+        cent_edges = np.append(cent_low, cent_high[-1])
 
-    norm_points = [5, 5, 3, 5]
+        trento_npart_nch = np.loadtxt(
+            'data/nch_per_npart/trento-{}.dat'.format(energy),
+            usecols=[2, 3]
+        )
 
-    for model, data, cmap, marker,index in zip(model_list, data_list, color_list,
-                                        marker_list, norm_points):
+        trento_npart, trento_nch = np.array([
+            b.mean(axis=0) for b in
+            split_cent_bins(
+                trento_npart_nch[trento_npart_nch[:, 1].argsort()[::-1]],
+                cent_edges
+            )
+        ]).T
 
-        clow, chigh, exp_nch, exp_error = \
-            np.loadtxt('data/nch_per_npart/{}.dat'.format(data),
-                    usecols=(0, 1, 2, 3)).T
-        bin_edges = np.append(clow, chigh[-1:])
+        npart2 = trento_npart/2
+        norm = np.median(exp_nch/trento_nch)
+        if energy == 5020:
+            norm_5020 = norm
 
-        trento_data = np.loadtxt('data/nch_per_npart/{}.dat'.format(model),
-                                 usecols=(2, 3))
-        model_npart, model_nch = trento_data[trento_data[:, 1].argsort()[::-1]].T
+        ax.plot(
+            trento_npart, norm*trento_nch/npart2,
+            color=getattr(plt.cm, cmap)(0.6), zorder=10
+        )
 
-        trento_npart = np.array(
-            [bin.mean() for bin in split_cent_bins(model_npart, bin_edges)])
-        trento_nch = np.array(
-            [bin.mean() for bin in split_cent_bins(model_nch, bin_edges)])
-        norm = exp_nch[index]/trento_nch[index]
+        if exp == 'phenix':
+            key = 'AuAu'
+            fmt = 'D'
+            ms = 2.5
+        else:
+            key = 'PbPb'
+            fmt = 'o'
+            ms = 3
 
-        plt.plot(trento_npart, norm*trento_nch/(trento_npart/2),
-                lw=1, zorder=1, color=getattr(plt.cm, cmap)(0.6), label='Pb+Pb')
-        plt.errorbar(trento_npart, exp_nch/(trento_npart/2),
-                    yerr=exp_error/(trento_npart/2), fmt=marker, capsize=0,
-                    color=offblack, mew=0, zorder=2, label='Pb+Pb')
+        handles[key] = ax.errorbar(
+            trento_npart, exp_nch/npart2, yerr=exp_err/npart2,
+            color=offblack, fmt=fmt, ms=ms, capsize=0, mew=0, zorder=20
+        )
 
-        pPb_norm = norm if model == 'trento-5020' else 1
+    npart, nch = np.loadtxt(
+        'data/nch_per_npart/trento-5020-pPb.dat',
+        usecols=(2, 3), unpack=True
+    )
+    npart2 = npart.mean()/2
 
-    npart, nch = np.loadtxt('data/nch_per_npart/trento-5020-pPb.dat', usecols=(2, 3)).T
-    plt.plot([-5, 5], pPb_norm*nch.mean()/(npart.mean()/2)*np.ones(2),
-                zorder=1, color=plt.cm.Blues(0.6), lw=1, label=r'p+Pb')
-    plt.errorbar(0, 16.81/(npart.mean()/2),
-                yerr=0.71/(npart.mean()/2), fmt='s', capsize=0,
-                color=offblack, mew=0, zorder=2, label='p+Pb')
+    x_pPb = -20
+    ax.plot(
+        x_pPb + 7*np.array([-1, 1]),
+        np.full(2, norm_5020*nch.mean()/(npart.mean()/2)),
+        color=plt.cm.Blues(0.6), zorder=10
+    )
 
-    plt.xlim(-20, 430)
-    plt.xticks(np.arange(0, 500, 100))
-    plt.xlabel(r'$N_\mathrm{part}$')
-    plt.ylim(0, 12)
-    plt.yticks(np.arange(0, 13, 4))
-    plt.ylabel('$(dN_\mathrm{ch}/d\eta) / (N_\mathrm{part} / 2)$')
+    # https://inspirehep.net/record/1190545
+    alice_pPb_nch_mean = 16.81
+    alice_pPb_nch_err = 0.71
 
-    plt.text(430, 3.3, '$130$ GeV', fontsize=textiny, ha='right', va='top')
-    plt.text(430, 3.75, '$200$ GeV', fontsize=textiny, ha='right', va='bottom')
-    plt.text(430, 7.1, '$2.76$ TeV', fontsize=textiny, ha='right')
-    plt.text(430, 8.75, '$5.02$ TeV', fontsize=textiny, ha='right')
+    handles['pPb'] = ax.errorbar(
+        x_pPb, alice_pPb_nch_mean/npart2, yerr=alice_pPb_nch_err/npart2,
+        color=offblack, fmt='s', ms=2.5, capsize=0, mew=0, zorder=20
+    )
+    ax.text(x_pPb + 3, alice_pPb_nch_mean/npart2 - .4, 'p+Pb',
+            ha='center', va='top', fontsize=textiny)
 
-    #plt.text(275, 2.6, '$130$ GeV', fontsize=textiny, ha='left', va='top')
-    #plt.text(275, 3.8, '$200$ GeV', fontsize=textiny, ha='left', va='bottom')
-    #plt.text(300, 6.4, '$2.76$ TeV', fontsize=textiny, ha='left')
-    #plt.text(280, 9.9, '$5.02$ TeV', fontsize=textiny, ha='left')
+    ax.set_xlim(2*x_pPb - 5, 420)
+    ax.set_ylim(0, 12.8)
 
-    handles, labels = plt.gca().get_legend_handles_labels()
-    handles = handles[7], handles[9], handles[5], handles[0]
-    labels = ['Pb+Pb 2.76, 5.02 TeV', 'p+Pb 5.02 TeV',
-               'Au+Au 130, 200 GeV', TRENTO_LABEL]
-    legend = plt.legend(handles, labels, bbox_to_anchor=(0.5, 1.05),
-                        handlelength=0.8, columnspacing=1.5, fontsize=textiny)
-    legend.legendHandles[3].set_color(offblack)
-    set_trento_label(legend, -1)
+    ax.set_xlabel(r'$N_\mathrm{part}$')
+    ax.set_ylabel(r'$(dN_\mathrm{ch}/d\eta) / (N_\mathrm{part} / 2)$')
 
-    finish()
+    set_trento_label(
+        ax.legend(
+            *zip(*[
+                (handles['PbPb'], 'Pb+Pb 2.76, 5.02 TeV'),
+                (handles['pPb'], 'p+Pb 5.02 TeV'),
+                (handles['AuAu'], 'Au+Au 130, 200 GeV'),
+                (lines.Line2D([], [], color=offblack), TRENTO_LABEL),
+            ]),
+            loc='upper left', bbox_to_anchor=[0, 1.04],
+            handlelength=.9
+        ),
+        -1
+    )
+
+    for x, y, label in [
+            (300, 10.05, '5.02 TeV'),
+            (300,  6.65, '2.76 TeV'),
+            (280,  4.10, '200 GeV'),
+            (280,  2.22, '130 GeV'),
+    ]:
+        ax.text(x, y, label, fontsize=textiny)
+
+    finish(pad=0)
 
 
 def _zetas(T, Tc=0.180,

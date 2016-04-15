@@ -601,8 +601,6 @@ We first run \order 6 steps to allow the chain to equilibrate, discard these ``b
 \fig*{posterior}{
   Diagonal and lower-diagonal: posterior marginal and joint distributions of the calibration parameters described in section \ref{?}.
   Diagonal entries show the posterior likelihood distribution of each parameter marginalized over remaining parameters, while lower-diagonal entries show the joint distribution of parameter pairs.
-  Upper diagonal: the Pearson product-moment correlation coefficient $\rho_{X,Y}=\text{cov}(X,Y)/(\sigma_X \sigma_Y)$ for each pair of parameters $X$, $Y$.
-  Red (blue) tiles indicate Pearson coefficients close to $1$ ($-1$) corresponding to strong linear correlation (anti-correlation).
   $^\dagger$The units for $\eta/s$ slope are [GeV$^{-1}$].
 }
 
@@ -632,10 +630,16 @@ Figure~\ref{fig:mode_observables} includes an additional centrality bin (70--80\
 
 \section{Summary and conclusions}
 
-We have determined initial condition and transport properties of the QGP medium produced in relativistic heavy-ion collisions using Bayesian methodology. The primary contribution of the present work is the application of the recently developed \trento\ model to parameterize entropy deposition in relativistic nuclear collisions and extract high likelihood parameters for the QGP initial conditions while asserting minimal theoretical assumptions. We show that the parameterized initial conditions are highly constrained by bulk observables and that the constraints are robust to the presence of correlated model uncertainties such as the temperature dependent shear and bulk viscosities.
+We have determined initial condition and transport properties of the QGP medium produced in relativistic heavy-ion collisions using Bayesian methodology. The primary contribution of the present work is the application of the recently developed \trento\ model to parameterize local entropy deposition in relativistic nuclear collisions and extract high likelihood parameters for the QGP initial conditions while asserting minimal theoretical assumptions. We show that the parameterized initial conditions are highly constrained by bulk observables and that the constraints are robust to the presence of correlated model uncertainties such as the temperature dependent shear and bulk viscosities.
 
-Although one ultimately seeks a first principles description for QGP energy deposition and thermalization, the present study demonstrates that such an understanding is not required to determine QGP medium parameters with quantitative uncertainty.
+The \trento\ initial condition model introduces a free parameter $p$ which interpolates among different types of entropy deposition schemes, ranging from a simple wounded nucleon model to specific calculations in CGC effective field theory. 
 
+
+The model also includes more typical parameters such as a Gaussian nucleon width $w$ and a Gamma distribution shape parameter $k$ which modulates the variance of proton-proton multiplicity fluctuations. 
+
+The \trento\ initial conditions are described by four model parameters: an entropy normalization factor, an entropy deposition parameter $p$ which attenuates particle production in, a Gaussian nucleon width $w$ and a Gamma distribution shape parameter $k$ which modulates the variance of proton-proton multiplicity fluctuations. We showed that the parameterization is sufficiently flexible to mimic several different model calculations in the literature and hence can be used to interpolate a subspace of reasonable initial condition 
+
+The heavy-ion collision transport dynamics were simulated using a modern event-by-event hydrodynamic model with temperature dependent shear and bulk viscous corrections, continuum extrapolated lattice equation of state and microscopic hadronic afterburner. We parameterized the QGP shear viscosity using a simple functional form \eqref{eq:etas} which assumes a minimal value at the pseudo-critical phase transition temperature and rises linearly with increasing temperature. For the QGP bulk viscosity, we used the temperature dependent parameterization constructed in Ref and varied the overall normalization factor to investigate different magnitudes of the bulk viscous curve normalization.
 The Bayesian analysis reveals a number of interesting features
 \begin{enumerate}
     \item The QGP initial conditions are well described by entropy deposition proportional to the geometric mean of local participant nucleon density \eqref{eq:means}.
@@ -653,6 +657,7 @@ The Bayesian analysis reveals a number of interesting features
 
 We've selected a set of high likelihood model parameters from the Bayesian analysis and used them to analyze the optimal performance of the model. The resulting discrepancy between model and experiment is less than $\pm10\%$ for mean $p_T$, flow cumulants, and charged particle yields while we observe significant $\sim\!10$--$30\%$ tension in the relative abundances of pions, kaons, and protons when the model is tuned to fit identified yields.
 
+Although one ultimately seeks a first principles description for QGP energy deposition and thermalization, the present study demonstrates that such an understanding is not required to determine QGP medium parameters with quantitative uncertainty. 
 \medskip
 
 All models use in this study are open source. The \trento\ model and free streaming package are available at \url{github.com/Duke-QCD/trento}, the iEBE-VISHNU hybrid model at \url{u.osu.edu/vishnu} and latest version of UrQMD can be downloaded from \url{urqmd.org}.

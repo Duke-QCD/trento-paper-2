@@ -575,23 +575,6 @@ MCMC algorithms generate random walks through parameter space by accepting or re
 We use the affine-invariant ensemble sampler \cite{Goodman:2010en,FM:2013mc}, an efficient MCMC algorithm that uses a large ensemble of interdependent walkers.
 We first run \order 6 steps to allow the chain to equilibrate, discard these ``burn-in'' samples, then generate \order 7 posterior samples.
 
-\begin{table}
-  \caption{
-    \label{tab:likely_param}
-    High likelihood parameters selected from the posterior distribution in Fig.~\ref{fig:posterior} used to generate Fig.~\ref{fig:mode_observables}
-  }
-  \begin{ruledtabular}
-    \begin{tabular}{llll}
-      \multicolumn{2}{c}{Initial condition} & \multicolumn{2}{c}{QGP medium} \\
-      \noalign{\smallskip}\hline\noalign{\smallskip}
-      norm & 120.          &  $\eta/s$ min   & 0.08       \\
-      $p$  & 0.0           &  $\eta/s$ slope & 0.85 GeV$^{-1}$   \\
-      $k$  & 1.5           &  $\zeta/s$ norm & 1.25       \\
-      $w$  & 0.43 fm       &  $T_\text{sw}$  & 0.148 GeV  \\
-    \end{tabular}
-  \end{ruledtabular}
-\end{table}
-
 \fig*{observables_samples}{
   Identified yields (left column), mean $p_T$ (middle column), and flow cumulants $v_n\{2\}$ (right column).
   The top row shows results obtained from the training data used to condition the emulator.
@@ -609,10 +592,43 @@ We first run \order 6 steps to allow the chain to equilibrate, discard these ``b
 
 \section{Results}
 
-Figure~\ref{fig:mode_observables} includes an additional centrality bin (70--80\%) that was used in parameter estimation.
+\begin{table}
+  \caption{
+    \label{tab:posterior}
+    Estimated parameter values (medians) and uncertainties (90\% credible intervals) from the posterior distributions calibrated to identified and charged particle yields (middle and right columns, respectively).
+  }
+  \begin{ruledtabular}
+    \begin{tabular}{lll}
+      Calibrated to: & \multicolumn{1}{c}{Identified} & \multicolumn{1}{c}{Charged} \\
+      \paddedhline
+      \input{tables/posterior}
+    \end{tabular}
+  \end{ruledtabular}
+\end{table}
+
+Figure~\ref{fig:mode_observables} includes an additional centrality bin (70--80\%) that was not used in parameter estimation.
+
+\begin{table}
+  \caption{
+    \label{tab:mode_params}
+    High-probability parameters chosen based on the posterior distributions and used to generate Fig.~\ref{fig:mode_observables}.
+    Pairs of values separated by slashes are based on identified / charged particle yields, respectively.
+    Single values are the same for both cases.
+  }
+  \begin{ruledtabular}
+    \begin{tabular}{ll@{\hspace{2em}}ll}
+      \multicolumn{2}{c}{Initial condition} & \multicolumn{2}{c}{QGP medium} \\
+      \paddedhline
+      norm & 120. / 129.    & $\eta/s$ min      & 0.08  \\
+      $p$  & 0.0            & $\eta/s$ slope    & 0.85 / 0.75 GeV$^{-1}$  \\
+      $k$  & 1.5  / 1.6     & $\zeta/s$ norm    & 1.25 / 1.10 \\
+      $w$  & 0.43 / 0.49 fm & $T_\text{switch}$ & 0.148 GeV \\
+    \end{tabular}
+  \end{ruledtabular}
+\end{table}
 
 \fig*{mode_observables}{
-  Top row: model calculations of identified yields $dN/dy$, mean $p_T$, and flow cumulants $v_n\{2\}$ as a function of collision centrality using high-likelihood parameters (listed in table \ref{tab:likely_param}) determined from the posterior in Fig.~\ref{fig:posterior}.
+  Top row: model calculations of identified yields $dN/dy$, mean $p_T$, and flow cumulants $v_n\{2\}$ as a function of collision centrality using high-likelihood parameters (listed in table \ref{tab:mode_params}) determined from the posterior in Fig.~\ref{fig:posterior}.
   Symbols with error bars show data from ALICE and lines show results of the model.
   Bottom row: ratio of the model divided by experiment.
   Gray band indicates 10\% discrepancy between the model and experiment.

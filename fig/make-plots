@@ -775,51 +775,46 @@ def mode_observables(**kwargs):
 
 
 @plot
-def posterior_p_arrows(n=1, **kwargs):
-    design = 'data/bayesian/model/design.hdf'
-    calibration = 'data/bayesian/calibration/results_err10.hdf'
-
-    with h5py.File(design, 'r') as f:
+def posterior_p_arrows(n=1):
+    with h5py.File('data/bayesian/model/design.hdf', 'r') as f:
         label = f['labels'][n]
         lim = f['range'][n]
 
-    with h5py.File(calibration, 'r') as f:
+    with h5py.File('data/bayesian/calibration/results_err10.hdf', 'r') as f:
         chain = f['chain'][:, n]
 
-    fig = plt.figure(figsize=(0.9*columnwidth, 0.5*aspect*columnwidth))
+    fig = plt.figure(figsize=(columnwidth, 0.5*aspect*columnwidth))
     ax = fig.gca()
 
     counts, edges = np.histogram(chain, bins=100, range=lim)
     x = (edges[1:] + edges[:-1]) / 2
     y = counts / counts.max()
-    ax.plot(x, y, lw=0.8, color=plt.cm.Blues(0.8))
-    ax.fill_between(x, y, color=plt.cm.Blues(0.15), zorder=-10,
-                    label='Posterior')
-    ax.plot(np.linspace(-1, 1, 2), -1*np.ones(2), lw=0.8, color=offblack,
-            label=r'dS/dy')
+    ax.plot(x, y, color=plt.cm.Blues(0.8))
+    ax.fill_between(x, y, color=plt.cm.Blues(0.15), zorder=-10)
 
-    ax.set_xlabel(label, labelpad=2)
+    ax.set_xlabel(label, labelpad=3)
 
     for spine in ax.spines.values():
         spine.set_visible(False)
 
-    # KLN model
-    ax.text(-0.67, 0.05, 'KLN', fontsize=texsmall, va='bottom', ha='center')
-    ax.plot([-0.68, -0.66], [0, 0], lw=4, color=offblack, alpha=0.6,
-            label='KLN', clip_on=False)
+    for label, x, err in [
+            ('KLN', -.67, .01),
+            ('EKRT', 0, .1),
+            ('WN', 1, None),
+    ]:
+        args = ([x], [0], 'o') if err is None else ([x - err, x + err], [0, 0])
+        ax.plot(*args, lw=4, ms=4, color=offblack, alpha=.58, clip_on=False)
 
-    # EKRT model
-    ax.text(0, 0.05, 'EKRT', fontsize=texsmall, va='bottom', ha='center')
-    ax.plot([-0.09, 0.12], [0, 0], lw=4, color=offblack, alpha=0.6,
-            label='EKRT', clip_on=False)
+        if label == 'EKRT':
+            x -= .01
 
-    # WN model
-    ax.text(1, 0.05, 'WN', fontsize=texsmall, va='bottom', ha='center')
-    ax.text(1, 0, '•', fontsize=texsmall, va='center', ha='center')
+        ax.text(x, .05, label, va='bottom', ha='center')
 
     ax.set_xticks(np.arange(-10, 11, 5)/10)
     ax.set_xticks(np.arange(-75, 76, 50)/100, minor=True)
-    ax.set_xticklabels(['-1.0', '-0.5', '0.0', '0.5', '1.0'], y=-0.02)
+
+    for t in ax.get_xticklabels():
+        t.set_y(-.03)
 
     xm = 1.15
     ax.set_xlim(-xm, xm)
@@ -836,7 +831,7 @@ def posterior_p_arrows(n=1, **kwargs):
     )
 
     ax.set_yticks([])
-    ax.set_ylim(0, y.max())
+    ax.set_ylim(0, 1.01*y.max())
 
     finish(despine=False)
 

@@ -578,9 +578,32 @@ We first run \order 6 steps to allow the chain to equilibrate, discard these ``b
 
 \section{Results}
 
+The primary result of this study is the posterior distribution for the model parameters, Fig.~\ref{fig:posterior}.
+In fact, this figure contains two posterior distributions:
+one from calibrating to identified particle yields $dN/dy$ (blue, lower triangle),
+and the other from calibrating to charged particle yields $d\nch/d\eta$ (red, upper triangle).
+We performed the alternate calibration to charged particles because the model could not simultaneously describe all identified particle yields for \emph{any} parameter values, as will be demonstrated shortly.
+
+In Fig.~\ref{fig:posterior}, the diagonal plots are marginal distributions for each model parameter (all other parameters integrated out) from the calibrations to identified (blue) and charged (red) particles, while the off-diagonals are joint distributions showing correlations among pairs of parameters from the calibrations to identified (blue, lower triangle) and charged (red, upper triangle) particles.
+Operationally, these are all histograms of MCMC samples.
+
+We discuss the posterior distributions in detail in the following subsections.
+As a partner to the distributions themselves, Fig.~\ref{fig:observables_samples} compares simulated observables (see Table~\ref{tab:observables}) to experimental data.
+The top row has explicit model calculations at each of the 300 design points;
+recall that all model parameters vary across their full ranges, leading to the large spread in computed observables.
+The bottom row shows emulator predictions of 100 random samples from the identified particle posterior distribution (these are visually indistinguishable for the charged particle posterior).
+Here, the model has been calibrated to experiment, so its calculations are clustered tightly around the data---although some uncertainty remains since the samples are drawn from a posterior distribution of finite width.
+Overall, these plots show an excellent simultaneous fit to all observables.
+
+\subsection{Initial condition parameters}
+
+
+\subsection{QGP medium parameters}
+
+
 \fig*{posterior}{
-  Diagonal and lower-diagonal: posterior marginal and joint distributions of the calibration parameters described in section \ref{?}.
-  Diagonal entries show the posterior likelihood distribution of each parameter marginalized over remaining parameters, while lower-diagonal entries show the joint distribution of parameter pairs.
+  Posterior distributions for the model parameters from calibrating to identified particles yields (blue, lower triangle) and charged particles yields (red, upper triangle).
+  The diagonal has marginal distributions for each parameter, while the off-diagonal contains joint distributions showing correlations among pairs of parameters.
   $^\dagger$The units for $\eta/s$ slope are [GeV$^{-1}$].
 }
 
@@ -599,9 +622,12 @@ We first run \order 6 steps to allow the chain to equilibrate, discard these ``b
 \end{table}
 
 \fig*{observables_samples}{
-  Identified yields (left column), mean $p_T$ (middle column), and flow cumulants $v_n\{2\}$ (right column).
-  The top row shows results obtained from the training data used to condition the emulator.
-  from 100 random samples drawn from the Bayesian posterior.
+  Simulated observables compared to experimental data from the ALICE experiment \cite{Abelev:2013vea,ALICE:2011ab}.
+  Top row: explicit model calculations for each of the 300 design points,
+  bottom: emulator predictions of 100 random samples drawn from the posterior distribution.
+  Left column: identified particle yields $dN/dy$,
+  middle: mean transverse momenta $\avg{p_T}$,
+  right: flow cumulants $v_n\{2\}$.
 }
 
 \fig[b]{posterior_p_arrows}{

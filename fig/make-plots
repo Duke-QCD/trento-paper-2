@@ -22,6 +22,9 @@ textwidth = 510/resolution
 textiny, texsmall, texnormal = 8.0, 9.25, 10.0
 offblack = '#262626'
 grey = '0.88'
+outer_band = dict(color='.92')
+inner_band = dict(color=plt.cm.Blues(.32))
+inner_line = dict(color=plt.cm.Blues(.77))
 
 plt.rcdefaults()
 plt.rcParams.update({
@@ -267,14 +270,12 @@ def thickness():
     Tmin = np.minimum(TA, TB)
     Tmax = np.maximum(TA, TB)
 
-    blue = plt.cm.Blues(0.6)
-    dark_blue = plt.cm.Blues(0.7)
-
-    plt.fill_between(X, Tmin, Tmax, lw=0, color=grey, zorder=0,
-                     label=r'$T_\mathrm{min} < T < T_\mathrm{max}$')
+    plt.fill_between(X, Tmin, Tmax,
+                     label=r'$T_\mathrm{min} < T < T_\mathrm{max}$',
+                     **outer_band)
     plt.fill_between(X, gen_mean(TA, TB, -1), gen_mean(TA, TB, 1),
-                     color=blue, lw=0, alpha=0.4, label=r'$-1<p<1$')
-    plt.plot(X, gen_mean(TA, TB, 0), color=dark_blue, label='$p=0$')
+                     label=r'$-1<p<1$', **inner_band)
+    plt.plot(X, gen_mean(TA, TB, 0), label='$p=0$', **inner_line)
 
     plt.xlim(-8.5, 8.5)
     plt.xticks(np.linspace(-8, 8, 9))
@@ -416,28 +417,6 @@ def nch_per_npart():
         ax.text(x, y, label, fontsize=textiny)
 
     finish(pad=0)
-
-
-def _zetas(T, Tc=0.180,
-           A1=-13.77, A2=27.55, A3=13.45,
-           lam1=0.9, lam2=0.25, lam3=0.9, lam4=0.22,
-           sig1=0.025, sig2=0.13, sig3=0.0025, sig4=0.022):
-    t = np.asarray(T)/Tc
-    zetas = np.empty_like(t)
-
-    low = t < 0.995
-    xm1 = t[low] - 1
-    zetas[low] = lam3*np.exp(xm1/sig3) + lam4*np.exp(xm1/sig4) + 0.03
-
-    high = t > 1.05
-    xm1 = t[high] - 1
-    zetas[high] = lam1*np.exp(-xm1/sig1) + lam2*np.exp(-xm1/sig2) + 0.001
-
-    mid = ~(low | high)
-    x = t[mid]
-    zetas[mid] = A1*x*x + A2*x - A3
-
-    return zetas
 
 
 @plot
@@ -862,67 +841,91 @@ def posterior_p_arrows(n=1, **kwargs):
     finish(despine=False)
 
 
+def _zetas(T, Tc=0.180,
+           A1=-13.77, A2=27.55, A3=13.45,
+           lam1=0.9, lam2=0.25, lam3=0.9, lam4=0.22,
+           sig1=0.025, sig2=0.13, sig3=0.0025, sig4=0.022):
+    t = np.asarray(T)/Tc
+    zetas = np.empty_like(t)
+
+    low = t < 0.995
+    xm1 = t[low] - 1
+    zetas[low] = lam3*np.exp(xm1/sig3) + lam4*np.exp(xm1/sig4) + 0.03
+
+    high = t > 1.05
+    xm1 = t[high] - 1
+    zetas[high] = lam1*np.exp(-xm1/sig1) + lam2*np.exp(-xm1/sig2) + 0.001
+
+    mid = ~(low | high)
+    x = t[mid]
+    zetas[mid] = A1*x*x + A2*x - A3
+
+    return zetas
+
+
+def credible_interval(samples, ci=.9):
+    """
+    Compute the HPD credible interval (default 90%) for an array of samples.
+    The array will be sorted in place.
+
+    """
+    samples.sort()
+
+    # number of intervals to compute
+    nci = int((1 - ci)*samples.size)
+
+    # find highest posterior density (HPD) credible interval
+    # i.e. the one with minimum width
+    cil = samples[:nci]   # interval lows
+    cih = samples[-nci:]  # interval highs
+    ihpd = np.argmin(cih - cil)
+
+    return cil[ihpd], cih[ihpd]
+
+
 @plot
-def viscosity_samples():
-    calibration = 'data/bayesian/calibration/results_err10.hdf'
+def etas_estimate(calibration='data/bayesian/calibration/results_err10.hdf'):
+    plt.figure(figsize=(columnwidth, aspect*columnwidth))
+    ax = plt.axes()
 
-    fig, axes = plt.subplots(nrows=2,
-                             figsize=(columnwidth, 1.8*aspect*columnwidth))
-    etas_ax, zetas_ax = axes
+    T = np.linspace(.154, .3, 50)
+    dT = T - T[0]
 
-    Tmin, Tc, Tmax = 0.145, 0.154, 0.300
-    T1 = np.linspace(Tmin, Tmax, 1000)
-    T2 = np.linspace(Tc, Tmax, 100)
+    prior = ax.fill_between(T, .3 + 2*dT, **outer_band)
 
-    if calibration is not None:
-        line_kwargs = dict(color=plt.cm.Blues(0.7), alpha=0.2, lw=0.7)
+    with h5py.File(calibration, 'r') as f:
+        etas_min, etas_slope = f['chain'][:, 5:7].T
 
-        with h5py.File(calibration, 'r') as cal:
-            sample_idx = np.random.randint(0, cal['chain'].shape[0], size=200)
+    intervals = np.array([
+        credible_interval(etas_min + dT_*etas_slope)
+        for dT_ in dT
+    ]).T
 
-            for i in sample_idx:
-                etas_min, etas_slope, zetas_norm = cal['chain'][i, 5:8]
-                etas_ax.plot(T2, etas_min + etas_slope*(T2 - Tc),
-                             **line_kwargs)
-                zetas_ax.plot(T1, zetas_norm*_zetas(T1), **line_kwargs)
+    band = ax.fill_between(T, *intervals, **inner_band)
 
-    fill_kwargs = dict(color=grey, alpha=0.8, zorder=-1000)
+    ax.plot(T, np.full_like(T, 1/(4*np.pi)), color='.6')
+    ax.text(.25, .04, 'KSS bound', color='.4', fontsize=textiny)
 
-    etas_ax.fill_between(T2, 0.3 + 2*(T2 - Tc), **fill_kwargs)
-    etas_ax.axvline(Tc, dashes=(4, 2), lw=0.8, color='0.3')
-    etas_ax.text(Tc + 0.003, 0.45, '$T_c = \,{}$ GeV'.format(Tc),
-                 ha='left', va='center', fontsize=textiny, color=offblack)
+    median, = ax.plot(
+        T, np.median(etas_min) + dT*np.median(etas_slope),
+        **inner_line
+    )
 
-    points = etas_ax.transData.transform([
-        (Tc, 0.3),
-        (Tmax, 0.3 + 2*(Tmax-Tc))
-    ])
-    dx, dy = points[1] - points[0]
+    ax.set_xlim(xmin=.146)
+    ax.set_xticks(np.arange(150, 301, 50)/1000)
+    ax.xaxis.set_minor_locator(ticker.AutoMinorLocator(2))
+    set_loc(ax, 'y', minor=2)
 
-    etas_ax.set_ylabel(r'$\eta/s$')
-    etas_title = etas_ax.set_title('Shear viscosity')
-    etas_title.set_y(0.9)
+    ax.set_xlabel('Temperature [GeV]')
+    ax.set_ylabel(r'$\eta/s$')
 
-    zetas_ax.plot(T1, _zetas(T1), color=offblack, lw=0.8,
-                  label=r'Unscaled $(\zeta/s)(T)$')
-    zetas_ax.fill_between(T1, 2*_zetas(T1), label='Initial range',
-                          **fill_kwargs)
-    zetas_ax.plot(np.linspace(0, 0.3, 2), np.zeros(2), lw=0.8,
-                  color=plt.cm.Blues(0.6), label='Posterior samples')
-    zetas_ax.set_xlabel('Temperature [GeV]')
-    zetas_ax.set_ylabel(r'$\zeta/s$')
-    zetas_title = zetas_ax.set_title('Bulk viscosity')
-    zetas_title.set_y(0.9)
+    ax.legend(*zip(*[
+        (prior, 'Prior range'),
+        (median, 'Posterior median'),
+        (band, '90% CI'),
+    ]), loc='upper left', bbox_to_anchor=[0, 1.06])
 
-    handles, labels = zetas_ax.get_legend_handles_labels()
-    zetas_ax.legend(handles[::-1], labels[::-1], bbox_to_anchor=(1.03, 0.85))
-
-    for ax in axes:
-        ax.set_xticks(np.arange(150, 301, 50)/1000)
-        ax.set_xlim(Tmin, Tmax)
-        set_loc(ax, 'y', minor=2)
-
-    finish(h_pad=1)
+    finish()
 
 
 @plot

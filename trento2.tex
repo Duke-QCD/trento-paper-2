@@ -560,11 +560,13 @@ The likelihood may be quickly computed using the principal component Gaussian pr
   \label{eq:likelihood}
 \end{align}
 where $\z\st = \z\st(\x\st)$ are the principal components predicted by the emulators, $\z\ex$ is the principal component transform of the experimental data $\y\ex$, and $\Sigma_z$ is the covariance (uncertainty) matrix.
-As in previous work \cite{Novak:2013bqa,Bernhard:2015hxa}, we assume a simple fractional uncertainty on the principal components, so that the covariance matrix is
+As in previous work \cite{Novak:2013bqa,Bernhard:2015hxa}, we assume a constant fractional uncertainty on the principal components, so that the covariance matrix is
 \begin{equation}
   \Sigma_z = \text{diag}(\sigma^2_z\,\z\ex),
 \end{equation}
 with $\sigma_z = 0.10$ in the present study.
+This is a simple ansatz intended to conservatively account for the various sources of uncertainty in the experimental data, model calculations, and emulator predictions.
+It certainly limits the meaning of quantitative uncertainties in the final estimated parameters and is an obvious target for improvement in future studies.
 
 We place a uniform prior on the model parameters, i.e.\ the prior is constant within the design range and zero outside.
 Combined with the likelihood \eqref{eq:likelihood} and Bayes' theorem \eqref{eq:bayes}, we can easily evaluate the posterior probability at any point in parameter space.

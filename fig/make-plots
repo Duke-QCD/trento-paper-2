@@ -899,7 +899,8 @@ def etas_estimate(calibration='data/bayesian/calibration/results_err10.hdf'):
     band = ax.fill_between(T, *intervals, **inner_band)
 
     ax.plot(T, np.full_like(T, 1/(4*np.pi)), color='.6')
-    ax.text(.25, .04, 'KSS bound', color='.4', fontsize=textiny)
+    ax.text(.299, .07, r'KSS bound $1/4\pi$', va='top', ha='right',
+            color='.4', fontsize=textiny)
 
     median, = ax.plot(
         T, np.median(etas_min) + dT*np.median(etas_slope),

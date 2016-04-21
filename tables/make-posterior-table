@@ -39,13 +39,12 @@ def format_ci(samples, ci=.9):
     else:
         precision = 1
 
-    mfmt = str(precision).join(['{:#.', 'f}'])
-    ufmt = mfmt.replace('#', '')
+    fmt = str(precision).join(['{:#.', 'f}'])
 
     return ''.join([
-        '\parbox{3.5em}{\hfill $', mfmt.format(median), '$}',
-        '$_{-', ufmt.format(ul), '}',
-        '^{+', ufmt.format(uh), '}$'
+        '\parbox{3.5em}{\hfill $', fmt.format(median), '$}',
+        '$_{-', fmt.format(ul), '}',
+        '^{+', fmt.format(uh), '}$'
     ])
 
 

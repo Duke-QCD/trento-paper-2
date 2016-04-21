@@ -580,6 +580,12 @@ We first run \order 6 steps to allow the chain to equilibrate, discard these ``b
 
 \section{Results}
 
+\fig*{posterior}{
+  Posterior distributions for the model parameters from calibrating to identified particles yields (blue, lower triangle) and charged particles yields (red, upper triangle).
+  The diagonal has marginal distributions for each parameter, while the off-diagonal contains joint distributions showing correlations among pairs of parameters.
+  $^\dagger$The units for $\eta/s$ slope are [GeV$^{-1}$].
+}
+
 The primary result of this study is the posterior distribution for the model parameters, Fig.~\ref{fig:posterior}.
 In fact, this figure contains two posterior distributions:
 one from calibrating to identified particle yields $dN/dy$ (blue, lower triangle),
@@ -590,38 +596,19 @@ In Fig.~\ref{fig:posterior}, the diagonal plots are marginal distributions for e
 Operationally, these are all histograms of MCMC samples.
 
 We discuss the posterior distributions in detail in the following subsections.
-As a partner to the distributions themselves, Fig.~\ref{fig:observables_samples} compares simulated observables (see Table~\ref{tab:observables}) to experimental data.
+First, let us introduce several ancillary results.
+
+Table~\ref{tab:posterior} contains quantitative estimates of each parameter extracted from the posterior distributions.
+The reported values are the medians of each parameter's distribution, and the uncertainties are highest-posterior density\footnote{The highest-posterior density credible interval is the smallest range containing the desired fraction of the distribution.} 90\% credible intervals.
+Note that some estimates are influenced by limited prior ranges, e.g.\ the lower bound of the nucleon width $w$.
+
+Figure~\ref{fig:observables_samples} compares simulated observables (see Table~\ref{tab:observables}) to experimental data.
 The top row has explicit model calculations at each of the 300 design points;
 recall that all model parameters vary across their full ranges, leading to the large spread in computed observables.
 The bottom row shows emulator predictions of 100 random samples from the identified particle posterior distribution (these are visually indistinguishable for the charged particle posterior).
 Here, the model has been calibrated to experiment, so its calculations are clustered tightly around the data---although some uncertainty remains since the samples are drawn from a posterior distribution of finite width.
-Overall, these plots show an excellent simultaneous fit to all observables.
-
-\subsection{Initial condition parameters}
-
-
-\subsection{QGP medium parameters}
-
-
-\fig*{posterior}{
-  Posterior distributions for the model parameters from calibrating to identified particles yields (blue, lower triangle) and charged particles yields (red, upper triangle).
-  The diagonal has marginal distributions for each parameter, while the off-diagonal contains joint distributions showing correlations among pairs of parameters.
-  $^\dagger$The units for $\eta/s$ slope are [GeV$^{-1}$].
-}
-
-\begin{table}
-  \caption{
-    \label{tab:posterior}
-    Estimated parameter values (medians) and uncertainties (90\% credible intervals) from the posterior distributions calibrated to identified and charged particle yields (middle and right columns, respectively).
-  }
-  \begin{ruledtabular}
-    \begin{tabular}{lll}
-      Calibrated to: & \multicolumn{1}{c}{Identified} & \multicolumn{1}{c}{Charged} \\
-      \paddedhline
-      \input{tables/posterior}
-    \end{tabular}
-  \end{ruledtabular}
-\end{table}
+Overall, the calibrated model provides an excellent simultaneous fit to all observables except the pion/kaon yield ratio, which (although it is difficult to see on a log scale) deviates by roughly 10--20\%.
+We address this deficiency in the following subsections.
 
 \fig*{observables_samples}{
   Simulated observables compared to experimental data from the ALICE experiment \cite{Abelev:2013vea,ALICE:2011ab}.
@@ -632,10 +619,60 @@ Overall, these plots show an excellent simultaneous fit to all observables.
   right: flow cumulants $v_n\{2\}$.
 }
 
+\begin{table}[b]
+  \caption{
+    \label{tab:posterior}
+    Estimated parameter values (medians) and uncertainties (90\% credible intervals) from the posterior distributions calibrated to identified and charged particle yields (middle and right columns, respectively).
+  }
+  \begin{ruledtabular}
+    \begin{tabular}{lll}
+      & \multicolumn{2}{c}{Calibrated to:} \\
+      \noalign{\smallskip}\cline{2-3}\noalign{\smallskip}
+      Parameter & \multicolumn{1}{c}{Identified} & \multicolumn{1}{c}{Charged} \\
+      \paddedhline
+      \input{tables/posterior}
+    \end{tabular}
+  \end{ruledtabular}
+\end{table}
+
+
+\subsection{Initial condition parameters}
+
+The first four parameters are related to the initial condition model.
+Proceeding in order:
+
+The normalization factor is not a physical parameter but nonetheless must be tuned to fit overall particle production.
+Both calibrations produced narrow posterior distributions, with the identified particle result located slightly lower to compromise between pion and kaon yields.
+There are some mild correlations between the normalization and other parameters that affect particle production.
+
 \fig[b]{posterior_p_arrows}{
   Posterior distribution of the \protect\trento\ entropy deposition parameter $p$ introduced in Eq.~\eqref{eq:genmean}.
   Approximate $p$-values are annotated for the KLN ($p~\approx~0.67~\pm~0.01$), EKRT ($p~\approx~0.0~\pm~0.1$), and wounded nucleon ($p = 1$) models.
 }
+
+The \trento\ entropy deposition parameter $p$ introduced in Eq.~\eqref{eq:genmean} has a remarkably narrow distribution, with the two calibrations in excellent agreement.
+The estimated value is essentially zero with approximate 90\% uncertainty $\pm0.2$, meaning that initial state entropy deposition is roughly proportional to the geometric mean of participant nuclear thickness functions, $s \sim \sqrt{\T_A\T_B}$.
+This confirms previous analysis of the \trento\ model which demonstrated that $p \approx 0$ simultaneously produces the correct ratio between initial state ellipticity and triangularity and fits multiplicity distributions for a variety of collision systems \cite{Moreland:2014oya}.
+We observe little correlation between $p$ and any other parameters, suggesting that its optimal value is mostly factorized from the rest of the model.
+
+Further, recall that the $p$ parameter smoothly interpolates among different classes of initial condition models;
+Fig.~\ref{fig:posterior_p_arrows} shows an expanded view of the posterior distribution along with the approximate $p$-values for the other models in Fig.~\ref{fig:cgc_compare}.
+The EKRT model (and presumably IP-Glasma as well) lie squarely in the peak---this helps explain their success---while the KLN and wounded nucleon models are considerably outside.
+
+The distributions for the multiplicity fluctuation parameter $k$ are quite broad, indicating that it's relatively unimportant for the present model and observables.
+Indeed, these fluctuations are overwhelmed by nucleon position fluctuations in large collision systems such as Pb+Pb.
+
+The Gaussian nucleon width $w$ has fairly narrow distributions mostly within 0.4--0.6 fm.
+It appears we did not extend the initial range low enough and so the posteriors are truncated;
+however we still resolve peaks at ${\sim}0.43$ and ${\sim}0.49$ fm for the identified and charged particle calibrations, respectively.
+\textbf{NOTE ABOUT EXP VALUE / OTHER MODELS?}
+Since the distributions are asymmetric, the median values are somewhat higher than the modes.
+We also observe striking correlations between the nucleon width and QGP viscosities---this is because decreasing the width leads to smaller scale structures and steeper gradients in the initial state.
+So e.g.\ as the nucleon width decreases, average transverse momentum increases, and bulk viscosity must increase to compensate.
+This explains the strong correlation between $w$ and $\zeta/s$ norm.
+
+
+\subsection{QGP medium parameters}
 
 \fig[b]{etas_estimate}{
   Estimated temperature dependence of the shear viscosity $(\eta/s)(T)$ for $T > T_c = 0.154$ GeV.
@@ -645,7 +682,19 @@ Overall, these plots show an excellent simultaneous fit to all observables.
   The horizontal gray line indicates the KSS bound $\eta/s \geq 1/4\pi$ \cite{Policastro:2001yc,Kovtun:2004de}.
 }
 
+\cite{Song:2013qma}
+
+
+\subsection{Mode observables [interim title]}
+
 Figure~\ref{fig:mode_observables} includes an additional centrality bin (70--80\%) that was not used in parameter estimation.
+
+\fig*{mode_observables}{
+  Top row: model calculations of identified yields $dN/dy$, mean $p_T$, and flow cumulants $v_n\{2\}$ as a function of collision centrality using high-likelihood parameters (listed in table \ref{tab:mode_params}) determined from the posterior in Fig.~\ref{fig:posterior}.
+  Symbols with error bars show data from ALICE and lines show results of the model.
+  Bottom row: ratio of the model divided by experiment.
+  Gray band indicates 10\% discrepancy between the model and experiment.
+}
 
 \begin{table}
   \caption{
@@ -665,13 +714,6 @@ Figure~\ref{fig:mode_observables} includes an additional centrality bin (70--80\
     \end{tabular}
   \end{ruledtabular}
 \end{table}
-
-\fig*{mode_observables}{
-  Top row: model calculations of identified yields $dN/dy$, mean $p_T$, and flow cumulants $v_n\{2\}$ as a function of collision centrality using high-likelihood parameters (listed in table \ref{tab:mode_params}) determined from the posterior in Fig.~\ref{fig:posterior}.
-  Symbols with error bars show data from ALICE and lines show results of the model.
-  Bottom row: ratio of the model divided by experiment.
-  Gray band indicates 10\% discrepancy between the model and experiment.
-}
 
 
 \section{Summary and conclusions}

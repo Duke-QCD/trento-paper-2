@@ -669,25 +669,39 @@ however we still resolve peaks at ${\sim}0.43$ and ${\sim}0.49$ fm for the ident
 Since the distributions are asymmetric, the median values are somewhat higher than the modes.
 We also observe striking correlations between the nucleon width and QGP viscosities---this is because decreasing the width leads to smaller scale structures and steeper gradients in the initial state.
 So e.g.\ as the nucleon width decreases, average transverse momentum increases, and bulk viscosity must increase to compensate.
-This explains the strong correlation between $w$ and $\zeta/s$ norm.
-
+This explains the strong anti-correlation between $w$ and $\zeta/s$ norm.
 
 \subsection{QGP medium parameters}
 
-\fig[b]{etas_estimate}{
+The shear viscosity parameters $(\eta/s)_\text{min,slope}$ set the temperature dependence of $\eta/s$ according to the linear ansatz
+\begin{equation}
+  (\eta/s)(T) = (\eta/s)_\text{min} + (\eta/s)_\text{slope} (T - T_c)
+\end{equation}
+for $T > T_c$.
+The full parametrization Eq.~\eqref{eq:etas} also includes a constant $(\eta/s)_\text{hrg}$ for $T < T_c$; this parameter was included in the calibration but yielded an essentially flat posterior distribution, implying that it has little to no effect.
+This is not surprising, since hadronic viscosity is largely handled by UrQMD, not the hydro model.
+Therefore, we omit $(\eta/s)_\text{hrg}$ from the posterior distribution visualizations and tables.
+
+Examining the marginal distributions for $\eta/s$ min and slope, we see a clear preference for $(\eta/s)_\text{min} \lesssim 0.15$ and a mild preference for a shallow slope;
+however, the marginal distributions do not paint a complete picture.
+The joint distribution shows a salient correlation between the two parameters, hence, while neither $\eta/s$ min nor slope are strongly constrained independently, a linear combination is quite strongly constrained.
+Figure~\ref{fig:etas_estimate} visualizes the complete estimate of the temperature dependence of $\eta/s$ via the median min and slope from the posterior (for identified particles) and a 90\% credible interval.
+This visualization corroborates that the posterior for $(\eta/s)(T)$ is markedly narrower than the prior and further reveals that the uncertainty is smallest at intermediate temperatures, $T \sim {}$200--225 MeV.
+We hypothesize that this is the most important temperature range at $\sqrts = 2.76$~TeV---perhaps it is where most anisotropic flow develops, for instance---and thus the data provide a ``handle'' for $\eta/s$ around 200 MeV.
+Data at other beam energies could provide additional handles at different temperatures, enabling a more precise estimate of the temperature dependence of $\eta/s$.
+
+This result for $(\eta/s)(T)$ supports several recent findings using other models:
+a detailed study using the EKRT model \cite{Niemi:2015qia} showed that a combination of RHIC and LHC data prefer a shallow high-temperature slope, while an analysis using a three-dimensional constituent quark model \cite{Denicol:2015nhu} demonstrated that a similar shallow slope best describes the rapidity dependence of elliptic flow at RHIC.
+In addition, the estimated temperature-averaged shear viscosity is consistent with the (constant) $\eta/s = 0.095$ reported \cite{Ryu:2015vwa} using the IP-Glasma model and the same bulk viscosity parametrization, Eq.~\eqref{eq:zetas}.
+Finally, the present result remains compatible (within uncertainty) with the KSS bound $\eta/s \geq 1/4\pi$ \cite{Policastro:2001yc,Kovtun:2004de}.
+
+\fig{etas_estimate}{
   Estimated temperature dependence of the shear viscosity $(\eta/s)(T)$ for $T > T_c = 0.154$ GeV.
   The gray shaded region indicates the prior range for the linear $(\eta/s)(T)$ parametrization Eq.~\eqref{eq:etas},
   the blue line is the median from the posterior distribution,
   and the blue band is a 90\% credible interval.
   The horizontal gray line indicates the KSS bound $\eta/s \geq 1/4\pi$ \cite{Policastro:2001yc,Kovtun:2004de}.
 }
-
-\cite{Song:2013qma}
-
-
-\subsection{Mode observables [interim title]}
-
-Figure~\ref{fig:mode_observables} includes an additional centrality bin (70--80\%) that was not used in parameter estimation.
 
 \fig*{mode_observables}{
   Top row: model calculations of identified yields $dN/dy$, mean $p_T$, and flow cumulants $v_n\{2\}$ as a function of collision centrality using high-likelihood parameters (listed in table \ref{tab:mode_params}) determined from the posterior in Fig.~\ref{fig:posterior}.
@@ -696,7 +710,33 @@ Figure~\ref{fig:mode_observables} includes an additional centrality bin (70--80\
   Gray band indicates 10\% discrepancy between the model and experiment.
 }
 
-\begin{table}
+For the $\zeta/s$ norm (the prefactor for the parametrization Eq.~\eqref{eq:zetas}), the calibrations yielded clearly peaked posterior distributions located slightly above one.
+Hence, the estimate is comfortably consistent with leaving the parametrization unscaled, as in \cite{Ryu:2015vwa}.
+As noted in the previous subsection, there is a strong anti-correlation between $\zeta/s$ norm and the nucleon width.
+We also observe a positive correlation with $\eta/s$ min, which initially seems counterintuitive.
+This dependence arises via the nucleon width:
+increasing bulk viscosity requires decreasing the nucleon width, which in turn necessitates increasing shear viscosity to damp out the excess anisotropy.
+Given the previously mentioned shortcomings in the current treatment of bulk viscosity (neglecting bulk corrections at particlization, parametrization mismatch with the equation of state, lack of a dynamical pre-equilibrium phase), we refrain from making any quantitative statements.
+What is clear, however, is that finite bulk viscosity is necessary to simultaneously describe transverse momentum and flow data.
+
+The distributions for the hydro-to-UrQMD switching temperature $T_\text{switch}$ have by far the most dramatic difference between the two calibrations.
+The posterior from identified particle yields shows a shark peak centered at $T \approx 148$~MeV, just below $T_c = 154$~MeV;
+but with charged particle yields, the distribution is nearly flat.
+This is because hydro is in chemical equilibrium while UrQMD is not, hence $T_\text{switch}$ is the only model parameter that can influence identified particle ratios, and so when we require the model to describe identified particle yields $T_\text{switch}$ is tightly constrained.
+On the other hand, lacking these data there is little else to determine an optimal switching temperature.
+This reinforces the original hybrid model postulate---that both hydro and Boltzmann transport models predict the same medium evolution within a temperature window \cite{Bass:2000ib,Nonaka:2006yn,Petersen:2008dd}.
+
+Note that, while we do see a narrow peak for $T_\text{switch}$, the model cannot simultaneously fit pion, kaon, and proton yields;
+in particular, the pion/kaon ratio is 10--20\% low.
+The peak thus arises from a compromise between pions and kaons---not an ideal fit---so we do not consider the quantitative value of the peak to be particularly meaningful.
+This is a long-standing issue in hybrid models \cite{Song:2013qma} and therefore likely indicates a more fundamental problem with the particle production scheme rather than one with this specific model.
+
+\subsection{Mode observables [interim title]}
+
+Table~\ref{tab:mode_params}
+Figure~\ref{fig:mode_observables} includes an additional centrality bin (70--80\%) that was not used in parameter estimation.
+
+\begin{table}[b]
   \caption{
     \label{tab:mode_params}
     High-probability parameters chosen based on the posterior distributions and used to generate Fig.~\ref{fig:mode_observables}.

@@ -918,7 +918,7 @@ def etas_estimate(calibration='data/bayesian/calibration/results_err10.hdf'):
     ax.legend(*zip(*[
         (prior, 'Prior range'),
         (median, 'Posterior median'),
-        (band, '90% CI'),
+        (band, '90% CR'),
     ]), loc='upper left', bbox_to_anchor=[0, 1.06])
 
     finish()

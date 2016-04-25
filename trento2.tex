@@ -704,10 +704,12 @@ Finally, the present result remains compatible (within uncertainty) with the KSS
 }
 
 \fig*{mode_observables}{
-  Top row: model calculations of identified yields $dN/dy$, mean $p_T$, and flow cumulants $v_n\{2\}$ as a function of collision centrality using high-likelihood parameters (listed in table \ref{tab:mode_params}) determined from the posterior in Fig.~\ref{fig:posterior}.
-  Symbols with error bars show data from ALICE and lines show results of the model.
-  Bottom row: ratio of the model divided by experiment.
-  Gray band indicates 10\% discrepancy between the model and experiment.
+  Model calculations using the high-probability parameters listed in Table~\ref{tab:mode_params}.
+  Solid lines are calculations using parameters based on the identified particle posterior,
+  dashed lines are based on the charged particle posterior,
+  and points are data from the ALICE experiment \cite{Abelev:2013vea,ALICE:2011ab}.
+  Top row: calculations of identified or charged particle yields $dN/dy$ or $d\nch/d\eta$ (left), mean transverse momenta $\avg{p_T}$ (middle), and flow cumulants $\vnk n 2$ (right) compared to data.
+  Bottom: ratio of model calculations to data, where the gray band indicates $\pm10$\%.
 }
 
 One should interpret the estimate of $(\eta/s)(T)$ depicted in Fig.~\ref{fig:etas_estimate} with care.
@@ -737,10 +739,7 @@ in particular, the pion/kaon ratio is 10--20\% low.
 The peak thus arises from a compromise between pions and kaons---not an ideal fit---so we do not consider the quantitative value of the peak to be particularly meaningful.
 This is a long-standing issue in hybrid models \cite{Song:2013qma} and therefore likely indicates a more fundamental problem with the particle production scheme rather than one with this specific model.
 
-\subsection{Mode observables [interim title]}
-
-Table~\ref{tab:mode_params}
-Figure~\ref{fig:mode_observables} includes an additional centrality bin (70--80\%) that was not used in parameter estimation.
+\subsection{Verification of high-probability parameters}
 
 \begin{table}[b]
   \caption{
@@ -760,6 +759,18 @@ Figure~\ref{fig:mode_observables} includes an additional centrality bin (70--80\
     \end{tabular}
   \end{ruledtabular}
 \end{table}
+
+As a final verification of emulator predictions and the model's accuracy, we ran a large number of events using high-probability parameters and computed observables for comparison with experiment.
+We chose two sets of parameters based on the peaks of the posterior distributions, listed in Table~\ref{tab:mode_params}.
+These are something like the ``most probable'' parameters and the corresponding model calculations should optimally fit the data.
+
+We executed \order 5 minimum-bias events for each set of parameters and computed observables, shown along with experimental data in Fig.~\ref{fig:mode_observables}.
+Solid lines represent calculations using parameters based on the identified particle posterior while dashed lines are based on the charged particle posterior.
+Note that these calculations include a peripheral centrality bin (70--80\%) that was not used in parameter estimation.
+
+We observe an excellent overall fit; most calculations are within 10\% of experimental data, the notable exceptions being the pion/kaon ratio and central elliptic flow, both of which are general problems within this class of models.
+Total charged particle production is nearly perfect---within 2\% of experiment out to 80\% centrality---indicating that the issues with identified particle ratios arise in the particlization and/or hadronic phases, not in initial entropy production.
+The $v_2$ mismatch in the most central bin is a manifestation of the experimental observation that elliptic and triangular flow converge to the same value in ultra-central collisions \cite{CMS:2013bza}, a phenomenon that hydrodynamic models have yet to explain \cite{Denicol:2014ywa,Shen:2015qta}.
 
 
 \section{Summary and conclusions}

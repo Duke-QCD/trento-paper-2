@@ -454,7 +454,7 @@ We selected the same centrality classes as the corresponding experimental data b
 We computed identified $dN/dy$ and $\avg{p_T}$ by simple counting and averaging of the desired species at mid-rapidity ($|y| < 0.5$); no additional steps are necessary since the experimental data are corrected and extrapolated to zero $p_T$ \cite{Abelev:2013vea}.
 Finally, we calculated flow coefficients for charged particles within the kinematic range of the ALICE detector using the direct $Q$-cumulant method \cite{Bilandzic:2010jr}.
 
-The top row of Fig.~\ref{fig:observables_samples} shows the final observables for each of the 300 design points;
+The top row of Fig.~\ref{fig:observables_samples} (located later in Sec.~\ref{sec:results}) shows the final observables for each of the 300 design points;
 their large spreads arise from the wide input parameter ranges.
 
 \subsection{Gaussian process emulators}
@@ -511,7 +511,7 @@ We use a typical Gaussian function
   \sigma(\x, \x') = \sigma_\text{GP}^2 \exp\Biggl[ -\sum_{k=1}^n \frac{(x_k - x'_k)^2}{2\ell_k^2} \Biggr] + \sigma_n^2\delta_{\x\x'},
 \end{equation}
 which yields smoothly-varying processes with continuous derivatives, making it a common choice for well-behaved models.
-This form has several \emph{hyperparameters} to be estimated from the training data:
+This form has several variable \emph{hyperparameters}:
 the overall variance of the Gaussian process $\sigma_\text{GP}^2$,
 the correlation lengths for each input parameter $\ell_k$,
 and the noise variance $\sigma_n^2$ which allows for statistical error.
@@ -520,7 +520,7 @@ These hyperparameters may be estimated from the training data by numerically max
   \log P = -\frac{1}{2} \y\tran \Sigma^{-1} \y - \frac{1}{2} \log |\Sigma| - \frac{m}{2} \log 2\pi,
 \end{equation}
 with $\Sigma = \sigma(X, X)$, i.e.\ the covariance function applied to the inputs.
-This form consists of a least-squares fit to the data (first term), a complexity penalty to prevent overfitting (second term), and a normalization constant (third term).
+This expression consists of a least-squares fit to the data (first term), a complexity penalty to prevent overfitting (second term), and a normalization constant (third term).
 
 To this point we have considered only a single output.
 Gaussian processes are fundamentally scalar functions, but the model produces many outputs, all of which must be emulated.
@@ -552,7 +552,7 @@ The predictions need not agree perfectly at every point; ideally the residuals w
 \newcommand{\ex}{_\text{exp}}
 
 The final step in the parameter estimation method is to calibrate the model parameters to optimally reproduce experimental observables, thereby extracting probability distributions for the true values of the parameters.
-According to Bayes' theorem, the probability for the true parameters $\x\st$is
+According to Bayes' theorem, the probability for the true parameters $\x\st$ is
 \begin{equation}
   P(\x\st|X,Y,\y\ex) \propto P(X,Y,\y\ex|\x\st) P(\x\st).
   \label{eq:bayes}
@@ -573,6 +573,7 @@ where $\z\st = \z\st(\x\st)$ are the principal components predicted by the emula
 As in previous work \cite{Novak:2013bqa,Bernhard:2015hxa}, we assume a constant fractional uncertainty on the principal components, so that the covariance matrix is
 \begin{equation}
   \Sigma_z = \text{diag}(\sigma^2_z\,\z\ex),
+  \label{eq:uncertainty}
 \end{equation}
 with $\sigma_z = 0.10$ in the present study.
 This is a simple ansatz intended to conservatively account for the various sources of uncertainty in the experimental data, model calculations, and emulator predictions.
@@ -588,7 +589,7 @@ We use the affine-invariant ensemble sampler \cite{Goodman:2010en,FM:2013mc}, an
 We first run \order 6 steps to allow the chain to equilibrate, discard these ``burn-in'' samples, then generate \order 7 posterior samples.
 
 
-\section{Results}
+\section{\label{sec:results}Results}
 
 \fig*{posterior}{
   Posterior distributions for the model parameters from calibrating to identified particles yields (blue, lower triangle) and charged particles yields (red, upper triangle).
@@ -724,7 +725,7 @@ Finally, the present result remains compatible (within uncertainty) with the KSS
 
 One should interpret the estimate of $(\eta/s)(T)$ depicted in Fig.~\ref{fig:etas_estimate} with care.
 We asserted a somewhat restricted linear parametrization reaching a minimum at a fixed temperature, and evidently may not have extended the prior range for the slope high enough to bracket the posterior distribution;
-these assumptions, along with the flat 10\% uncertainty, surely affect the precise result.
+these assumptions, along with the flat 10\% uncertainty (see Eq.~\eqref{eq:uncertainty}), surely affect the precise result.
 And in general, a credible region is not a strict constraint---the true function may lie partially or completely (however improbably) outside the estimated region.
 Yet the overarching message holds: we estimate a shallow positive slope with the least uncertainty at intermediate temperatures.
 
@@ -740,8 +741,9 @@ What is clear, however, is that finite bulk viscosity is necessary to simultaneo
 The distributions for the hydro-to-UrQMD switching temperature $T_\text{switch}$ have by far the most dramatic difference between the two calibrations.
 The posterior from identified particle yields shows a shark peak centered at $T \approx 148$~MeV, just below $T_c = 154$~MeV;
 but with charged particle yields, the distribution is nearly flat.
-This is because hydro is in chemical equilibrium while UrQMD is not, hence $T_\text{switch}$ is the only model parameter that can influence identified particle ratios, and so when we require the model to describe identified particle yields $T_\text{switch}$ is tightly constrained.
-On the other hand, lacking these data there is little else to determine an optimal switching temperature.
+This is because the final particle ratios---while somewhat modified by scatterings and decays in the hadronic phase---are largely determined by the thermal ratios at the switching temperature (the present hydrodynamic equation of state does not have partial chemical equilibrium).
+So, when we require the model to describe identified particle yields, $T_\text{switch}$ is tightly constrained;
+on the other hand, lacking these data there is little else to determine an optimal switching temperature.
 This reinforces the original hybrid model postulate---that both hydro and Boltzmann transport models predict the same medium evolution within a temperature window \cite{Bass:2000ib,Nonaka:2006yn,Petersen:2008dd}.
 
 Note that, while we do see a narrow peak for $T_\text{switch}$, the model cannot simultaneously fit pion, kaon, and proton yields;
@@ -770,7 +772,7 @@ This is a long-standing issue in hybrid models \cite{Song:2013qma} and therefore
   \end{ruledtabular}
 \end{table}
 
-As a final verification of emulator predictions and the model's accuracy, we ran a large number of events using high-probability parameters and computed observables for comparison with experiment.
+As a final verification of emulator predictions and the model's accuracy, we ran a large number of events using high-probability parameters and compared the resulting observables to experiment.
 We chose two sets of parameters based on the peaks of the posterior distributions, listed in Table~\ref{tab:mode_params}.
 These are something like the ``most probable'' parameters and the corresponding model calculations should optimally fit the data.
 
@@ -778,9 +780,9 @@ We executed \order 5 minimum-bias events for each set of parameters and computed
 Solid lines represent calculations using parameters based on the identified particle posterior while dashed lines are based on the charged particle posterior.
 Note that these calculations include a peripheral centrality bin (70--80\%) that was not used in parameter estimation.
 
-We observe an excellent overall fit; most calculations are within 10\% of experimental data, the notable exceptions being the pion/kaon ratio and central elliptic flow, both of which are general problems within this class of models.
+We observe an excellent overall fit; most calculations are within 10\% of experimental data, the notable exceptions being the pion/kaon ratio (discussed in the previous subsection) and central elliptic flow, both of which are general problems within this class of models.
 Total charged particle production is nearly perfect---within 2\% of experiment out to 80\% centrality---indicating that the issues with identified particle ratios arise in the particlization and/or hadronic phases, not in initial entropy production.
-The $v_2$ mismatch in the most central bin is a manifestation of the experimental observation that elliptic and triangular flow converge to the same value in ultra-central collisions \cite{CMS:2013bza}, a phenomenon that hydrodynamic models have yet to explain \cite{Denicol:2014ywa,Shen:2015qta}.
+The $v_2$ mismatch in the most central bin is a manifestation of the experimental observation that elliptic and triangular flow converge to nearly the same value in ultra-central collisions \cite{CMS:2013bza}, a phenomenon that hydrodynamic models have yet to explain \cite{Denicol:2014ywa,Shen:2015qta}.
 
 
 \section{Summary and conclusions}
@@ -813,12 +815,22 @@ The Bayesian analysis reveals a number of interesting features
 We've selected a set of high likelihood model parameters from the Bayesian analysis and used them to analyze the optimal performance of the model. The resulting discrepancy between model and experiment is less than $\pm10\%$ for mean $p_T$, flow cumulants, and charged particle yields while we observe significant $\sim\!10$--$30\%$ tension in the relative abundances of pions, kaons, and protons when the model is tuned to fit identified yields.
 
 Although one ultimately seeks a first principles description for QGP energy deposition and thermalization, the present study demonstrates that such an understanding is not required to determine QGP medium parameters with quantitative uncertainty. 
+
 \medskip
 
-All models use in this study are open source. The \trento\ model and free streaming package are available at \url{github.com/Duke-QCD/trento}, the iEBE-VISHNU hybrid model at \url{u.osu.edu/vishnu} and latest version of UrQMD can be downloaded from \url{urqmd.org}.
+\newcommand{\nicelink}[2][http]{\mbox{\href{#1://#2}{\nolinkurl{#2}}}}
+
+All code used in this study is publicly available:
+the \trento\ initial condition model at \nicelink{qcd.phy.duke.edu/trento},
+the iEBE-VISHNU package at \url{u.osu.edu/vishnu},
+UrQMD at \url{urqmd.org},
+the workflow for generating events at \nicelink[https]{github.com/jbernhard/heavy-ion-collisions-osg},
+and the source for this manuscript including all figures and tables at \nicelink[https]{github.com/Duke-QCD/trento-paper-2}.
 
 \begin{acknowledgments}
-The authors thank Ulrich Heinz, Scott Pratt, Harri Niemi and Bj\"orn Schenke for helpful discussions and clarifications in the production of the manuscript.
+The authors thank Ulrich Heinz, Scott Pratt, Harri Niemi, and Bj\"orn Schenke for helpful discussions and clarifications in the production of the manuscript.
+This research was completed using over ten million CPU hours provided by the Open Science Grid \cite{Pordes:2007zzb,Sfiligoi:2010zz}, which is supported by the National Science Foundation and the U.S.\ Department of Energy's Office of Science.
+\textbf{FUNDING FUNDING FUNDING}
 \end{acknowledgments}
 
 \bibliography{trento2}

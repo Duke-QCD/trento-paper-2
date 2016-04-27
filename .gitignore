@@ -3,3 +3,4 @@
 *.hdf
 build/
 fig/data
+tables/*.tex

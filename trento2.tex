@@ -427,7 +427,7 @@ The simularity suggests that \trento\ can effectively reproduce the scaling beha
 
 With the full evolution model in hand, a number of important model parameters---related to both initial-state entropy deposition and the QGP medium---remain undetermined.
 These parameters typically correlate among each other and affect multiple observables, hence, if we wish to describe a wide variety of experimental observables, the only option is a simultaneous fit of all parameters.
-But, it is not feasible to do this directly, since simulating observables at even a single set of parameter values requires thousands of individual events and significant computation time.
+However, it is not feasible to do this directly, since simulating observables at even a single set of parameter values requires thousands of individual events and significant computation time.
 
 To overcome this limitation, we employ a Bayesian method for parameter estimation with computationally expensive models \cite{OHagan:2006ba,Higdon:2008cmc,Higdon:2014tva,Wesolowski:2015fqa}.
 Briefly, the model is evaluated at a relatively small \order 2 number of parameter points, the output is interpolated by a Gaussian process emulator, and the emulator is used to systematically explore parameter space with Markov chain Monte Carlo.
@@ -490,7 +490,7 @@ Four control the parametric initial state:
 \end{enumerate}
 the remaining five are related to the QGP medium:
 \begin{enumerate}
-  \item[5--7.] the three parameters ($\eta/s$ hrg, min, and slope) in Eq.~\eqref{eq:etas} that set the temperature dependence of shear viscosity,
+  \item[5--7.] the three parameters ($\eta/s$ hrg, min, and slope) in Eq.~\eqref{eq:etas} that set the temperature dependence of the specific shear viscosity,
   \setcounter{enumi}{7}
   \item normalization prefactor for the temperature dependence of bulk viscosity Eq.~\eqref{eq:zetas}, and
   \item particlization temperature $T_\text{switch}$.
@@ -498,7 +498,7 @@ the remaining five are related to the QGP medium:
 This parameter set will enable simultaneous characterization of the initial state and medium, including any correlations.
 Table~\ref{tab:design} summarizes the parameters and their corresponding ranges, which are intentionally wide to ensure that the optimal values are bracketed.
 
-Having designated the model parameters and ranges, we generated a 300 point maximin Latin hypercube design \cite{Morris:1995lh} in the nine-dimensional space and executed \order 4 minimum-bias Pb+Pb events at each of the 300 points.
+Having designated the model parameters and ranges, we generated a 300 point maximin\footnote{A ``maximin'' design \emph{maximizes} the \emph{minimum} distance between points, thereby reducing large gaps and tight clusters.} Latin hypercube design \cite{Morris:1995lh} in the nine-dimensional space and executed \order 4 minimum-bias Pb+Pb events at each of the 300 points.
 Each event consists of a single initial condition and hydro simulation followed by multiple samples of the freeze-out hypersurface.
 The number of samples is roughly inversely proportional to the event's particle multiplicity so that total particle production is constant across all events---typically ${\sim}$5 samples for central events and up to 100 for peripheral events.
 This strategy leads to consistent statistical uncertainties across all parameter points and centrality classes.
@@ -643,7 +643,7 @@ It certainly limits the meaning of quantitative uncertainties in the final estim
 We place a uniform prior on the model parameters, i.e.\ the prior is constant within the design range and zero outside.
 Combined with the likelihood \eqref{eq:likelihood} and Bayes' theorem \eqref{eq:bayes}, we can easily evaluate the posterior probability at any point in parameter space.
 
-The canonical method for constructing the posterior distribution is Markov chain Monte Carlo (MCMC).
+Posterior distributions are typically constructed using Markov chain Monte Carlo (MCMC) methods.
 MCMC algorithms generate random walks through parameter space by accepting or rejecting proposal points based on the posterior probability; after many steps the chain converges to the desired posterior.
 
 We use the affine-invariant ensemble sampler \cite{Goodman:2010en,FM:2013mc}, an efficient MCMC algorithm that uses a large ensemble of interdependent walkers.

@@ -93,7 +93,7 @@ An estimate of the effective (constant) QGP shear viscosity needed to fit spectr
 
 The remaining uncertainty in $\eta/s$ arises largely from the hydrodynamic initial conditions:
 different initial condition models lead to different hydrodynamic flow and hence prefer different values of $\eta/s$.
-Current efforts to reduce uncertainties typically focus on improving theoretical descriptions of the initial conditions \cite{Schenke:2012wb, Niemi:2015qia} as well as including new sensitive observables to assess the performance of each model.
+Current efforts to reduce uncertainties include improving theoretical descriptions of the initial conditions \cite{Schenke:2012wb, Niemi:2015qia} and testing respective model predictions against sensitive new observables \cite{Aad:2013xma, Aad:2014fla, ALICE:2016kpq}.
 The process thus defines an iterative cycle in which theory calculations are embedded in hydrodynamic transport simulations, analyzed against a comprehensive list of bulk observables, and used to generate testable predictions which inform subsequent refinements to the theory.
 
 Model optimization and comparison is often complicated by multiple undetermined and highly correlated input parameters.
@@ -229,8 +229,8 @@ Once the particles cease interacting, the position, momentum, and particle type 
 \subsection{Parametric initial conditions}
 
 \fig{thickness}{
-  Cross section of the participant nucleon density in a mid-central Pb+Pb collision at $\sqrts=2.76$ TeV as a function of the transverse coordinate $x$ parallel to impact parameter $\vec{b}$.
-  The gray band indicates the region bounded by the minimum and maximum values of the local participant thickness functions $T_A$ and $T_B$, while the blue band indicates the region spanned by the generalized mean of $T_A$ and $T_B$ with parameter $-1<p<1$.
+    Cross section of the participant nucleon density in a mid-central Pb+Pb collision at $\sqrts=2.76$ TeV as a function of the transverse coordinate $x$ parallel to impact parameter $\vec{b}$.
+  The gray band indicates the region bounded by the minimum and maximum values of the local participant thickness functions $\tilde{T}_A$ and $\tilde{T}_B$, while the blue band indicates the region spanned by the generalized mean of $\tilde{T}_A$ and $\tilde{T}_B$ with parameter $-1<p<1$.
   The solid blue line shows an example of a discrete mapping specified by a generalized mean with $p=0$.
 }
 
@@ -239,11 +239,9 @@ Once the particles cease interacting, the position, momentum, and particle type 
 }
 
 The hydrodynamic equations of motion necessitate initial conditions for the energy density $e$, four-velocity $u^\mu$, bulk pressure $\Pi$, and shear stress tensor $\pi^{\mu\nu}$ at the thermalization time $\tau_0$ when the fluid attains local thermal equilibrium.
-These initial conditions emerge from dynamical processes of the collision, and are commonly modeled in two stages: initial state models describe the system immediately after impact at time $\tau=0^+$, then pre-equilibrium transport models evolve the system until time $\tau=\tau_0$ when the system is assumed to have thermalized.
-Efforts to realistically model the pre-equilibrium phase of the collision include calculations in both strongly and weakly coupled limits \cite{Schenke:2012wb, Schenke:2012fw, vanderSchee:2013pia, vanderSchee:2015rta, Chesler:2015fpa}.
+These initial conditions emerge from dynamical processes of the collision, and are commonly modeled in two stages: initial state models describe the system immediately after impact at time $\tau=0^+$, then pre-equilibrium transport models evolve the system until time $\tau=\tau_0$ when the system is assumed to have thermalized. The pre-equilibrium phase of the collision has been modeled by transport dynamics in both strongly and weakly coupled theories
 
-Efforts to understand thermalization \cite{Romatschke:2006nk, Krasnitz:2002ng, Berges:2013eia, Arnold:2004ti, Kurkela:2011ti, Heller:2012km, vanderSchee:2013pia, Rebhan:2004ur, Heller:2011ju, Janik:2006gp}.
-
+Considerable effort has been devoted to understanding the processes responsible for rapid thermalization \cite{Romatschke:2006nk, Krasnitz:2002ng, Berges:2013eia, Arnold:2004ti, Kurkela:2011ti, Heller:2012km, vanderSchee:2013pia, Rebhan:2004ur, Heller:2011ju, Janik:2006gp} and models of the pre-equilibrium transport dynamics have been implemented in both strongly and weakly coupled limits \cite{Schenke:2012wb, Schenke:2012fw, vanderSchee:2013pia, vanderSchee:2015rta, Chesler:2015fpa}.
 
 The importance of pre-equilibrium dynamics was recently studied by initializing hydrodynamic simulations with a free streaming phase (zero coupling) and switching to hydrodynamics (strong coupling) after different periods of time \cite{Liu:2015nwa}.
 The authors showed that although free streaming never leads to thermalization, it can be used to bracket the influence of pre-equilibrium dynamics on the medium evolution as the pre-equilibrium coupling strength is expected to fall between the free streaming and hydrodynamic limits.
@@ -286,7 +284,7 @@ The collision cross sections thus enter through the calculation of $\T_A$ and $\
 
 \fig[b]{nch_per_npart}{
     Average charged particle density per participant pair $(d\nch/d\eta)/(\npart/2)$ at mid-rapidity as a function of participant number for Au+Au, Pb+Pb and p+Pb systems at various collision energies.
-    Lines are \protect\trento\ calculations with generalized mean parameter $p=0$, and symbols are experimental data from PHENIX and ALICE \ref{?}.
+    Lines are \protect\trento\ calculations with generalized mean parameter $p=0$, and symbols are experimental data from PHENIX and ALICE \cite{Adare:2015bua, Aamodt:2010cz, Adam:2015ptt}.
     The average minimum bias participant number for the p+Pb system has been shifted for clarity.
 }
 
@@ -323,6 +321,7 @@ The generalized mean ansatz thus parameterizes asymmetric entropy deposition, or
 \fig*{cgc_compare}{
   Profiles of the initial thermal distribution predicted by the KLN (left), EKRT (middle), and wounded nucleon (right) models (dashed black lines) compared to a generalized mean with different values of the parameter $p$ (solid blue lines).
   Staggered lines show different cross sections of the initial entropy density $dS/(d^2r_\perp dy)$ as a function of the participant nucleon density $\T_A$ for several values of $\T_B = 1, 2, 3$ [fm$^{-2}$].
+  The EKRT mapping is shown with model parameters $K=0.64$ and $\beta=0.8$ from Ref.~\cite{Niemi:2015qia}.
   Entropy normalization is arbitrary.
 }
 

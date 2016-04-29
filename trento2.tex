@@ -192,7 +192,7 @@ with dimensionless parameter $x = T/T_0$ and parameterization coefficients
   &T_0 = 0.18 \text{ GeV}, ~~T_a = 0.995\, T_0, ~~T_b = 1.05\, T_0.
 \end{align*}
 The resulting $(\zeta/s)(T)$ curve peaks at $T=180$~MeV and falls off exponentially at higher and lower temperatures.
-Equation~\eqref{eq:zetas} is then multiplied by an overall normalization factor $(\zeta/s)_\text{norm}$, taken as a free parameter, to scale the bulk viscosity curve up and down.
+Equation~\eqref{eq:zetas} is then multiplied by an overall normalization factor $(\zeta/s)_\text{norm}$, taken as a free parameter, to scale the height of the bulk viscosity curve.
 The parameter $(\zeta/s)_\text{norm}$ hence quantifies the ratio of the $(\zeta/s)(T)$ parameterization used in this work to the approximate best fit curve used in Ref.~\cite{Ryu:2015vwa}.
 
 The hybrid model used in the present analysis switches from hydrodynamic field equations to a microscopic kinetic description of the medium once the fluid expands, cools, and hadronizes.
@@ -217,9 +217,9 @@ The shear correction to the distribution function is given by,
 \end{equation}
 where $f_0$ is the ideal distribution function, $\pi_{\mu\nu}$ the shear stress tensor, $p^\mu$ the particle momentum and $e$, $P$ and $T$ the fluid's energy density, pressure and temperature.
 The bulk viscous correction, on the other hand, is described by multiple formulations in the literature which predict significantly different behavior when either the bulk pressure $\Pi$ or the momentum $p$ are large \cite{Dusling:2011fd, Noronha-Hostler:2013gga}.
-The present study neglects bulk viscous corrections to the distribution function $\delta f_\text{bulk}$ at particlization, based on the expectation that the corrections are small for the specific $(\zeta/s)(T)$ curve Eq.~\eqref{eq:zetas} used in this analysis.
+The present study neglects bulk viscous corrections to the distribution function $\delta f_\text{bulk}$ at particlization, based on the expectation that the corrections are small for the $(\zeta/s)(T)$ curve specified in Eq.~\eqref{eq:zetas}.
 The approximation, admittedly, is not great and leads to e.g.\ order 10\% errors in the magnitude of mean $p_T$ at particlization.
-We thus refrain from making any quantitative statements regarding the magnitude of bulk viscosity preferred by the analysis and emphasize that a more realistic $(\zeta/s)(T)$ curve and careful treatment of $\delta f_\text{bulk}$ are necessary to constrain the QGP bulk viscosity with precision.
+We thus refrain from making any quantitative statements regarding the magnitude of bulk viscosity preferred by the analysis and emphasize that a more realistic $(\zeta/s)(T)$ curve and careful treatment of $\delta f_\text{bulk}$ are necessary to constrain the QGP bulk viscosity with improved precision.
 
 Once the fluid is converted into hadrons, the subsequent microscopic dynamics are modeled using the UrQMD hadronic afterburner \cite{Bass:1998ca, Bleicher:1999xi}.
 The UrQMD model propagates all produced hadrons along classical trajectories, samples their stochastic binary collisions and simulates their resonance decays until the system becomes too dilute to continue interacting.
@@ -244,7 +244,10 @@ Once the particles cease interacting, the position, momentum, and particle type 
 
 The hydrodynamic equations of motion necessitate initial conditions for the energy density $e$, four-velocity $u^\mu$, bulk pressure $\Pi$, and shear stress tensor $\pi^{\mu\nu}$ at the thermalization time $\tau_0$ when the fluid attains local thermal equilibrium.
 These initial conditions emerge from dynamical processes of the collision, and are commonly modeled in two stages: initial state models describe the system immediately after impact at time $\tau=0^+$, then pre-equilibrium transport models evolve the system until time $\tau=\tau_0$ when the system is assumed to have thermalized.
-Current efforts to realistically model the pre-equilibrium phase of the collision include calculations in both strong and weakly coupled limits \ref{?}, although the exact processes which drive rapid thermalization are not well understood.
+Efforts to realistically model the pre-equilibrium phase of the collision include calculations in both strongly and weakly coupled limits \cite{Schenke:2012wb, Schenke:2012fw, vanderSchee:2013pia, vanderSchee:2015rta, Chesler:2015fpa}.
+
+Efforts to understand thermalization \cite{Romatschke:2006nk, Krasnitz:2002ng, Berges:2013eia, Arnold:2004ti, Kurkela:2011ti, Heller:2012km, vanderSchee:2013pia, Rebhan:2004ur, Heller:2011ju, Janik:2006gp}.
+
 
 The importance of pre-equilibrium dynamics was recently studied by initializing hydrodynamic simulations with a free streaming phase (zero coupling) and switching to hydrodynamics (strong coupling) after different periods of time \cite{Liu:2015nwa}.
 The authors showed that although free streaming never leads to thermalization, it can be used to bracket the influence of pre-equilibrium dynamics on the medium evolution as the pre-equilibrium coupling strength is expected to fall between the free streaming and hydrodynamic limits.
@@ -266,12 +269,12 @@ where the mapping $f$ is some static function of the density of nuclear matter i
 where the relative nucleon coordinates of each nucleus are shifted by a random impact parameter such that ${\T_{A,B}(x, y) = \T(x \pm b/2, y)}$.
 For the proton thickness function we use a Gaussian
 \begin{equation}
-  T_p(\vec{x}) = \frac{1}{2\pi w^2} \exp\bigg(\!-\frac{x^2 + y^2}{2 w^2}\bigg).
+  T_p(x, y) = \frac{1}{2\pi w^2} \exp\bigg(\!-\frac{x^2 + y^2}{2 w^2}\bigg).
 \end{equation}
 with nucleon width $w$ taken as a free parameter.
-The random weight factor $\gamma_i$ multiplying each nucleon in Eq.~\eqref{eq:participant} is added to account for minimum bias proton-proton multiplicity fluctuations and is sampled from a gamma distribution with unit mean and variance $1/k$, where $k$ is a tunable shape parameter \ref{?}.
+The random weight factor $\gamma_i$ multiplying each nucleon in Eq.~\eqref{eq:participant} is added to account for minimum bias proton-proton multiplicity fluctuations and is sampled from a gamma distribution with unit mean and variance $1/k$, where $k$ is a tunable shape parameter \cite{Bozek:2013uha}.
 
-The inelastic nucleon-nucleon participation probability, and hence the density of participant matter, can be calculated from a standard Glauber formalism \ref{?},
+The inelastic nucleon-nucleon participation probability, and hence the density of participant matter, can be calculated from a standard Glauber formalism \cite{d'Enterria:2010hd},
 \begin{equation}
   P_\text{coll}(b) =
     1 - \exp\biggl[
@@ -404,7 +407,7 @@ The KLN model, for example, is described by $p\sim-0.67$ while the EKRT model co
 Smaller, more negative values of $p$ pull the generalized mean toward a minimum function and hence correspond to models with more extreme gluon saturation effects.
 
 The three models shown in Fig.~\ref{fig:cgc_compare} are by no means an exhaustive list of initial condition models proposed in the literature.
-Notably absent, for instance, is the highly successful IP-Glasma model which combines IP-Sat CGC initial conditions with classical Yang-Mills dynamics to describe the full pre-equilibrium evolution of produced glasma fields.
+Notably absent, for instance, is the highly successful IP-Glasma model which combines IP-Sat CGC initial conditions with classical Yang-Mills dynamics to describe the full pre-equilibrium evolution of produced glasma fields \cite{Schenke:2012wb, Schenke:2012fw, Gale:2012rq}.
 The dynamical nature of IP-Glasma is difficult to characterize as a mapping ${dS/dy \sim f(\T_A,\T_B)}$, but nevertheless, can be classified according its predicted eccentricity harmonics $\varepsilon_n$ which serve as a unique signature of initial condition models.
 
 \fig{ipglasma}{

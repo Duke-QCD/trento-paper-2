@@ -82,26 +82,25 @@ We find that the parameterized initial conditions are highly constrained by bulk
 
 Simulations based on relativistic viscous hydrodynamics have been highly successful describing a wealth of bulk observables in heavy-ion collisions at the Relativistic Heavy-Ion Collider (RHIC) in Brookhaven, NY and the Large Hadron Collider (LHC) in Geneva, Switzerland.
 Initially, the success of hydrodynamic simulations was primarily qualitative.
-The framework elegantly described a number experimental phenomena, for example the existence of large azimuthal particle correlations, the mass ordering of these correlations and their characteristic momentum dependence.
+The framework elegantly described a number experimental phenomena, for example the existence of large azimuthal particle correlations, the mass ordering of these correlations, and their characteristic momentum dependence.
 
-Modern hydrodynamic simulations have greatly improved upon the successes of first-generation models.
-The addition of dissipative corrections to ideal hydrodynamics \cite{Muronga:2004sf, Chaudhuri:2006jd, Romatschke:2007mq, Dusling:2007gi, Song:2007ux, Luzum:2008cw}, event-by-event fluctuations in the colliding nuclei \cite{Alver:2008zza, Alver:2010gr} and modern lattice quantum chromodynamics (QCD) calculations for the quark-gluon plasma (QGP) equation of state \cite{Bazavov:2009zn, Borsanyi:2013bia, Bazavov:2014pvz} are just a few examples of developments which have dramatically improved the agreement of hydrodynamic models with experiment.
+Modern hydrodynamic simulations have greatly expanded upon the successes of first-generation models.
+The addition of dissipative corrections to ideal hydrodynamics \cite{Muronga:2004sf, Chaudhuri:2006jd, Romatschke:2007mq, Dusling:2007gi, Song:2007ux, Luzum:2008cw}, event-by-event fluctuations in the colliding nuclei \cite{Alver:2008zza, Alver:2010gr}, and modern lattice quantum chromodynamics (QCD) calculations for the quark-gluon plasma (QGP) equation of state \cite{Bazavov:2009zn, Borsanyi:2013bia, Bazavov:2014pvz} are just a few examples of developments which have dramatically improved the agreement of hydrodynamic models with experiment.
 
-These developments have positioned hydrodynamic modeling to evolve beyond a qualitative science and extract intrinsic properties of hot and dense QCD matter with quantitative uncertainties.
-A primary goal of the ongoing effort is to determine the temperature dependence of the QGP transport coefficients such as the specific shear viscosity $\eta/s$ which is theorized to reach a lower bound ${(\eta/s)(T) \ge 1/4\pi}$ near the QGP phase transition temperature \cite{Policastro:2001yc, Kovtun:2004de}.
+These developments have positioned hydrodynamic modeling to evolve beyond a qualitative science and quantitatively extract intrinsic properties of hot and dense QCD matter.
+A primary goal of the ongoing effort is to determine the temperature dependence of QGP transport coefficients such as the specific shear viscosity $\eta/s$, theorized to reach a lower bound ${\eta/s \ge 1/4\pi}$ near the QGP phase transition temperature \cite{Policastro:2001yc, Kovtun:2004de}.
+An estimate of the effective (constant) QGP shear viscosity needed to fit spectra and flows at RHIC found ${1 \le 4\pi\eta/s \le 2.5}$ \cite{Song:2010mg}, while independent studies have reported estimates consistent with this range \cite{Luzum:2008cw,Schenke:2010rr,Luzum:2012wu}.
 
-A prominent source of uncertainty in determining QGP transport coefficients from hydrodynamic model-to-data comparison is in modeling the initial stages of the collision.
-Model predictions vary with the choice of initial conditions and hence prefer hydrodynamic transport coefficients, e.g.\ QGP shear and bulk viscosities, which differ from calculation to calculation.
-For example, an estimate of the effective (constant) QGP shear viscosity $(\eta/s)_\text{QGP}$ needed to fit spectra and flows at RHIC found ${1 \le 4 \pi(\eta/s)_\text{QGP} \le 2.5}$, where the uncertainty was attributable to discrepancies in $(\eta/s)_\text{QGP}$ extracted with two different hydrodynamic initial condition models \cite{Song:2010mg}.
+The remaining uncertainty in $\eta/s$ arises largely from the hydrodynamic initial conditions:
+different initial condition models lead to different hydrodynamic flow and hence prefer different values of $\eta/s$.
+Current efforts to reduce uncertainties typically focus on improving theoretical descriptions of the initial conditions \cite{Schenke:2012wb, Niemi:2015qia} as well as including new sensitive observables to assess the performance of each model.
+The process thus defines an iterative cycle in which theory calculations are embedded in hydrodynamic transport simulations, analyzed against a comprehensive list of bulk observables, and used to generate testable predictions which inform subsequent refinements to the theory.
 
-The ongoing effort to constrain current bounds on the QGP shear viscosity typically focuses on improving theoretical descriptions of the initial conditions \cite{Schenke:2012wb, Niemi:2015qia} as well as the addition of new sensitive observables to assess the validity of each model's inherent assumptions and approximations.
-The process thus defines an iterative cycle in which theory calculations are embedded in hydrodynamic transport simulations and analyzed against a comprehensive list of bulk observables to determine the likelihood distributions of the model parameters.
+Model optimization and comparison is often complicated by multiple undetermined and highly correlated input parameters.
+In addition to QGP transport coefficients, simulations depend on auxiliary inputs such as the effective nucleon width and QGP thermalization time, all of which must be simultaneously optimized.
+Evaluating at a model for a single set of parameters requires thousands of individual event simulations, so direct optimization techniques quickly become intractable.
 
-Model optimization and comparison is complicated by the high-dimensional nature of the underconstrained parameter space.
-In addition to free parameters which describe the QGP transport coefficients, hydrodynamic simulations depend on a number of auxiliary parameters such as an effective nucleon width, QGP thermalization time, and chemical freeze-out temperature which require simultaneous optimization.
-Evaluating hydrodynamic models at a single point in parameter space may require tens of thousand of hydrodynamic simulations and thus brute force optimization techniques quickly become intractable.
-
-One solution to the model optimization problem is the use of modern Bayesian methods designed to tune computationally intensive models which depend on free parameters that live in large and highly correlated parameter spaces \cite{OHagan:2006ba, Higdon:2008cmc, Higdon:2014tva,Wesolowski:2015fqa}.
+One solution to the model optimization problem is the use of modern Bayesian methods for estimating parameters of computationally intensive models \cite{OHagan:2006ba, Higdon:2008cmc, Higdon:2014tva, Wesolowski:2015fqa}.
 A given model is first evaluated using a relatively small number of parameter configurations corresponding to discrete points in parameter space, and the model evaluations are used to train a Gaussian process emulator which interpolates model predictions between the training points \cite{Rasmussen:2006gp}.
 A standard Markov chain Monte Carlo algorithm is then be used to explore the parameter space interpolated by the emulator and isolate regions of parameter space which optimally replicate experiment.
 

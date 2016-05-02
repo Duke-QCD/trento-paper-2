@@ -271,7 +271,7 @@ def thickness():
     Tmax = np.maximum(TA, TB)
 
     plt.fill_between(X, Tmin, Tmax,
-                     label=r'$T_\mathrm{min} < T < T_\mathrm{max}$',
+                     label=r'$\tilde{T}_\mathrm{min} < \tilde{T} < \tilde{T}_\mathrm{max}$',
                      **outer_band)
     plt.fill_between(X, gen_mean(TA, TB, -1), gen_mean(TA, TB, 1),
                      label=r'$-1<p<1$', **inner_band)

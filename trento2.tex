@@ -253,6 +253,7 @@ where the relative nucleon coordinates of each nucleus are shifted by a random i
 For the proton thickness function we use a Gaussian
 \begin{equation}
   T_p(x, y) = \frac{1}{2\pi w^2} \exp\bigg(\!-\frac{x^2 + y^2}{2 w^2}\bigg).
+  \label{eq:Tp}
 \end{equation}
 with nucleon width $w$ taken as a free parameter.
 The random weight factor $\gamma_i$ multiplying each nucleon in Eq.~\eqref{eq:participant} is added to account for minimum bias proton-proton multiplicity fluctuations and is sampled from a gamma distribution with unit mean and variance $1/k$, where $k$ is a tunable shape parameter \cite{Bozek:2013uha}.
@@ -477,14 +478,14 @@ This section summarizes the methodology; see Ref.~\cite{Bernhard:2015hxa} for a 
 
 We choose a set of nine model parameters for estimation.
 Four control the parametric initial state:
-\begin{enumerate}[noitemsep]
+\begin{enumerate}[itemsep=0pt]
   \item the overall normalization factor,
   \item entropy deposition parameter $p$ from the generalized mean ansatz Eq.~\eqref{eq:genmean},
-  \item multiplicity fluctuation gamma shape parameter $k$,
-  \item and Gaussian nucleon width $w$, which determines initial-state granularity;
+  \item gamma shape parameter $k$, which sets nucleon multiplicity fluctuations, and
+  \item Gaussian nucleon width $w$ from Eq.~\eqref{eq:Tp}, which determines initial-state granularity;
 \end{enumerate}
 the remaining five are related to the QGP medium:
-\begin{enumerate}[noitemsep]
+\begin{enumerate}[itemsep=0pt]
   \item[5--7.] the three parameters ($\eta/s$ hrg, min, and slope) in Eq.~\eqref{eq:etas} that set the temperature dependence of the specific shear viscosity,
   \setcounter{enumi}{7}
   \item normalization prefactor for the temperature dependence of bulk viscosity Eq.~\eqref{eq:zetas}, and

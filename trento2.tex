@@ -104,12 +104,16 @@ One solution to the model optimization problem is the use of modern Bayesian met
 A given model is first evaluated at a relatively small number of parameter configurations and the results are interpolated by a Gaussian process emulator \cite{Rasmussen:2006gp}.
 Then, using the emulator as a stand-in for the full model, a standard Markov chain Monte Carlo (MCMC) algorithm exhaustively explores the parameter space and extracts probability distributions for the optimal values of each parameter.
 
-Bayesian methods have been applied to heavy-ion collisions in several previous studies \cite{Novak:2013bqa, Pratt:2015zsa, Bernhard:2015hxa, Sangaline:2015isa}, including simulations initialized with a two-component Monte Carlo Glauber (MC-Glb.) model \cite{Miller:2007ri} and the Kharzeev-Levin-Nardi (MC-KLN) model \cite{Drescher:2006pi}, an implementation of Color-Glass Condensate (CGC) effective field theory \cite{Gelis:2010nm, Gelis:2015gza}.
+Bayesian methods have been applied to heavy-ion collisions in several previous studies \cite{Novak:2013bqa, Pratt:2015zsa, Sangaline:2015isa, Bernhard:2015hxa}, including simulations initialized with a two-component Monte Carlo Glauber (MC-Glb.) model \cite{Miller:2007ri} and the Kharzeev-Levin-Nardi (MC-KLN) model \cite{Drescher:2006pi}, an implementation of Color-Glass Condensate (CGC) effective field theory \cite{Gelis:2010nm, Gelis:2015gza}.
 Future work could expand this coverage to additional calculations of QGP initial conditions in order to systematically constrain each model's parameters along with hydrodynamic transport coefficients.
 Once the models are appropriately optimized, the relative accuracy of the various theory calculations may be quantified using a model selection criterion such as Bayes factors.
 
 An alternative approach to model-by-model validation is to optimize parametric initial conditions that are sufficiently flexible to mimic the behavior of various theory calculations.
-In this work, we extend previous efforts to parametrize and constrain QGP initial conditions \cite{Novak:2013bqa, Pratt:2015zsa, Sangaline:2015isa} using a recently developed event-by-event model, \trento\ \cite{Moreland:2014oya}, which is constructed to interpolate a subspace of all initialization models including (but not limited to) specific calculations in CGC effective field theory.
+This allows the parameter optimization process to determine the nature of the initial conditions concurrently with QGP medium properties while propagating any relevant uncertainties---without imposing the assumptions of a specific model.
+It also accelerates the model evaluation cycle by establishing which theory calculations are most compatible with the data and informing further refinements.
+To this end, several recent studies have successfully used event-averaged parametric initial conditions to constrain QGP properties including the equation of state \cite{Novak:2013bqa, Pratt:2015zsa, Sangaline:2015isa}.
+
+In this work, we extend previous efforts to parametrize and constrain QGP initial conditions using a recently developed event-by-event model, \trento\ \cite{Moreland:2014oya}, which is constructed to interpolate a subspace of all initialization models including (but not limited to) specific calculations in CGC effective field theory.
 We couple the parametric model to viscous hydrodynamics and a hadronic afterburner and apply Bayesian methods to simultaneously estimate QGP initial condition and medium properties.
 
 

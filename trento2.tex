@@ -104,12 +104,16 @@ One solution to the model optimization problem is the use of modern Bayesian met
 A given model is first evaluated at a relatively small number of parameter configurations and the results are interpolated by a Gaussian process emulator \cite{Rasmussen:2006gp}.
 Then, using the emulator as a stand-in for the full model, a standard Markov chain Monte Carlo (MCMC) algorithm exhaustively explores the parameter space and extracts probability distributions for the optimal values of each parameter.
 
-Bayesian methods have been applied to heavy-ion collisions in several previous studies \cite{Novak:2013bqa, Pratt:2015zsa, Bernhard:2015hxa, Sangaline:2015isa}, including simulations initialized with a two-component Monte Carlo Glauber (MC-Glb.) model \cite{Miller:2007ri} and the Kharzeev-Levin-Nardi (MC-KLN) model \cite{Drescher:2006pi}, an implementation of Color-Glass Condensate (CGC) effective field theory \cite{Gelis:2010nm, Gelis:2015gza}.
+Bayesian methods have been applied to heavy-ion collisions in several previous studies \cite{Novak:2013bqa, Pratt:2015zsa, Sangaline:2015isa, Bernhard:2015hxa}, including simulations initialized with a two-component Monte Carlo Glauber (MC-Glb.) model \cite{Miller:2007ri} and the Kharzeev-Levin-Nardi (MC-KLN) model \cite{Drescher:2006pi}, an implementation of Color-Glass Condensate (CGC) effective field theory \cite{Gelis:2010nm, Gelis:2015gza}.
 Future work could expand this coverage to additional calculations of QGP initial conditions in order to systematically constrain each model's parameters along with hydrodynamic transport coefficients.
 Once the models are appropriately optimized, the relative accuracy of the various theory calculations may be quantified using a model selection criterion such as Bayes factors.
 
 An alternative approach to model-by-model validation is to optimize parametric initial conditions that are sufficiently flexible to mimic the behavior of various theory calculations.
-In this work, we extend previous efforts to parametrize and constrain QGP initial conditions \cite{Novak:2013bqa, Pratt:2015zsa, Sangaline:2015isa} using a recently developed event-by-event model, \trento\ \cite{Moreland:2014oya}, which is constructed to interpolate a subspace of all initialization models including (but not limited to) specific calculations in CGC effective field theory.
+This allows the parameter optimization process to determine the nature of the initial conditions concurrently with QGP medium properties while propagating any relevant uncertainties---without imposing the assumptions of a specific model.
+It also accelerates the model evaluation cycle by establishing which theory calculations are most compatible with the data and informing further refinements.
+To this end, several recent studies have successfully used event-averaged parametric initial conditions to constrain QGP properties including the equation of state \cite{Novak:2013bqa, Pratt:2015zsa, Sangaline:2015isa}.
+
+In this work, we extend previous efforts to parametrize and constrain QGP initial conditions using a recently developed event-by-event model, \trento\ \cite{Moreland:2014oya}, which is constructed to interpolate a subspace of all initialization models including (but not limited to) specific calculations in CGC effective field theory.
 We couple the parametric model to viscous hydrodynamics and a hadronic afterburner and apply Bayesian methods to simultaneously estimate QGP initial condition and medium properties.
 
 
@@ -228,9 +232,9 @@ Once the particles cease interacting, the position, momentum, and particle type 
 
 \subsection{Parametric initial conditions}
 
-The hydrodynamic equations of motion necessitate initial conditions for the energy density $e$, four-velocity $u^\mu$, bulk pressure $\Pi$, and shear stress tensor $\pi^{\mu\nu}$ at the thermalization time $\tau_0$ when the fluid attains local thermal equilibrium.
-These initial conditions emerge from dynamical processes of the collision, and are commonly modeled in two stages: initial state models describe the system immediately after impact at time $\tau=0^+$, then pre-equilibrium transport models evolve the system until time $\tau=\tau_0$ when the system is assumed to have thermalized. 
-Efforts to realistically model the pre-equilibrium stage of the collision include transport dynamics \cite{Schenke:2012wb, Schenke:2012fw, vanderSchee:2013pia, vanderSchee:2015rta, Chesler:2015fpa} motivated by thermalization studies in strong and weakly coupled field theories \cite{Romatschke:2006nk, Krasnitz:2002ng, Berges:2013eia, Arnold:2004ti, Kurkela:2011ti, Heller:2012km, vanderSchee:2013pia, Rebhan:2004ur, Heller:2011ju, Janik:2006gp}. 
+The hydrodynamic equations of motion necessitate initial conditions for the energy density $e$, four-velocity $u^\mu$, bulk pressure $\Pi$, and shear stress tensor $\pi^{\mu\nu}$ at time $\tau = \tau_0$, when the system is assumed to have thermalized.
+These initial conditions emerge from dynamical processes of the collision, and are commonly modeled in two stages: initial state models describe the system immediately after impact at time $\tau=0^+$, then pre-equilibrium transport models evolve the system until the thermalization time $\tau_0$.
+Efforts to realistically model the pre-equilibrium stage of the collision include transport dynamics \cite{Schenke:2012wb, Schenke:2012fw, vanderSchee:2013pia, vanderSchee:2015rta, Chesler:2015fpa} motivated by thermalization studies in strong and weakly coupled field theories \cite{Romatschke:2006nk, Krasnitz:2002ng, Berges:2013eia, Arnold:2004ti, Kurkela:2011ti, Heller:2012km, vanderSchee:2013pia, Rebhan:2004ur, Heller:2011ju, Janik:2006gp}.
 
 The importance of pre-equilibrium dynamics was recently studied by initializing hydrodynamic simulations with a free streaming phase (zero coupling) and switching to hydrodynamics (strong coupling) after different periods of time \cite{Liu:2015nwa}.
 The authors showed that although free streaming never leads to thermalization, it can be used to bracket the influence of pre-equilibrium dynamics on the medium evolution as the pre-equilibrium coupling strength is expected to fall between the free streaming and hydrodynamic limits.
@@ -253,6 +257,7 @@ where the relative nucleon coordinates of each nucleus are shifted by a random i
 For the proton thickness function we use a Gaussian
 \begin{equation}
   T_p(x, y) = \frac{1}{2\pi w^2} \exp\bigg(\!-\frac{x^2 + y^2}{2 w^2}\bigg).
+  \label{eq:Tp}
 \end{equation}
 with nucleon width $w$ taken as a free parameter.
 The random weight factor $\gamma_i$ multiplying each nucleon in Eq.~\eqref{eq:participant} is added to account for minimum bias proton-proton multiplicity fluctuations and is sampled from a gamma distribution with unit mean and variance $1/k$, where $k$ is a tunable shape parameter \cite{Bozek:2013uha}.
@@ -481,14 +486,14 @@ This section summarizes the methodology; see Ref.~\cite{Bernhard:2015hxa} for a 
 
 We choose a set of nine model parameters for estimation.
 Four control the parametric initial state:
-\begin{enumerate}[noitemsep]
+\begin{enumerate}[itemsep=0pt]
   \item the overall normalization factor,
   \item entropy deposition parameter $p$ from the generalized mean ansatz Eq.~\eqref{eq:genmean},
-  \item multiplicity fluctuation gamma shape parameter $k$,
-  \item and Gaussian nucleon width $w$, which determines initial-state granularity;
+  \item gamma shape parameter $k$, which sets nucleon multiplicity fluctuations, and
+  \item Gaussian nucleon width $w$ from Eq.~\eqref{eq:Tp}, which determines initial-state granularity;
 \end{enumerate}
 the remaining five are related to the QGP medium:
-\begin{enumerate}[noitemsep]
+\begin{enumerate}[itemsep=0pt]
   \item[5--7.] the three parameters ($\eta/s$ hrg, min, and slope) in Eq.~\eqref{eq:etas} that set the temperature dependence of the specific shear viscosity,
   \setcounter{enumi}{7}
   \item normalization prefactor for the temperature dependence of bulk viscosity Eq.~\eqref{eq:zetas}, and

@@ -767,7 +767,7 @@ The shear viscosity parameters $(\eta/s)_\text{min,slope}$ set the temperature d
 \end{equation}
 for $T > T_c$.
 The full parametrization Eq.~\eqref{eq:etas} also includes a constant $(\eta/s)_\text{hrg}$ for $T < T_c$; this parameter was included in the calibration but yielded an essentially flat posterior distribution, implying that it has little to no effect.
-This is not surprising, since hadronic viscosity is largely handled by UrQMD, not the hydro model.
+This is not surprising, since hadronic viscosity is largely handled by UrQMD, not the hydrodynamic model.
 Therefore, we omit $(\eta/s)_\text{hrg}$ from the posterior distribution visualizations and tables.
 
 Examining the marginal distributions for $\eta/s$ min and slope, we see a clear preference for $(\eta/s)_\text{min} \lesssim 0.15$ and a mild preference for a shallow slope;
@@ -813,7 +813,7 @@ We also observe a positive correlation with $\eta/s$ min, which initially seems 
 This dependence arises via the nucleon width:
 increasing bulk viscosity requires decreasing the nucleon width, which in turn necessitates increasing shear viscosity to damp out the excess anisotropy.
 Given the previously mentioned shortcomings in the current treatment of bulk viscosity (neglecting bulk corrections at particlization, parametrization mismatch with the equation of state, lack of a dynamical pre-equilibrium phase), we refrain from making any quantitative statements.
-What is clear, however, is that finite bulk viscosity is necessary to simultaneously describe transverse momentum and flow data.
+What is clear, however, is that a finite bulk viscosity is necessary to simultaneously describe transverse momentum and flow data.
 
 The distributions for the particlization temperature $T_\text{switch}$ have by far the most dramatic difference between the two calibrations.
 The posterior from identified particle yields shows a shark peak centered at $T \approx 148$~MeV, just below $T_c = 154$~MeV;
@@ -849,11 +849,11 @@ This is a long-standing issue in hybrid models \cite{Song:2013qma} and therefore
   \end{ruledtabular}
 \end{table}
 
-As a final verification of emulator predictions and the model's accuracy, we ran a large number of events using high-probability parameters and compared the resulting observables to experiment.
+As a final verification of emulator predictions and the model's accuracy, we calculated a large number of events using high-probability parameters and compared the resulting observables to experiment.
 We chose two sets of parameters based on the peaks of the posterior distributions, listed in Table~\ref{tab:mode_params}.
-These are something like the ``most probable'' parameters and the corresponding model calculations should optimally fit the data.
+These values approximate the ``most probable'' parameters and the corresponding model calculations should optimally fit the data.
 
-We executed \order 5 minimum-bias events for each set of parameters and computed observables, shown along with experimental data in Fig.~\ref{fig:mode_observables}.
+We evaluated \order 5 minimum-bias events for each set of parameters and computed observables, shown along with experimental data in Fig.~\ref{fig:mode_observables}.
 Solid lines represent calculations using parameters based on the identified particle posterior while dashed lines are based on the charged particle posterior.
 Note that these calculations include a peripheral centrality bin (70--80\%) that was not used in parameter estimation.
 

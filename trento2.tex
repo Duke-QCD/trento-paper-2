@@ -104,12 +104,16 @@ One solution to the model optimization problem is the use of modern Bayesian met
 A given model is first evaluated at a relatively small number of parameter configurations and the results are interpolated by a Gaussian process emulator \cite{Rasmussen:2006gp}.
 Then, using the emulator as a stand-in for the full model, a standard Markov chain Monte Carlo (MCMC) algorithm exhaustively explores the parameter space and extracts probability distributions for the optimal values of each parameter.
 
-Bayesian methods have been applied to heavy-ion collisions in several previous studies \cite{Novak:2013bqa, Pratt:2015zsa, Bernhard:2015hxa, Sangaline:2015isa}, including simulations initialized with a two-component Monte Carlo Glauber (MC-Glb.) model \cite{Miller:2007ri} and the Kharzeev-Levin-Nardi (MC-KLN) model \cite{Drescher:2006pi}, an implementation of Color-Glass Condensate (CGC) effective field theory \cite{Gelis:2010nm, Gelis:2015gza}.
+Bayesian methods have been applied to heavy-ion collisions in several previous studies \cite{Novak:2013bqa, Pratt:2015zsa, Sangaline:2015isa, Bernhard:2015hxa}, including simulations initialized with a two-component Monte Carlo Glauber (MC-Glb.) model \cite{Miller:2007ri} and the Kharzeev-Levin-Nardi (MC-KLN) model \cite{Drescher:2006pi}, an implementation of Color-Glass Condensate (CGC) effective field theory \cite{Gelis:2010nm, Gelis:2015gza}.
 Future work could expand this coverage to additional calculations of QGP initial conditions in order to systematically constrain each model's parameters along with hydrodynamic transport coefficients.
 Once the models are appropriately optimized, the relative accuracy of the various theory calculations may be quantified using a model selection criterion such as Bayes factors.
 
 An alternative approach to model-by-model validation is to optimize parametric initial conditions that are sufficiently flexible to mimic the behavior of various theory calculations.
-In this work, we extend previous efforts to parametrize and constrain QGP initial conditions \cite{Novak:2013bqa, Pratt:2015zsa, Sangaline:2015isa} using a recently developed event-by-event model, \trento\ \cite{Moreland:2014oya}, which is constructed to interpolate a subspace of all initialization models including (but not limited to) specific calculations in CGC effective field theory.
+This allows the parameter optimization process to determine the nature of the initial conditions concurrently with QGP medium properties while propagating any relevant uncertainties---without imposing the assumptions of a specific model.
+It also accelerates the model evaluation cycle by establishing which theory calculations are most compatible with the data and informing further refinements.
+To this end, several recent studies have successfully used event-averaged parametric initial conditions to constrain QGP properties including the equation of state \cite{Novak:2013bqa, Pratt:2015zsa, Sangaline:2015isa}.
+
+In this work, we extend previous efforts to parametrize and constrain QGP initial conditions using a recently developed event-by-event model, \trento\ \cite{Moreland:2014oya}, which is constructed to interpolate a subspace of all initialization models including (but not limited to) specific calculations in CGC effective field theory.
 We couple the parametric model to viscous hydrodynamics and a hadronic afterburner and apply Bayesian methods to simultaneously estimate QGP initial condition and medium properties.
 
 
@@ -145,9 +149,9 @@ The relaxation equations in Eq.~\eqref{eq:relaxation} are then used to solve the
   \partial_\mu T^{\mu\nu} = 0, \quad T^{\mu\nu} = e u^\mu u^\nu  - \Delta^{\mu\nu} (P + \Pi) + \pi^{\mu\nu},
   \label{eq:conservation}
 \end{equation}
-for the energy-momentum tensor $T^{\mu\nu}$, provided a set of initial conditions for the energy density $e(x,y)$ and four-velocity $u^\mu(x,y)$ as well as an equation of state to interrelate the energy density $e$, pressure $P$, and temperature $T$ of each fluid cell in local thermal equilibrium.
+for the energy-momentum tensor $T^{\mu\nu}$, provided a set of initial conditions for the energy density $e(x,y)$ and four-velocity $u^\mu(x,y)$ as well as an equation of state (EoS) to interrelate the energy density $e$, pressure $P$, and temperature $T$ of each fluid cell in local thermal equilibrium.
 
-We use a modern QCD equation of state (EoS) based on continuum extrapolated lattice calculations at zero baryon density published by the HotQCD collaboration \cite{Bazavov:2014pvz} and blended into a hadron resonance gas EoS in the interval $110 \le T \le 130$~MeV using a smoothstep interpolation function \cite{Moreland:2015dvc}.
+We use a modern QCD EoS based on continuum extrapolated lattice calculations at zero baryon density published by the HotQCD collaboration \cite{Bazavov:2014pvz} and blended into a hadron resonance gas EoS in the interval $110 \le T \le 130$~MeV using a smoothstep interpolation function \cite{Moreland:2015dvc}.
 The HotQCD EoS, characterized by the parameterized interaction measure $\theta^{\mu\mu}(T) = (e - 3P)/T^4$, has been compared to additional state-of-the-art calculations by the Wuppertal-Budapest collaboration and shown to agree within published errors \cite{Bazavov:2014pvz}.
 The two parameterizations were also studied in a recent error analysis at RHIC energies which quantified the effect of systematic lattice EoS discrepancies and statistical continuum extrapolation errors on hydrodynamic observables \cite{Moreland:2015dvc}.
 The effect of these errors on mean $p_T$, elliptic flow $v_2$, and triangular flow $v_3$ was found to be order 1\% and hence is expected to be negligible in the present analysis.
@@ -162,7 +166,7 @@ The QGP specific shear viscosity $\eta/s$ is qualitatively expected to reach a g
   \end{cases}
   \label{eq:etas}
 \end{equation}
-where we fix $T_c = 0.154$~GeV using the approximate pseudo-critical phase transition temperature of the HotQCD equation of state, and $(\eta/s)_\text{min}$, $(\eta/s)_\text{slope}$, and $(\eta/s)_\text{hrg}$ are constants which we wish to determine.
+where we fix $T_c = 0.154$~GeV using the approximate pseudo-critical phase transition temperature of the HotQCD equation of state, and $(\eta/s)_\text{min}$, $(\eta/s)_\text{slope}$, and $(\eta/s)_\text{hrg}$ are constants we wish to determine.
 For the temperature dependent bulk viscosity, we use the parameterization constructed in Ref.~\cite{Denicol:2009am, Ryu:2015vwa},
 \begin{equation}
   (\zeta/s)(T) =
@@ -228,20 +232,9 @@ Once the particles cease interacting, the position, momentum, and particle type 
 
 \subsection{Parametric initial conditions}
 
-\fig{thickness}{
-    Cross section of the participant nucleon density in a mid-central Pb+Pb collision at $\sqrts=2.76$ TeV as a function of the transverse coordinate $x$ parallel to impact parameter $\vec{b}$.
-  The gray band indicates the region bounded by the minimum and maximum values of the local participant thickness functions $\tilde{T}_A$ and $\tilde{T}_B$, while the blue band indicates the region spanned by the generalized mean of $\tilde{T}_A$ and $\tilde{T}_B$ with parameter $-1<p<1$.
-  The solid blue line shows an example of a discrete mapping specified by a generalized mean with $p=0$.
-}
-
-\fig[b]{trento_events}{
-  Several \protect\trento\ Pb+Pb initial condition events for the transverse entropy density $dS/(d^2r_\perp dy)$ calculated using generalized mean parameter $p=0$, nucleon width $w=0.5$~fm, and gamma fluctuation factor $k=1.4$.
-}
-
-The hydrodynamic equations of motion necessitate initial conditions for the energy density $e$, four-velocity $u^\mu$, bulk pressure $\Pi$, and shear stress tensor $\pi^{\mu\nu}$ at the thermalization time $\tau_0$ when the fluid attains local thermal equilibrium.
-These initial conditions emerge from dynamical processes of the collision, and are commonly modeled in two stages: initial state models describe the system immediately after impact at time $\tau=0^+$, then pre-equilibrium transport models evolve the system until time $\tau=\tau_0$ when the system is assumed to have thermalized. The pre-equilibrium phase of the collision has been modeled by transport dynamics in both strongly and weakly coupled theories
-
-Considerable effort has been devoted to understanding the processes responsible for rapid thermalization \cite{Romatschke:2006nk, Krasnitz:2002ng, Berges:2013eia, Arnold:2004ti, Kurkela:2011ti, Heller:2012km, vanderSchee:2013pia, Rebhan:2004ur, Heller:2011ju, Janik:2006gp} and models of the pre-equilibrium transport dynamics have been implemented in both strongly and weakly coupled limits \cite{Schenke:2012wb, Schenke:2012fw, vanderSchee:2013pia, vanderSchee:2015rta, Chesler:2015fpa}.
+The hydrodynamic equations of motion necessitate initial conditions for the energy density $e$, four-velocity $u^\mu$, bulk pressure $\Pi$, and shear stress tensor $\pi^{\mu\nu}$ at time $\tau = \tau_0$, when the system is assumed to have thermalized.
+These initial conditions emerge from dynamical processes of the collision, and are commonly modeled in two stages: initial state models describe the system immediately after impact at time $\tau=0^+$, then pre-equilibrium transport models evolve the system until the thermalization time $\tau_0$.
+Efforts to realistically model the pre-equilibrium stage of the collision include transport dynamics \cite{Schenke:2012wb, Schenke:2012fw, vanderSchee:2013pia, vanderSchee:2015rta, Chesler:2015fpa} motivated by thermalization studies in strong and weakly coupled field theories \cite{Romatschke:2006nk, Krasnitz:2002ng, Berges:2013eia, Arnold:2004ti, Kurkela:2011ti, Heller:2012km, vanderSchee:2013pia, Rebhan:2004ur, Heller:2011ju, Janik:2006gp}.
 
 The importance of pre-equilibrium dynamics was recently studied by initializing hydrodynamic simulations with a free streaming phase (zero coupling) and switching to hydrodynamics (strong coupling) after different periods of time \cite{Liu:2015nwa}.
 The authors showed that although free streaming never leads to thermalization, it can be used to bracket the influence of pre-equilibrium dynamics on the medium evolution as the pre-equilibrium coupling strength is expected to fall between the free streaming and hydrodynamic limits.
@@ -264,9 +257,14 @@ where the relative nucleon coordinates of each nucleus are shifted by a random i
 For the proton thickness function we use a Gaussian
 \begin{equation}
   T_p(x, y) = \frac{1}{2\pi w^2} \exp\bigg(\!-\frac{x^2 + y^2}{2 w^2}\bigg).
+  \label{eq:Tp}
 \end{equation}
 with nucleon width $w$ taken as a free parameter.
 The random weight factor $\gamma_i$ multiplying each nucleon in Eq.~\eqref{eq:participant} is added to account for minimum bias proton-proton multiplicity fluctuations and is sampled from a gamma distribution with unit mean and variance $1/k$, where $k$ is a tunable shape parameter \cite{Bozek:2013uha}.
+
+\fig{trento_events}{
+  Several \protect\trento\ Pb+Pb initial condition events for the transverse entropy density $dS/(d^2r_\perp dy)$ calculated using generalized mean parameter $p=0$, nucleon width $w=0.5$~fm, and gamma fluctuation factor $k=1.4$.
+}
 
 The inelastic nucleon-nucleon participation probability, and hence the density of participant matter, can be calculated from a standard Glauber formalism \cite{d'Enterria:2010hd},
 \begin{equation}
@@ -281,12 +279,6 @@ where $b$ is the impact parameter between two nucleons and the partonic cross se
 \end{equation}
 at the desired beam energy.
 The collision cross sections thus enter through the calculation of $\T_A$ and $\T_B$ which are determined \emph{independently} of the function $f$ used to convert local participant density into entropy deposition.
-
-\fig[b]{nch_per_npart}{
-    Average charged particle density per participant pair $(d\nch/d\eta)/(\npart/2)$ at mid-rapidity as a function of participant number for Au+Au, Pb+Pb and p+Pb systems at various collision energies.
-    Lines are \protect\trento\ calculations with generalized mean parameter $p=0$, and symbols are experimental data from PHENIX and ALICE \cite{Adare:2015bua, Aamodt:2010cz, Adam:2015ptt}.
-    The average minimum bias participant number for the p+Pb system has been shifted for clarity.
-}
 
 At this point it becomes necessary to specify the function $f$ in Eq~\eqref{eq:mapping} which maps participant matter to local entropy deposition.
 In general, the function $f(\T_A, \T_B)$ is assumed to be symmetric, monotonically increasing and smooth.
@@ -318,21 +310,21 @@ The gray band marks the region spanned by $\T_\text{min}$ and $\T_\text{max}$, w
 The figure shows that decreasing $p$ pulls the generalized mean towards the minimum of $\T_A$ and $\T_B$ while increasing $p$ pushes it to the maximum of the two.
 The generalized mean ansatz thus parameterizes asymmetric entropy deposition, or in the parlance of Color-Glass Condensate theory, the intensity of saturation effects on local gluon production.
 
-\fig*{cgc_compare}{
-  Profiles of the initial thermal distribution predicted by the KLN (left), EKRT (middle), and wounded nucleon (right) models (dashed black lines) compared to a generalized mean with different values of the parameter $p$ (solid blue lines).
-  Staggered lines show different cross sections of the initial entropy density $dS/(d^2r_\perp dy)$ as a function of the participant nucleon density $\T_A$ for several values of $\T_B = 1, 2, 3$ [fm$^{-2}$].
-  The EKRT mapping is shown with model parameters $K=0.64$ and $\beta=0.8$ from Ref.~\cite{Niemi:2015qia}.
-  Entropy normalization is arbitrary.
+\fig{thickness}{
+    Cross section of the participant nucleon density in a mid-central Pb+Pb collision at $\sqrts=2.76$ TeV as a function of the transverse coordinate $x$ parallel to impact parameter $\vec{b}$.
+  The gray band indicates the region bounded by the minimum and maximum values of the local participant thickness functions $\tilde{T}_A$ and $\tilde{T}_B$, while the blue band indicates the region spanned by the generalized mean of $\tilde{T}_A$ and $\tilde{T}_B$ with parameter $-1<p<1$.
+  The solid blue line shows an example of a discrete mapping specified by a generalized mean with $p=0$.
 }
 
+These local modifications naturally become manifest in global quantities such as integrated particle yields.
 When two heavy ions collide at fixed impact parameter $b$, their nuclear densities are shifted by a common offset $T(x\pm b,y)$ which increases the average asymmetry of local participant matter.
 This asymmetry grows with increasing impact parameter and is highly correlated with collision centrality.
 By varying the generalized mean parameter $p$, the \trento\ model directly modulates the attenuation of entropy deposition in peripheral collisions and provides a parametric handle on the centrality dependence of charged particle production---similar to the role of the binary collision fraction $\alpha$ in the two-component Glauber model.
 
-In Fig.~\ref{fig:nch_per_npart} we plot the charged particle density per participant pair at mid-rapidity as a function of participant number using model calculations from \trento\ and experimental data from PHENIX and ALICE \ref{?}.
-The model curves are calculated assuming a linear relation between charged particle multiplicity and entropy $\nch \propto S$, where the proportionality constant varies with beam energy, but is constant across different collision systems \ref{?}.
-We choose a fixed, energy independent instantiation of the generalized mean $p=0$ which was previously shown to provide a good description of proton-proton, proton-lead and lead-lead multiplicity distributions at LHC energies \cite{Moreland:2014oya}. In principle, the parameter $p$ could possess some energy dependence, although this is not considered in the present figure.
-We see that the entropy deposition mapping $p=0$ provides a good description of the data at all beam energies and self consistently describes proton-lead and lead-lead multiplicities at the same collision energy.
+In Fig.~\ref{fig:nch_per_npart} we plot the charged particle density per participant pair at mid-rapidity as a function of participant number using model calculations from \trento\ and experimental data from PHENIX and ALICE \cite{Adare:2015bua, Aamodt:2010cz, Adam:2015ptt}.
+The model curves are calculated assuming a linear relation between charged particle multiplicity and entropy $\nch \propto S$ \cite{Song:2008si}, where the proportionality constant varies with beam energy, but is constant for all collision systems at the same energy.
+We choose a fixed, energy independent instantiation of the generalized mean $p=0$ which was previously shown to provide a good description of proton-proton, proton-lead and lead-lead multiplicity distributions at LHC energies \cite{Moreland:2014oya}. In principle, the parameter $p$ could possess some energy dependence, although this is not considered in Fig.~\ref{fig:nch_per_npart}.
+We see that the entropy deposition mapping modeled by a generalized mean with $p=0$ provides a good description of the data at all beam energies and self consistently describes proton-lead and lead-lead multiplicities at the same collision energy.
 
 At this point the reader may complain that while the generalized mean parameterizes entropy deposition in asymmetric regions of the collision $\T_\text{min} < \T_\text{max}$, it asserts a particular scaling law for entropy deposition in symmetric regions of the collision where $\T_\text{min} = \T_\text{max}$.
 In particular,
@@ -342,20 +334,31 @@ In particular,
 \end{equation}
 This property of the generalized mean is known as scale invariance or homogeneity.
 While it is difficult to empirically prove or disprove exact scale invariance, multiple experimental observations indicate that it holds to very good approximation.
-For example, it was demonstrated that collisions of highly deformed uranium nuclei exhibit elliptic flow patterns which are incompatible with a scale-violating binary collision term postulated by the two-component Glauber ansatz \ref{?}.
-Measurements of central copper-copper, gold-gold and uranium-uranium particle production at RHIC also exhibit approximate participant scaling in agreement with Eq.~\eqref{eq:homogenous} \ref{?}.
+For example, it was demonstrated that collisions of highly deformed uranium nuclei exhibit elliptic flow patterns which are incompatible with a scale-violating binary collision term postulated by the two-component Glauber ansatz \cite{Goldschmidt:2015kpa, Pandit:2013uiv, Wang:2014qxa}.
+Measurements of central copper-copper, gold-gold and uranium-uranium particle production at RHIC also exhibit approximate participant scaling in agreement with Eq.~\eqref{eq:homogenous} \cite{Adare:2015bua}.
 Moreover, the scale invariant constraint serves as a reasonable approximation for a number of calculations of the mapping $f$ in Eq.~\eqref{eq:mapping} derived from CGC effective field theory as we show momentarily.
 At present we thus assert the scale invariant constraint as a simplifying postulate although future work may relax this constraint to further reduce bias in the chosen parameterization.
 
+\fig[b]{nch_per_npart}{
+    Average charged particle density per participant pair $(d\nch/d\eta)/(\npart/2)$ at mid-rapidity as a function of participant number for Au+Au, Pb+Pb and p+Pb systems at various collision energies.
+    Lines are \protect\trento\ calculations with generalized mean parameter $p=0$, and symbols are experimental data from PHENIX and ALICE \cite{Adare:2015bua, Aamodt:2010cz, Adam:2015ptt}.
+    The average minimum bias participant number for the p+Pb system has been shifted for clarity.
+}
 
+\fig*{cgc_compare}{
+  Profiles of the initial thermal distribution predicted by the KLN (left), EKRT (middle), and wounded nucleon (right) models (dashed black lines) compared to a generalized mean with different values of the parameter $p$ (solid blue lines).
+  Staggered lines show different slices of the initial entropy density $dS/(d^2r_\perp dy)$ as a function of the participant nucleon density $\T_A$ for several values of $\T_B = 1, 2, 3$ [fm$^{-2}$].
+  The EKRT mapping is shown with model parameters $K=0.64$ and $\beta=0.8$ from Ref.~\cite{Niemi:2015qia}.
+  Entropy normalization is arbitrary.
+}
 \subsection{Reproducing existing I.C.\ models}
 
 
-The aforementioned procedure defines the \trento\ initial condition model proposed in Ref.~\ref{?}.
+The aforementioned procedure defines the \trento\ initial condition model proposed in Ref.~\cite{Moreland:2014oya}.
 The model is purposefully constructed to achieve maximal flexibility using a minimal number of parameters and can mimic a wide range initial condition models proposed in the literature.
 To demonstrate the efficacy of the generalized mean ansatz, we now show that the mapping can reproduce different theory calculations using suitably chosen values of the generalized mean parameter $p$.
 
-Perhaps the simplest and oldest model of heavy-ion initial conditions is the so called participant or wounded nucleon model which deposits a blob of entropy for each nucleon in the nucleus that engages in one or more inelastic collisions.
+Perhaps the simplest and oldest model of heavy-ion initial conditions is the so called participant or wounded nucleon model which deposits a blob of entropy for each nucleon in the nucleus that engages in one or more inelastic collisions \ref{?}.
 In its Monte Carlo formulation, the wounded nucleon model is described by
 \begin{equation}
   s \propto \T_A + \T_B
@@ -365,7 +368,7 @@ where $\T_A$ and $\T_B$ denote the event-by-event participant densities defined 
 Quick examination of Eqs.~\eqref{eq:means} and \eqref{eq:wn} shows that the wounded nucleon model describes a subcase of the generalized mean ansatz for $p=1$ up to an arbitrary factor which can be absorbed by the normalization constant.
 
 More sophisticated calculations of the mapping $f$ in Eq.~\eqref{eq:mapping} can be derived from Color-Glass Condensate effective field theory.
-A common implementation of a CGC based saturation picture is provided by the KLN model where entropy deposition at the QGP thermalization time can be determined from the produced gluon density $s \propto N_g$ where,
+A common implementation of a CGC based saturation picture is provided by the KLN model \ref{?} where entropy deposition at the QGP thermalization time can be determined from the produced gluon density $s \propto N_g$ where,
 \begin{equation}
   \frac{dN_g}{dy\,d^2r_\perp} \sim \Qs{min}^2 \biggl[
     2 + \log \biggl(\frac{\Qs{max}^2}{\Qs{min}^2} \biggr)
@@ -381,13 +384,13 @@ In the original formulation of the KLN model, the two saturation scales are prop
 \end{equation}
 to put it in a form which can be directly compared with the wounded nucleon model.
 
-Another CGC model which has attracted recent interest after it successfully described an extensive list of experimental particle multiplicity and flow observables is the EKRT model which combines collinearly factorized pQCD minijet production with a simple conjecture for gluon saturation.
+Another CGC model which has attracted recent interest after it successfully described an extensive list of experimental particle multiplicity and flow observables is the EKRT model which combines collinearly factorized pQCD minijet production with a simple conjecture for gluon saturation \ref{?}.
 The energy density predicted by the model after a pre-thermal Bjorken free streaming stage is given by
 \begin{equation}
-  e(\tau_0, x, y) \sim \frac{K_\text{sat}}{\pi} p_\text{sat}^3(T_A, T_B).
+  e(\tau_0, x, y) \sim \frac{K_\text{sat}}{\pi} p_\text{sat}^3(K_\text{sat}, \beta; T_A, T_B).
   \label{eq:ekrt_energy}
 \end{equation}
-where the saturation momentum $p_\text{sat}$, defined in Ref.~\ref{?}, is a function of phenomenological model parameters $K_\text{sat}$ and $\beta$.
+where the saturation momentum $p_\text{sat}$ is a function of phenomenological model parameters $K_\text{sat}$ and $\beta$ and is defined in Ref.~\cite{Niemi:2015qia}.
 The energy density in Eq.~\eqref{eq:ekrt_energy} can then be recast as an entropy density using the thermodynamic relation ${s \sim e^{3/4}}$ to compare it with the previous models.
 
 Note that Eq.~\eqref{eq:ekrt_energy} is expressed as a function of nuclear thickness $T$ which includes contributions from \emph{all} nucleons inside the nucleus and is different than the participant density $\T$ used previously.
@@ -407,14 +410,14 @@ The dynamical nature of IP-Glasma is difficult to characterize as a mapping ${dS
 
 \fig{ipglasma}{
   Eccentricity harmonics $\varepsilon_2$ and $\varepsilon_3$ as a function of impact parameter $b$ for Pb+Pb collisions at ${\sqrts=2.76}$~TeV.
-  IP-Glasma events \ref{?} are evaluated after $\tau=0.4$~fm/c classical Yang-Mills evolution and \protect\trento\ events after $\tau=0.4$~fm/c free streaming.
+  IP-Glasma events \cite{Schenke:2012wb} are evaluated after $\tau=0.4$~fm/c classical Yang-Mills evolution and \protect\trento\ events after $\tau=0.4$~fm/c free streaming.
   \protect\trento\ specific parameters are $p=0$ and $k=1.4$.
-  Both models use nucleon-nucleon cross section $\sigma_\text{NN}=6.4$~fm$^2$, nucleon width $w=0.43$~fm, and correlated lead nuclei from Ref.~\ref{?}.
+  Both models use nucleon-nucleon cross section $\sigma_\text{NN}=6.4$~fm$^2$ and nucleon width $w=0.43$~fm.
   The eccentricity calculation is performed using the energy density of the IP-Glasma model and $T^{00}$ component of the \protect\trento\ stress energy tensor after free streaming.
 }
 
 Fig.~\ref{fig:ipglasma} compares the eccentricity harmonics predicted by IP-Glasma with \trento\ using a geometric mean ${p=0}$ which was previously shown to reproduce the eccentricity hierarchy of $\varepsilon_2$ and $\varepsilon_3$ in IP-Glasma.
-Each \trento\ initial condition event is free streamed for $\tau=0.4$~fm/c \ref{?} to mimic the weakly coupled pre-equilibrium dynamics of IP-Glasma and match the evolution time of both models.
+Each \trento\ initial condition event is free streamed using the procedure in Ref.~\ref{?} for $\tau=0.4$~fm/c to mimic the weakly coupled pre-equilibrium dynamics of IP-Glasma and match the evolution time of both models.
 Both calculations are performed using a nucleon width $w=0.43$~fm and identical Woods-Saxon parameters.
 The result shows a striking similarity in the eccentricity harmonics predicted by both models out to large values of the impact parameter $b$ where the sub-nucleonic structure of the IP-Glasma model starts to have significant effect.
 The simularity suggests that \trento\ can effectively reproduce the scaling behavior of the IP-Glasma model, although a more detailed comparison of the two models would be necessary to establish the strength of correspondence illustrated in Fig.~\ref{fig:cgc_compare}.
@@ -479,14 +482,14 @@ This section summarizes the methodology; see Ref.~\cite{Bernhard:2015hxa} for a 
 
 We choose a set of nine model parameters for estimation.
 Four control the parametric initial state:
-\begin{enumerate}
+\begin{enumerate}[itemsep=0pt]
   \item the overall normalization factor,
   \item entropy deposition parameter $p$ from the generalized mean ansatz Eq.~\eqref{eq:genmean},
-  \item multiplicity fluctuation gamma shape parameter $k$, and
-  \item Gaussian nucleon width $w$, which determines initial-state granularity;
+  \item gamma shape parameter $k$, which sets nucleon multiplicity fluctuations, and
+  \item Gaussian nucleon width $w$ from Eq.~\eqref{eq:Tp}, which determines initial-state granularity;
 \end{enumerate}
 the remaining five are related to the QGP medium:
-\begin{enumerate}
+\begin{enumerate}[itemsep=0pt]
   \item[5--7.] the three parameters ($\eta/s$ hrg, min, and slope) in Eq.~\eqref{eq:etas} that set the temperature dependence of the specific shear viscosity,
   \setcounter{enumi}{7}
   \item normalization prefactor for the temperature dependence of bulk viscosity Eq.~\eqref{eq:zetas}, and
@@ -730,8 +733,8 @@ Indeed, these fluctuations are overwhelmed by nucleon position fluctuations in l
 The Gaussian nucleon width $w$ has fairly narrow distributions mostly within 0.4--0.6 fm.
 It appears we did not extend the initial range low enough and so the posteriors are truncated;
 however we still resolve peaks at ${\sim}0.43$ and ${\sim}0.49$ fm for the identified and charged particle calibrations, respectively.
-\textbf{NOTE ABOUT EXP VALUE / OTHER MODELS?}
 Since the distributions are asymmetric, the median values are somewhat higher than the modes.
+These preferred values are in good agreement with the gluonic width extracted from deep inelastic scattering data at HERA using the IP-Sat model \ref{?}, and are considerably smaller than the rms-width of the proton charge density $r_\text{rms} \approx 0.85$~fm \ref{?}.
 We also observe striking correlations between the nucleon width and QGP viscosities---this is because decreasing the width leads to smaller scale structures and steeper gradients in the initial state.
 So e.g.\ as the nucleon width decreases, average transverse momentum increases, and bulk viscosity must increase to compensate.
 This explains the strong anti-correlation between $w$ and $\zeta/s$ norm.

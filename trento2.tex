@@ -202,7 +202,7 @@ As the hydrodynamic medium expands and cools below the QCD transition temperatur
 We therefore convert the medium to an ensemble of particles and switch from hydrodynamics to a microscopic kinetic model, which can better handle the late stages of the collision including species-dependent kinetic freeze-out, hadronic feed-down dynamics, and non-equilibrium breakup.
 Kinetic models also naturally account for hadronic viscosity, obviating the need to manually specify transport coefficients.
 Thus, although the parametrizations for $\eta/s$ and $\zeta/s$, Eq.~\eqref{eq:etas} and \eqref{eq:zetas}, extend below $T_c$, they do not affect the kinetic model.
-In particular, the parameter $(\eta/s)_\text{hrg}$ only controls the small fraction of hydrodynamic evolution below $T_c$ and before switching to the kinetic model, and is not expected to strongly affect the overall model.
+In particular, the parameter $(\eta/s)_\text{hrg}$ only controls the small fraction of hydrodynamic evolution below $T_c$ and before switching to the kinetic model, and hence is not expected to strongly affect the overall model.
 Such multi-stage approaches are known as hybrid models \cite{Bass:2000ib, Nonaka:2006yn, Petersen:2008dd}.
 
 \newcommand{\Tsw}{$T_\text{switch}$}
@@ -222,7 +222,7 @@ We use the iSS sampler \cite{Shen:2014vra, Qiu:2013wca} for particlization.
 \newcommand{\df}{\delta f}
 
 The distribution function $f$ includes any non-equilibrium contributions from shear and bulk viscosities, typically expanded into an ideal part and a viscous correction, $f = f_0 + \df$, where the ideal part $f_0$ is a Bose or Fermi distribution and the viscous correction $\df = \df_\text{shear} + \df_\text{bulk}$.
-We use the common shear correction \cite{Teaney:2003kp}
+We use a common form for the shear correction \cite{Teaney:2003kp}
 \begin{equation}
   \delta f_\text{shear} = f_0(1 \pm f_0) \frac{1}{2T^2(e+P)} p^\mu p^\nu \pi_{\mu\nu}.
 \end{equation}
@@ -774,7 +774,7 @@ however, the marginal distributions do not paint a complete picture.
 The joint distribution shows a salient correlation between the two parameters, hence, while neither $\eta/s$ min nor slope are strongly constrained independently, a linear combination is quite strongly constrained.
 Figure~\ref{fig:etas_estimate} visualizes the complete estimate of the temperature dependence of $\eta/s$ via the median min and slope from the posterior (for identified particles) and a 90\% credible region.
 This visualization corroborates that the posterior for $(\eta/s)(T)$ is markedly narrower than the prior and further reveals that the uncertainty is smallest at intermediate temperatures, $T \sim {}$200--225 MeV.
-We hypothesize that this is the most important temperature range at $\sqrts = 2.76$~TeV---perhaps it is where most anisotropic flow develops, for instance---and thus the data provide a ``handle'' for $\eta/s$ around 200 MeV.
+We hypothesize that this is the most important temperature range at $\sqrts = 2.76$~TeV---perhaps it is where the system spends most of its time and hence where most anisotropic flow develops, for instance---and thus the data provide a ``handle'' for $\eta/s$ around 200 MeV.
 Data at other beam energies could provide additional handles at different temperatures, enabling a more precise estimate of the temperature dependence of $\eta/s$.
 
 This result for $(\eta/s)(T)$ supports several recent findings using other models:
@@ -811,7 +811,7 @@ As noted in the previous subsection, there is a strong anti-correlation between 
 We also observe a positive correlation with $\eta/s$ min, which initially seems counterintuitive.
 This dependence arises via the nucleon width:
 increasing bulk viscosity requires decreasing the nucleon width, which in turn necessitates increasing shear viscosity to damp out the excess anisotropy.
-Given the previously mentioned shortcomings in the current treatment of bulk viscosity (neglecting bulk corrections at particlization, parametrization mismatch with the equation of state, lack of a dynamical pre-equilibrium phase), we refrain from making any quantitative statements.
+Given the previously mentioned shortcomings in the current treatment of bulk viscosity (neglecting bulk corrections at particlization, lack of a dynamical pre-equilibrium phase), we refrain from making any quantitative statements.
 What is clear, however, is that a finite bulk viscosity is necessary to simultaneously describe transverse momentum and flow data.
 
 The distributions for the particlization temperature $T_\text{switch}$ have by far the most dramatic difference between the two calibrations.

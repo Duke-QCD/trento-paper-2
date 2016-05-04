@@ -88,7 +88,7 @@ Modern hydrodynamic simulations have greatly expanded upon the successes of firs
 The addition of dissipative corrections to ideal hydrodynamics \cite{Muronga:2004sf, Chaudhuri:2006jd, Romatschke:2007mq, Dusling:2007gi, Song:2007ux, Luzum:2008cw}, event-by-event fluctuations in the colliding nuclei \cite{Alver:2008zza, Alver:2010gr}, and modern lattice quantum chromodynamics (QCD) calculations for the quark-gluon plasma (QGP) equation of state \cite{Bazavov:2009zn, Borsanyi:2013bia, Bazavov:2014pvz} are just a few examples of developments which have dramatically improved the agreement of hydrodynamic models with experiment.
 
 These developments have positioned hydrodynamic modeling to evolve beyond a qualitative science and quantitatively extract intrinsic properties of hot and dense QCD matter.
-A primary goal of the ongoing effort is to determine the temperature dependence of QGP transport coefficients such as the specific shear viscosity $\eta/s$, theorized to reach a lower bound ${\eta/s \ge 1/4\pi}$ near the QGP phase transition temperature \cite{Policastro:2001yc, Kovtun:2004de}.
+A primary goal of the ongoing effort is to determine the temperature dependence of QGP transport coefficients such as the specific shear viscosity $\eta/s$, theorized to reach a lower bound ${\eta/s \ge 1/4\pi}$ near the QGP phase transition temperature \cite{Danielewicz:1984ww, Policastro:2001yc, Kovtun:2004de}.
 An estimate of the effective (constant) QGP shear viscosity needed to fit spectra and flows at RHIC found ${1 \le 4\pi\eta/s \le 2.5}$ \cite{Song:2010mg}, while independent studies have reported estimates consistent with this range \cite{Luzum:2008cw,Schenke:2010rr,Luzum:2012wu}.
 
 The remaining uncertainty in $\eta/s$ arises largely from the hydrodynamic initial conditions:
@@ -202,7 +202,7 @@ As the hydrodynamic medium expands and cools below the QCD transition temperatur
 We therefore convert the medium to an ensemble of particles and switch from hydrodynamics to a microscopic kinetic model, which can better handle the late stages of the collision including species-dependent kinetic freeze-out, hadronic feed-down dynamics, and non-equilibrium breakup.
 Kinetic models also naturally account for hadronic viscosity, obviating the need to manually specify transport coefficients.
 Thus, although the parametrizations for $\eta/s$ and $\zeta/s$, Eq.~\eqref{eq:etas} and \eqref{eq:zetas}, extend below $T_c$, they do not affect the kinetic model.
-The parameter $(\eta/s)_\text{hrg}$ therefore only influences the small fraction of hydrodynamic evolution both below $T_c$ and before switching to the kinetic model, and is thus not expected to strongly affect the overall model.
+In particular, the parameter $(\eta/s)_\text{hrg}$ only controls the small fraction of hydrodynamic evolution below $T_c$ and before switching to the kinetic model, and is not expected to strongly affect the overall model.
 Such multi-stage approaches are known as hybrid models \cite{Bass:2000ib, Nonaka:2006yn, Petersen:2008dd}.
 
 \newcommand{\Tsw}{$T_\text{switch}$}
@@ -767,7 +767,7 @@ The shear viscosity parameters $(\eta/s)_\text{min,slope}$ set the temperature d
 \end{equation}
 for $T > T_c$.
 The full parametrization Eq.~\eqref{eq:etas} also includes a constant $(\eta/s)_\text{hrg}$ for $T < T_c$; this parameter was included in the calibration but yielded an essentially flat posterior distribution, implying that it has little to no effect.
-This is not surprising, since hadronic viscosity is largely handled by UrQMD, not the hydro model.
+This is not surprising, since hadronic viscosity is largely handled by UrQMD, not the hydrodynamic model.
 Therefore, we omit $(\eta/s)_\text{hrg}$ from the posterior distribution visualizations and tables.
 
 Examining the marginal distributions for $\eta/s$ min and slope, we see a clear preference for $(\eta/s)_\text{min} \lesssim 0.15$ and a mild preference for a shallow slope;
@@ -781,14 +781,14 @@ Data at other beam energies could provide additional handles at different temper
 This result for $(\eta/s)(T)$ supports several recent findings using other models:
 a detailed study using the EKRT model \cite{Niemi:2015qia} showed that a combination of RHIC and LHC data prefer a shallow high-temperature slope, while an analysis using a three-dimensional constituent quark model \cite{Denicol:2015nhu} demonstrated that a similar shallow slope best describes the rapidity dependence of elliptic flow at RHIC.
 In addition, the estimated temperature-averaged shear viscosity is consistent with the (constant) $\eta/s = 0.095$ reported \cite{Ryu:2015vwa} using the IP-Glasma model and the same bulk viscosity parametrization, Eq.~\eqref{eq:zetas}.
-Finally, the present result remains compatible (within uncertainty) with the KSS bound $\eta/s \geq 1/4\pi$ \cite{Policastro:2001yc,Kovtun:2004de}.
+Finally, the present result remains compatible (within uncertainty) with the KSS bound $\eta/s \geq 1/4\pi$ \cite{Danielewicz:1984ww, Policastro:2001yc, Kovtun:2004de}.
 
 \fig{etas_estimate}{
   Estimated temperature dependence of the shear viscosity $(\eta/s)(T)$ for $T > T_c = 0.154$ GeV.
   The gray shaded region indicates the prior range for the linear $(\eta/s)(T)$ parametrization Eq.~\eqref{eq:etas},
   the blue line is the median from the posterior distribution,
   and the blue band is a 90\% credible region.
-  The horizontal gray line indicates the KSS bound $\eta/s \geq 1/4\pi$ \cite{Policastro:2001yc,Kovtun:2004de}.
+  The horizontal gray line indicates the KSS bound $\eta/s \geq 1/4\pi$ \cite{Danielewicz:1984ww, Policastro:2001yc, Kovtun:2004de}.
 }
 
 \fig*{mode_observables}{
@@ -813,7 +813,7 @@ We also observe a positive correlation with $\eta/s$ min, which initially seems 
 This dependence arises via the nucleon width:
 increasing bulk viscosity requires decreasing the nucleon width, which in turn necessitates increasing shear viscosity to damp out the excess anisotropy.
 Given the previously mentioned shortcomings in the current treatment of bulk viscosity (neglecting bulk corrections at particlization, parametrization mismatch with the equation of state, lack of a dynamical pre-equilibrium phase), we refrain from making any quantitative statements.
-What is clear, however, is that finite bulk viscosity is necessary to simultaneously describe transverse momentum and flow data.
+What is clear, however, is that a finite bulk viscosity is necessary to simultaneously describe transverse momentum and flow data.
 
 The distributions for the particlization temperature $T_\text{switch}$ have by far the most dramatic difference between the two calibrations.
 The posterior from identified particle yields shows a shark peak centered at $T \approx 148$~MeV, just below $T_c = 154$~MeV;
@@ -849,11 +849,11 @@ This is a long-standing issue in hybrid models \cite{Song:2013qma} and therefore
   \end{ruledtabular}
 \end{table}
 
-As a final verification of emulator predictions and the model's accuracy, we ran a large number of events using high-probability parameters and compared the resulting observables to experiment.
+As a final verification of emulator predictions and the model's accuracy, we calculated a large number of events using high-probability parameters and compared the resulting observables to experiment.
 We chose two sets of parameters based on the peaks of the posterior distributions, listed in Table~\ref{tab:mode_params}.
-These are something like the ``most probable'' parameters and the corresponding model calculations should optimally fit the data.
+These values approximate the ``most probable'' parameters and the corresponding model calculations should optimally fit the data.
 
-We executed \order 5 minimum-bias events for each set of parameters and computed observables, shown along with experimental data in Fig.~\ref{fig:mode_observables}.
+We evaluated \order 5 minimum-bias events for each set of parameters and computed observables, shown along with experimental data in Fig.~\ref{fig:mode_observables}.
 Solid lines represent calculations using parameters based on the identified particle posterior while dashed lines are based on the charged particle posterior.
 Note that these calculations include a peripheral centrality bin (70--80\%) that was not used in parameter estimation.
 

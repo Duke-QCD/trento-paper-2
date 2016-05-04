@@ -233,12 +233,12 @@ We will, however, be able to determine if $\zeta/s$ is zero or finite.
 We plan to remedy this shortcoming in future work, enabling a quantitative estimate of the temperature dependence of bulk viscosity.
 
 Once the fluid is converted into hadrons, the subsequent microscopic dynamics are simulated using the Ultra-relativistic Quantum Molecular Dynamics (UrQMD) model as a hadronic afterburner \cite{Bass:1998ca, Bleicher:1999xi}.
-UrQMD implements a Monte Carlo realization of the Boltzmann equation
+UrQMD uses Monte Carlo techniques to solve the Boltzmann equation
 \begin{equation}
   \frac{df_i(x,p)}{dt} = \mathcal{C}_i(x, p),
 \end{equation}
 where $f_i$ is the distribution function and $\mathcal{C}_i$ the collision kernel for particles species $i$.
-The model propagates all produced hadrons along classical trajectories, samples their stochastic binary collisions, and simulates their resonance decays until they cease interacting.
+The model propagates all produced hadrons along classical trajectories, and accounts for their scattering, resonance formation and decay processes until all hadrons in the system have ceased interacting.
 The final particle data are then postprocessed into observables for comparison with experiment.
 
 \subsection{Parametric initial conditions}
@@ -907,7 +907,8 @@ and the source for this manuscript including all figures and tables at \nicelink
 \begin{acknowledgments}
 The authors thank Ulrich Heinz, Scott Pratt, Harri Niemi, and Bj\"orn Schenke for helpful discussions and clarifications in the production of the manuscript.
 This research was completed using over ten million CPU hours provided by the Open Science Grid \cite{Pordes:2007zzb,Sfiligoi:2010zz}, which is supported by the National Science Foundation and the U.S.\ Department of Energy's Office of Science.
-\textbf{FUNDING FUNDING FUNDING}
+SAB and JEB are being supported by the U.S. Department of Energy Grant no.~DE-FG02-05ER41367, JL is being supported by {\bf OSU grant}
+and JSM acknowledges support by the DOE/NNSA Stockpile Stewardship Graduate Fellowship under grant no.~DE-FC52-08NA28752.
 \end{acknowledgments}
 
 \bibliography{trento2}

@@ -402,12 +402,12 @@ The energy density predicted by the model after a pre-thermal Bjorken free strea
   \label{eq:ekrt_energy}
 \end{equation}
 where the saturation momentum $p_\text{sat}$ depends on nuclear thickness functions $T_A$ and $T_B$, as well as phenomenological model parameters $K_\text{sat}$ and $\beta$.
-Calculating the saturation momentum directly from the EKRT formalism is computationally intensive, hence the authors fit $p_\text{sat}$ to a parametric form listed in \cite{Niemi:2015qia} which we use here.
+Calculating the saturation momentum in the EKRT formalism is computationally intensive, and hence---in its Monte Carlo implementation---the model parametrizes the saturation momentum $p_\text{sat}$ to facilitate efficient event sampling \cite{Niemi:2015qia}. 
 The energy density in Eq.~\eqref{eq:ekrt_energy} can then be recast as an entropy density using the thermodynamic relation ${s \sim e^{3/4}}$ to compare it with the previous models.
 
 Note that Eq.~\eqref{eq:ekrt_energy} is expressed as a function of nuclear thickness $T$ which includes contributions from \emph{all} nucleons inside the nucleus and is different than the participant density $\T$ used previously.
 In order to express initial condition mappings as functions of a common variable one could, e.g.\ relate $\T$ and $T$ using an analytic wounded nucleon model.
-The effect of this substitution on the EKRT model, however, is small as the mapping deposits zero entropy if nucleons are non-overlapping effectively removing them from the participant thickness function.
+The effect of this substitution on the EKRT model, however, is small as the mapping deposits zero entropy if nucleons are non-overlapping, effectively removing them from the participant thickness function.
 We thus replace $T$ with $\T$ in the EKRT model and note that similar results are obtained by recasting the wounded nucleon, KLN and \trento\ models as functions of $T$ using standard Glauber relations.
 
 In Fig.~\ref{fig:cgc_compare} we plot one-dimensional slices of the entropy deposition mapping predicted by the KLN, EKRT and wounded nucleon models for characteristic values of the participant nucleon density sampled in lead-lead collisions at $\sqrts=2.76$~TeV.
@@ -418,24 +418,28 @@ Smaller, more negative values of $p$ pull the generalized mean toward a minimum 
 
 The three models shown in Fig.~\ref{fig:cgc_compare} are by no means an exhaustive list of initial condition models proposed in the literature.
 Notably absent, for instance, is the highly successful IP-Glasma model which combines IP-Sat CGC initial conditions with classical Yang-Mills dynamics to describe the full pre-equilibrium evolution of produced glasma fields \cite{Schenke:2012wb, Schenke:2012fw, Gale:2012rq}.
-The IP-Glasma model lacks a simple analytic form for initial energy (or entropy) deposition at the QGP thermalization time, so it cannot be directly compared to the generalized mean ansatz, Eq.~\eqref{eq:genmean}.
-In lieu of such a comparison, we plot the IP-Glasma and \trento\ eccentricity harmonics in Fig.~\ref{fig:ipglasma}, which provides an indirect measure of the two initial condition models.
+The IP-Glasma model lacks a simple analytic form for initial energy (or entropy) deposition at the QGP thermalization time---so it cannot be directly compared to the generalized mean ansatz, Eq.~\eqref{eq:genmean}.
+In lieu of such a comparison, we calculate the IP-Glasma and \trento\ eccentricity harmonics $\varepsilon_n$, weighted by transverse energy density $e(x,y)$ at the QGP thermalization time 
+\begin{equation}
+    \varepsilon_n e^{i n \phi} = -\frac{\int dx\, dy\, r^n e^{i n \phi} e(x,y)}{\int dx\, dy\, e(x,y)},
+    \label{eq:eccentricity}
+\end{equation}
+to quantify geometric properties of the two initial condition models.
 
-using a geometric mean ${p=0}$ which was previously shown to reproduce the eccentricity hierarchy of $\varepsilon_2$ and $\varepsilon_3$ in IP-Glasma.
+We first generate a large number of \trento\ events using nucleon width {\color{red}$w=0.43$~fm}, entropy deposition parameter $p=0$, and fluctuation parameter $k=1.4$, which were previously shown to reproduce the ratio of ellipticity and triangularity in IP-Glasma \cite{Moreland:2014oya}.
+The events are then free streamed \cite{Liu:2015nwa, Broniowski:2008qk} for $\tau=0.4$~fm/c to mimic the weakly coupled pre-equilibrium dynamics of IP-Glasma and match the evolution time of both models.
+Finally, we calculate the eccentricity harmonics $\varepsilon_2$ and $\varepsilon_3$ from Eq.~\eqref{eq:eccentricity}, where the energy density is obtained from the $T^{00}$ component of the stress-energy tensor after the free streaming phase.
+The resulting eccentricities harmonics, pictured in Fig.~\ref{fig:ipglasma}, are in good agreement out to large values of the impact parameter $b$ where sub-nucleonic structure starts to become important.
+The similarity suggests that \trento\ with $p \sim 0$  can effectively reproduce the scaling behavior of the IP-Glasma model, although a more detailed comparison of the two models would be necessary to establish the strength of correspondence illustrated in Fig.~\ref{fig:cgc_compare}.
+
 
 \fig{ipglasma}{
   Eccentricity harmonics $\varepsilon_2$ and $\varepsilon_3$ as a function of impact parameter $b$ for Pb+Pb collisions at ${\sqrts=2.76}$~TeV.
   IP-Glasma events \cite{Schenke:2012wb} are evaluated after $\tau=0.4$~fm/c classical Yang-Mills evolution and \protect\trento\ events after $\tau=0.4$~fm/c free streaming.
   \protect\trento\ specific parameters are $p=0$ and $k=1.4$.
-  Both models use nucleon width $w=0.43$~fm and identical Woods-Saxon parameters.
+  Both models use nucleon width {\color{red} $w=0.43$~fm} \cite{Schenke:2013dpa} and identical Woods-Saxon parameters.
   The eccentricity calculation is performed using the energy density of the IP-Glasma model and $T^{00}$ component of the \protect\trento\ stress energy tensor after free streaming.
 }
-
-Each \trento\ initial condition event is free streamed using the procedure in Ref.~\cite{Liu:2015nwa} for $\tau=0.4$~fm/c to mimic the weakly coupled pre-equilibrium dynamics of IP-Glasma and match the evolution time of both models.
-Both calculations are performed using nucleon width $w=0.43$~fm and identical Woods-Saxon parameters.
-The result shows a striking similarity in the eccentricity harmonics predicted by both models out to large values of the impact parameter $b$ where the sub-nucleonic structure of the IP-Glasma model starts to have significant effect.
-The simularity suggests that \trento\ with $p \sim 0$  can effectively reproduce the scaling behavior of the IP-Glasma model, although a more detailed comparison of the two models would be necessary to establish the strength of correspondence illustrated in Fig.~\ref{fig:cgc_compare}.
-
 
 \section{Parameter estimation}
 

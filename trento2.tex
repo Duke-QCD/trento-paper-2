@@ -243,63 +243,63 @@ The final particle data are then postprocessed into observables for comparison w
 
 \subsection{Parametric initial conditions}
 
-The hydrodynamic equations of motion necessitate initial conditions for the energy density $e$, four-velocity $u^\mu$, bulk pressure $\Pi$, and shear stress tensor $\pi^{\mu\nu}$ at time $\tau = \tau_0$, when the system is assumed to have thermalized.
+The hydrodynamic equations of motion necessitate initial conditions for the energy density $e$, fluid flow velocity $u^\mu$, shear stress tensor $\pi^{\mu\nu}$, and bulk pressure $\Pi$ at time $\tau = \tau_0$, when the system is assumed to have thermalized.
 These initial conditions emerge from dynamical processes of the collision, and are commonly modeled in two stages: initial state models describe the system immediately after impact at time $\tau=0^+$, then pre-equilibrium transport models evolve the system until the thermalization time $\tau_0$.
-Efforts to realistically model the pre-equilibrium stage of the collision include transport dynamics \cite{Schenke:2012wb, Schenke:2012fw, vanderSchee:2013pia, vanderSchee:2015rta, Chesler:2015fpa} motivated by thermalization studies in strong and weakly coupled field theories \cite{Romatschke:2006nk, Krasnitz:2002ng, Berges:2013eia, Arnold:2004ti, Kurkela:2011ti, Heller:2012km, vanderSchee:2013pia, Rebhan:2004ur, Heller:2011ju, Janik:2006gp}.
+Efforts to realistically model the pre-equilibrium stage include transport dynamics \cite{Schenke:2012wb, Schenke:2012fw, vanderSchee:2013pia, vanderSchee:2015rta, Chesler:2015fpa} motivated by thermalization studies in strong and weakly coupled field theories \cite{Romatschke:2006nk, Krasnitz:2002ng, Berges:2013eia, Arnold:2004ti, Kurkela:2011ti, Heller:2012km, vanderSchee:2013pia, Rebhan:2004ur, Heller:2011ju, Janik:2006gp}.
 
-The importance of pre-equilibrium dynamics was recently studied by initializing hydrodynamic simulations with a free streaming phase (zero coupling) and switching to hydrodynamics (strong coupling) after different periods of time \cite{Liu:2015nwa}.
+The importance of pre-equilibrium dynamics was recently studied by initializing hydrodynamic simulations with a free streaming phase (zero coupling) and switching to hydrodynamics (strong coupling) after different periods of time \cite{Liu:2015nwa, Heinz:2015arc}.
 The authors showed that although free streaming never leads to thermalization, it can be used to bracket the influence of pre-equilibrium dynamics on the medium evolution as the pre-equilibrium coupling strength is expected to fall between the free streaming and hydrodynamic limits.
 The analysis found a preference for a brief free streaming phase ${\tau_\text{fs} \lesssim 1}$~fm/c, but the effect on hydrodynamic bulk observables was small and modifications to the preferred value of the QGP specific shear viscosity $\eta/s$ were less than 10\%.
 In reality, the magnitude of the effect is expected to be even smaller as the pre-equilibrium coupling strength is necessarily non-zero.
 
-We choose to neglect pre-equilibrium dynamics in the present study, and set the fluid four-velocity to zero ${u^\mu = (1,0,0,0)}$ as well as the shear and bulk viscous tensors $\pi^{\mu\nu}$ and $\Pi$ which quickly relax to their Navier-Stokes values.
-This reduces the initial conditions to a thermal energy density $e(\tau_0, x, y, \eta)$ which can be expressed as an entropy density via the QCD EoS.
-The initial conditions in boost-invariant hydrodynamics can thus described by an entropy density profile
+We neglect pre-equilibrium dynamics in the present study, instead initializing the flow velocity to zero as well as the viscous terms, which quickly relax to their Navier-Stokes values \cite{Song:2009rh}.
+This reduces the initial conditions to a thermal energy density, which may be provided as an entropy density and converted via the QCD EoS.
+We generate event-by-event initial conditions using the recently developed parametric model \trento\ \cite{Moreland:2014oya}.
+The model begins with a standard Monte Carlo Glauber formalism, summarized below, and parametrizes entropy deposition as a function of local participant nuclear density.
+
+First, nucleon positions for nuclei $A$ and $B$ are sampled from a standard uncorrelated Woods-Saxon distribution and shifted by $\pm b/2$, where $b$ is a minimum-bias impact parameter.
+Participants are then determined randomly from the inelastic collision probability \cite{d'Enterria:2010hd}
 \begin{equation}
-  s(\tau_0, x, y)\vert_{\eta=0} = f(\T_A, \T_B)
-  \label{eq:mapping}
+  \begin{aligned}
+    P_\text{coll}(b) &= 1 - \exp\bigl[ -\sigma_{gg} T_{pp}(b) \bigr], \\
+    T_{pp}(b) &= \int dx \, dy \, T_p(x, y) T_p(x - b, y),
+  \end{aligned}
 \end{equation}
-where the mapping $f$ is some static function of the density of nuclear matter in each nucleus which participates in inelastic collisions denoted $\T$, constructed by summing over the participant proton thicknesses
+where $b$ is now the impact parameter between two nucleons, $T_p$ is the nucleon thickness function, and the effective partonic cross section $\sigma_{gg}$ is fixed to reproduce the inelastic nucleon-nucleon cross section
+\begin{equation}
+  \sigma_\text{NN}^\text{inel} = \int 2 \pi b\, db\, P_\text{coll}(b).
+\end{equation}
+For the nucleon thickness function we use a Gaussian
+\begin{equation}
+  T_p(x, y) = \frac{1}{2\pi w^2} \exp\bigg(\!-\frac{x^2 + y^2}{2 w^2}\bigg),
+  \label{eq:Tp}
+\end{equation}
+where $w$ is a tunable effective nucleon width.
+
+We now define the \emph{participant} thickness function
 \begin{equation}
   \T(x, y) = \sum\limits_{i=1}^{N_\text{part}} \gamma_i\, T_p(x - x_i, y - y_i),
   \label{eq:participant}
 \end{equation}
-where the relative nucleon coordinates of each nucleus are shifted by a random impact parameter such that ${\T_{A,B}(x, y) = \T(x \pm b/2, y)}$.
-For the proton thickness function we use a Gaussian
-\begin{equation}
-  T_p(x, y) = \frac{1}{2\pi w^2} \exp\bigg(\!-\frac{x^2 + y^2}{2 w^2}\bigg).
-  \label{eq:Tp}
-\end{equation}
-with nucleon width $w$ taken as a free parameter.
-The random weight factor $\gamma_i$ multiplying each nucleon in Eq.~\eqref{eq:participant} is added to account for minimum bias proton-proton multiplicity fluctuations and is sampled from a gamma distribution with unit mean and variance $1/k$, where $k$ is a tunable shape parameter \cite{Bozek:2013uha}.
+which differs from the conventional thickness function $T$ by including only participant nucleons and weighting each participant by a random factor $\gamma_i$, sampled from a gamma distribution with unit mean and variance $1/k$, where $k$ is a tunable shape parameter \cite{Bozek:2013uha}.
+These weights are inserted to account for minimum-bias proton-proton multiplicity fluctuations.
 
 \fig{trento_events}{
-  Several \protect\trento\ Pb+Pb initial condition events for the transverse entropy density $dS/(d^2r_\perp dy)$ calculated using generalized mean parameter $p=0$, nucleon width $w=0.5$~fm, and gamma fluctuation factor $k=1.4$.
+  Several randomly generated \protect\trento\ Pb+Pb initial condition events using generalized mean parameter $p=0$, nucleon width $w=0.5$~fm, and gamma fluctuation factor $k=1.4$.
 }
 
-The inelastic nucleon-nucleon participation probability, and hence the density of participant matter, can be calculated from a standard Glauber formalism \cite{d'Enterria:2010hd},
+The \trento\ model calculates local entropy density at midrapidity by applying a function $f$ to the participant thickness functions:
 \begin{equation}
-  P_\text{coll}(b) =
-    1 - \exp\biggl[
-      -\sigma_{gg} \int d^2x_\perp T_p(|\vec{x}|) T_p(|\vec{x} - \vec{b}|)
-    \biggr]
+  s(\tau_0, x, y)\vert_{\eta_s=0} = f(\T_A, \T_B).
+  \label{eq:mapping}
 \end{equation}
-where $b$ is the impact parameter between two nucleons and the partonic cross section $\sigma_{gg}$ is tuned to fit the inelastic nucleon-nucleon cross section
+Based on basic physical constraints and phenomenological observations \cite{Moreland:2014oya}, we use a functional form known as the generalized mean,
 \begin{equation}
-  \int 2 \pi b\, db\, P_\text{coll}(b) = \sigma_\text{NN}^\text{inel}
-\end{equation}
-at the desired beam energy.
-The collision cross sections thus enter through the calculation of $\T_A$ and $\T_B$ which are determined \emph{independently} of the function $f$ used to convert local participant density into entropy deposition.
-
-At this point it becomes necessary to specify the function $f$ in Eq~\eqref{eq:mapping} which maps participant matter to local entropy deposition.
-In general, the function $f(\T_A, \T_B)$ is assumed to be symmetric, monotonically increasing and smooth.
-In this work we employ a parameterization for $f$ motivated in Ref.~\cite{Moreland:2014oya} based on a functional form known as the generalized mean,
-\begin{align}
   s \propto \left( \frac{\T_A^p + \T_B^p}{2} \right)^{1/p}.
   \label{eq:genmean}
-\end{align}
-The parameterization introduces two free parameters, a normalization prefactor and a continuous entropy deposition parameter $p\in(-\infty, \infty)$ which interpolates between different types of entropy deposition schemes.
-For ${p=(1, 0, -1)}$, the generalized mean reduces to the well known arithmetic, geometric and harmonic means, and for $p\rightarrow \pm\infty$ it asymptotes to minimum and maximum functions,
+\end{equation}
+This parametrization introduces a continuous entropy deposition parameter $p$ which effectively interpolates among different entropy deposition schemes.
+For ${p=(1, 0, -1)}$, the generalized mean reduces to arithmetic, geometric, and harmonic means, while for ${p \rightarrow \pm\infty}$ it asymptotes to minimum and maximum functions:
 \begin{equation}
   \newlength{\extraspace}
   \setlength{\extraspace}{0.5ex}
@@ -313,48 +313,47 @@ For ${p=(1, 0, -1)}$, the generalized mean reduces to the well known arithmetic,
   \end{cases}
   \label{eq:means}
 \end{equation}
-
-In Ref.~\cite{Moreland:2014oya} we motivate the generalized mean ansatz using basic physical constraints and phenomenological observations, but perhaps the simplest explanation of the ansatz is to examine the effect of the mapping on realistic events.
-Figure~\ref{fig:thickness} shows a cut-away of a lead-lead collision at $\sqrts=2.76$~TeV, sliced along the direction of impact parameter $\hat{b}$.
-At each point in the transverse plane there are two relevant scales of interest, the minimum participant density $\T_\text{min}$ and the maximum participant density $\T_\text{max}$.
-The gray band marks the region spanned by $\T_\text{min}$ and $\T_\text{max}$, while the blue band/line show the generalized mean acting on the participant density of each nucleus with different values of the parameter $p$.
-The figure shows that decreasing $p$ pulls the generalized mean towards the minimum of $\T_A$ and $\T_B$ while increasing $p$ pushes it to the maximum of the two.
-The generalized mean ansatz thus parameterizes asymmetric entropy deposition, or in the parlance of color glass condensate theory, the intensity of saturation effects on local gluon production.
+Perhaps the simplest explanation of this ansatz is to examine the effect of the mapping on realistic events:
+Fig.~\ref{fig:trento_events} shows examples of entropy density in the transverse plane for several typical lead-lead events at $\sqrts=2.76$~TeV,
+while Fig.~\ref{fig:thickness} shows a cross section of a single event along the direction of the impact parameter.
+At each point in the transverse plane there are two relevant scales of interest:
+the smaller of the two participant densities, $\T_\text{min} = \min(\T_A, \T_B)$, and the larger, $\T_\text{max}$.
+In Fig.~\ref{fig:thickness}, the gray band marks the region spanned by $\T_\text{min}$ and $\T_\text{max}$, while the blue band and line show the generalized mean of the participant densities for different values of the parameter $p$.
+We see that decreasing $p$ pulls the generalized mean towards the minimum of $\T_A$ and $\T_B$ while increasing $p$ pushes it to the maximum, thus, the generalized mean ansatz parametrizes asymmetric entropy deposition, or in the parlance of color glass condensate theory, the intensity of saturation effects on local gluon production.
 
 \fig{thickness}{
-    Cross section of the participant nucleon density in a mid-central Pb+Pb collision at $\sqrts=2.76$ TeV as a function of the transverse coordinate $x$ parallel to impact parameter $\vec{b}$.
-  The gray band indicates the region bounded by the minimum and maximum values of the local participant thickness functions $\tilde{T}_A$ and $\tilde{T}_B$, while the blue band indicates the region spanned by the generalized mean of $\tilde{T}_A$ and $\tilde{T}_B$ with parameter $-1<p<1$.
+    Cross section of the participant nucleon density in a mid-central Pb+Pb collision at $\sqrts=2.76$ TeV as a function of the transverse coordinate $x$ parallel to impact parameter $b$.
+  The gray band indicates the region bounded by the minimum and maximum values of the local participant thickness functions $\T_A$ and $\T_B$, while the blue band indicates the region spanned by the generalized mean of $\T_A$ and $\T_B$ with parameter $-1<p<1$.
   The solid blue line shows an example of a discrete mapping specified by a generalized mean with $p=0$.
 }
-
-These local modifications naturally become manifest in global quantities such as integrated particle yields.
-When two heavy ions collide at fixed impact parameter $b$, their nuclear densities are shifted by a common offset $T(x\pm b,y)$ which increases the average asymmetry of local participant matter.
-This asymmetry grows with increasing impact parameter and is highly correlated with collision centrality.
-By varying the generalized mean parameter $p$, the \trento\ model directly modulates the attenuation of entropy deposition in peripheral collisions and provides a parametric handle on the centrality dependence of charged particle production---similar to the role of the binary collision fraction $\alpha$ in the two-component Glauber model.
-
-In Fig.~\ref{fig:nch_per_npart} we plot the charged particle density per participant pair at mid-rapidity as a function of participant number using model calculations from \trento\ and experimental data from PHENIX and ALICE \cite{Adare:2015bua, Aamodt:2010cz, Adam:2015ptt}.
-The model curves are calculated assuming a linear relation between charged particle multiplicity and entropy $\nch \propto S$ \cite{Song:2008si}, where the proportionality constant varies with beam energy, but is constant for all collision systems at the same energy.
-We choose a fixed, energy independent instantiation of the generalized mean $p=0$ which was previously shown to provide a good description of proton-proton, proton-lead and lead-lead multiplicity distributions at LHC energies \cite{Moreland:2014oya}. In principle, the parameter $p$ could possess some energy dependence, although this is not considered in Fig.~\ref{fig:nch_per_npart}.
-We see that the entropy deposition mapping modeled by a generalized mean with $p=0$ provides a good description of the data at all beam energies and self consistently describes proton-lead and lead-lead multiplicities at the same collision energy.
-
-At this point the reader may complain that while the generalized mean parameterizes entropy deposition in asymmetric regions of the collision $\T_\text{min} < \T_\text{max}$, it asserts a particular scaling law for entropy deposition in symmetric regions of the collision where $\T_\text{min} = \T_\text{max}$.
-In particular,
-\begin{equation}
-  f(p; \alpha \T, \alpha \T) = \alpha \T.
-  \label{eq:homogenous}
-\end{equation}
-This property of the generalized mean is known as scale invariance or homogeneity.
-While it is difficult to empirically prove or disprove exact scale invariance, multiple experimental observations indicate that it holds to very good approximation.
-For example, it was demonstrated that collisions of highly deformed uranium nuclei exhibit elliptic flow patterns which are incompatible with a scale-violating binary collision term postulated by the two-component Glauber ansatz \cite{Goldschmidt:2015kpa, Pandit:2013uiv, Wang:2014qxa}.
-Measurements of central copper-copper, gold-gold and uranium-uranium particle production at RHIC also exhibit approximate participant scaling in agreement with Eq.~\eqref{eq:homogenous} \cite{Adare:2015bua}.
-Moreover, the scale invariant constraint serves as a reasonable approximation for a number of calculations of the mapping $f$ in Eq.~\eqref{eq:mapping} derived from CGC effective field theory as we show momentarily.
-At present, we thus assert the scale invariant constraint as a simplifying postulate, although future work may relax this constraint to further reduce bias in the chosen parameterization.
 
 \fig[b]{nch_per_npart}{
     Average charged particle density per participant pair $(d\nch/d\eta)/(\npart/2)$ at mid-rapidity as a function of participant number for Au+Au, Pb+Pb and p+Pb systems at various collision energies.
     Lines are \protect\trento\ calculations with generalized mean parameter $p=0$, and symbols are experimental data from PHENIX and ALICE \cite{Adare:2015bua, Aamodt:2010cz, Adam:2015ptt}.
     The average minimum bias participant number for the p+Pb system has been shifted for clarity.
 }
+
+These local modifications naturally become manifest in global quantities such as integrated particle yields.
+When two heavy ions collide at fixed impact parameter $b$, their nuclear densities are shifted by a common offset $T(x\pm b/2,y)$ which increases the average asymmetry of local participant matter.
+This asymmetry grows with increasing impact parameter and is highly correlated with collision centrality.
+By varying the generalized mean parameter $p$, the \trento\ model directly modulates the attenuation of entropy deposition in peripheral collisions and provides a parametric handle on the centrality dependence of charged particle production---similar to the role of the binary collision fraction $\alpha$ in the two-component Glauber model.
+
+Figure~\ref{fig:nch_per_npart} plots the charged particle density per participant pair at midrapidity as a function of participant number using model calculations from \trento\ and experimental data from PHENIX and ALICE \cite{Adare:2015bua, Aamodt:2010cz, Adam:2015ptt}.
+The model curves are calculated assuming that charged particle multiplicity is proportional to total initial entropy \cite{Song:2008si}, where the proportionality constant varies with beam energy but is constant for all collision systems at the same energy.
+We set the entropy deposition parameter $p=0$, which was previously shown to provide a good description of proton-proton, proton-lead, and lead-lead multiplicity distributions as well as lead-lead eccentricity harmonics at LHC energies \cite{Moreland:2014oya}.
+While $p$ could depend on energy, we see in the figure that $p=0$ provides a good description of the data at all beam energies and self consistently describes proton-lead and lead-lead multiplicities at the same collision energy.
+
+Note that, while the generalized mean parametrizes entropy deposition in asymmetric regions of the collision ($\T_A \neq \T_B$), it asserts a particular scaling in symmetric regions, namely
+\begin{equation}
+  f(\alpha \T, \alpha \T) = \alpha \T,
+  \label{eq:homogenous}
+\end{equation}
+for a constant $\alpha$.
+This property, known as scale invariance or homogeneity, is difficult to empirically prove or disprove, but multiple experimental observations indicate that it holds to very good approximation.
+For example, it was demonstrated that collisions of highly deformed uranium nuclei exhibit elliptic flow patterns which are incompatible with a scale-violating binary collision term postulated by the two-component Glauber ansatz \cite{Goldschmidt:2015kpa, Pandit:2013uiv, Wang:2014qxa}.
+Measurements of central copper-copper, gold-gold, and uranium-uranium particle production at RHIC also exhibit approximate participant scaling \cite{Adare:2015bua}.
+Moreover, the scale invariant constraint serves as a reasonable approximation for a number of calculations of the mapping $f$ in Eq.~\eqref{eq:mapping} derived from CGC effective field theory, as we show momentarily.
+At present, we thus assert scale invariance as a simplifying postulate, although relaxing this constraint may further reduce bias and could be considered in future work.
 
 \fig*{cgc_compare}{
   Profiles of the initial thermal distribution predicted by the KLN (left), EKRT (middle), and wounded nucleon (right) models (dashed black lines) compared to a generalized mean with different values of the parameter $p$ (solid blue lines).

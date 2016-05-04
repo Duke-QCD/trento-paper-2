@@ -71,7 +71,7 @@
 \begin{abstract}
 We aim to determine the quark-gluon-plasma initial conditions created in ultra-relativistic heavy-ion collisions and its temperature dependent transport coefficients utilizing Bayesian statistics and a multi-parameter model-to-data comparison.
 The study is performed using \trento, a recently developed parametric initial condition model for relativistic nuclear collisions which is able to interpolate among a general class of saturation based particle production scenarios.
-The parameterization is compared to explicit calculations in Color-Glass Condensate (CGC) effective field theory and embedded in a realistic hybrid model which couples event-by-event viscous hydrodynamics to a hadronic cascade.
+The parameterization is compared to explicit calculations in color glass condensate (CGC) effective field theory and embedded in a realistic hybrid model which couples event-by-event viscous hydrodynamics to a hadronic cascade.
 We find that the parameterized initial conditions are highly constrained by bulk observables and provide a first set of constraints on the temperature dependence of the specific shear- and bulk-viscosities of the quark-gluon plasma.
 \end{abstract}
 
@@ -104,7 +104,7 @@ One solution to the model optimization problem is the use of modern Bayesian met
 A given model is first evaluated at a relatively small number of parameter configurations and the results are interpolated by a Gaussian process emulator \cite{Rasmussen:2006gp}.
 Then, using the emulator as a stand-in for the full model, a standard Markov chain Monte Carlo (MCMC) algorithm exhaustively explores the parameter space and extracts probability distributions for the optimal values of each parameter.
 
-Bayesian methods have been applied to heavy-ion collisions in several previous studies \cite{Novak:2013bqa, Pratt:2015zsa, Sangaline:2015isa, Bernhard:2015hxa}, including simulations initialized with a two-component Monte Carlo Glauber (MC-Glb.) model \cite{Miller:2007ri} and the Kharzeev-Levin-Nardi (MC-KLN) model \cite{Drescher:2006pi}, an implementation of Color-Glass Condensate (CGC) effective field theory \cite{Gelis:2010nm, Gelis:2015gza}.
+Bayesian methods have been applied to heavy-ion collisions in several previous studies \cite{Novak:2013bqa, Pratt:2015zsa, Sangaline:2015isa, Bernhard:2015hxa}, including simulations initialized with a two-component Monte Carlo Glauber (MC-Glb.) model \cite{Miller:2007ri} and the Kharzeev-Levin-Nardi (MC-KLN) model \cite{Drescher:2006pi}, an implementation of color glass condensate (CGC) effective field theory \cite{Gelis:2010nm, Gelis:2015gza}.
 Future work could expand this coverage to additional calculations of QGP initial conditions in order to systematically constrain each model's parameters along with hydrodynamic transport coefficients.
 Once the models are appropriately optimized, the relative accuracy of the various theory calculations may be quantified using a model selection criterion such as Bayes factors.
 
@@ -319,7 +319,7 @@ Figure~\ref{fig:thickness} shows a cut-away of a lead-lead collision at $\sqrts=
 At each point in the transverse plane there are two relevant scales of interest, the minimum participant density $\T_\text{min}$ and the maximum participant density $\T_\text{max}$.
 The gray band marks the region spanned by $\T_\text{min}$ and $\T_\text{max}$, while the blue band/line show the generalized mean acting on the participant density of each nucleus with different values of the parameter $p$.
 The figure shows that decreasing $p$ pulls the generalized mean towards the minimum of $\T_A$ and $\T_B$ while increasing $p$ pushes it to the maximum of the two.
-The generalized mean ansatz thus parameterizes asymmetric entropy deposition, or in the parlance of Color-Glass Condensate theory, the intensity of saturation effects on local gluon production.
+The generalized mean ansatz thus parameterizes asymmetric entropy deposition, or in the parlance of color glass condensate theory, the intensity of saturation effects on local gluon production.
 
 \fig{thickness}{
     Cross section of the participant nucleon density in a mid-central Pb+Pb collision at $\sqrts=2.76$ TeV as a function of the transverse coordinate $x$ parallel to impact parameter $\vec{b}$.
@@ -379,7 +379,7 @@ In its Monte Carlo formulation \cite{Shor:1988vk, Wang:1991hta, Alver:2008aq, Br
 where $\T_A$ and $\T_B$ denote the event-by-event participant densities defined in Eq.~\eqref{eq:participant}.
 Quick examination of Eqs.~\eqref{eq:means} and \eqref{eq:wn} shows that the wounded nucleon model describes a subcase of the generalized mean ansatz for $p=1$ up to an arbitrary factor which can be absorbed by the normalization constant.
 
-More sophisticated calculations of the mapping $f$ in Eq.~\eqref{eq:mapping} can be derived from Color-Glass Condensate effective field theory.
+More sophisticated calculations of the mapping $f$ in Eq.~\eqref{eq:mapping} can be derived from color glass condensate effective field theory.
 A common implementation of a CGC based saturation picture is provided by the KLN model \cite{Kharzeev:2001yq, Kharzeev:2002ei, Kharzeev:2004if} where entropy deposition at the QGP thermalization time can be determined from the produced gluon density $s \propto N_g$ where,
 \begin{equation}
   \frac{dN_g}{dy\,d^2r_\perp} \sim \Qs{min}^2 \biggl[

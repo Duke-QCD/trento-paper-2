@@ -1,4 +1,4 @@
-\documentclass[aps,prc,reprint,amsmath,nofootinbib,superscriptaddress]{revtex4-1}
+\documentclass[aps,prc,reprint,amsmath,nofootinbib]{revtex4-1}
 
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -58,13 +58,12 @@
 
 \author{Jonah E.\ Bernhard}
 \author{J.\ Scott Moreland}
+\author{Steffen A.\ Bass}
 \affiliation{Department of Physics, Duke University, Durham, NC 27708-0305}
 
 \author{Jia Liu}
+\author{Ulrich Heinz}
 \affiliation{Department of Physics, The Ohio State University, Columbus, OH 43210-1117}
-
-\author{Steffen A.\ Bass}
-\affiliation{Department of Physics, Duke University, Durham, NC 27708-0305}
 
 \date{\today}
 
@@ -133,7 +132,7 @@ for the energy-momentum tensor
   T^{\mu\nu} = e \, u^\mu u^\nu  - \Delta^{\mu\nu} (P + \Pi) + \pi^{\mu\nu},
 \end{equation}
 provided a set of initial conditions for the fluid flow velocity $u^\mu$, energy density $e$, pressure $P$, shear stress tensor $\pi^{\mu\nu}$, and bulk viscous pressure $\Pi$.
-We use VISH2+1 \cite{Song:2007ux}, a stable, extensively tested implementation of boost-invariant viscous hydrodynamics which has been updated to handle fluctuating event-by-event initial conditions \cite{Shen:2014vra} and incorporate bulk viscous corrections with shear-bulk coupling \cite{}.
+We use VISH2+1 \cite{Song:2007ux}, a stable, extensively tested implementation of boost-invariant viscous hydrodynamics which has been updated to handle fluctuating event-by-event initial conditions \cite{Shen:2014vra} and incorporate bulk viscous corrections with shear-bulk coupling \cite{Liu:2015bik}.
 This implementation calculates the time evolution of the viscous corrections through the second-order Israel-Stewart equations \cite{Israel:1979wp, Israel:1976aa} in the 14-momentum approximation, which yields a set of relaxation-type equations \cite{Denicol:2014vaa}
 \begin{subequations}
   \label{eq:relaxation}
@@ -907,7 +906,7 @@ the workflow for generating events at \nicelink[https]{github.com/jbernhard/heav
 and the source for this manuscript including all figures and tables at \nicelink[https]{github.com/Duke-QCD/trento-paper-2}.
 
 \begin{acknowledgments}
-The authors thank Ulrich Heinz, Scott Pratt, Harri Niemi, and Bj\"orn Schenke for helpful discussions and clarifications in the production of the manuscript.
+The authors thank Scott Pratt, Harri Niemi, and Bj\"orn Schenke for helpful discussions and clarifications in the production of the manuscript.
 This research was completed using over ten million CPU hours provided by the Open Science Grid \cite{Pordes:2007zzb,Sfiligoi:2010zz}, which is supported by the National Science Foundation and the U.S.\ Department of Energy's Office of Science.
 SAB and JEB are supported by the U.S.\ Department of Energy Grant no.~DE-FG02-05ER41367,
 JL is supported by {\bf OSU grant},

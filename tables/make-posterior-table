@@ -72,7 +72,11 @@ def main():
             label = 'Normalization'
 
         print(
-            ' & '.join([label] + [format_ci(s) for s in samples]),
+            ' & '.join([label] + (
+                [format_ci(samples[0]), r'\hspace{3em}---']
+                if 'switch' in label else
+                [format_ci(s) for s in samples]
+            )),
             r'\\ \noalign{\smallskip}'
         )
 

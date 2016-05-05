@@ -866,36 +866,61 @@ The $v_2$ mismatch in the most central bin is a manifestation of the experimenta
 
 \section{Summary and conclusions}
 
-We have determined initial condition and transport properties of the QGP medium produced in relativistic heavy-ion collisions using Bayesian methodology.
-The primary contribution of the present work is the application of the recently developed \trento\ model to parameterize local entropy deposition in relativistic nuclear collisions and extract high probability parameters for the QGP initial conditions with minimal theoretical assumptions.
-We show that the parameterized initial conditions are highly constrained by bulk observables and that the constraints are robust to the presence of correlated model uncertainties such as the temperature dependent shear and bulk viscosities.
+We have used Bayesian methodology to quantitatively estimate initial condition and transport properties of the QGP medium produced in relativistic heavy-ion collisions.
+By parametrizing initial state entropy deposition with a flexible ansatz, we facilitated a systematic extraction of the temperature-dependent shear and bulk viscosities with minimal theoretical assumptions.
+We coupled the parametrized initial conditions to a viscous hydrodynamics model and a hadronic afterburner, calibrated the model to a variety of bulk observables, and established a number of salient constraints on model parameters, including a shear viscosity that increases slowly with temperature, a clear signal for a finite bulk viscosity, and a robust constraint on the entropy deposition ansatz itself.
 
-The \trento\ initial conditions are described by several model parameters such as a Gaussian nucleon width $w$ and a gamma distribution shape parameter $k$ which modulates the variance of proton-proton multiplicity fluctuations.
-Most notably, the model introduces a free parameter $p$ which interpolates among different types of entropy deposition schemes.
-Figure~\ref{fig:cgc_compare} demonstrates how the model can be used to mimic specific theory calculations in the literature, ranging from a simple wounded nucleon model to specific calculations in CGC effective field theory, using suitably chosen values of $p$.
-This desired flexibility allows the analysis to select optimal initial conditions from a large space of physically reasonable models.
+The parametric initial condition model used in this analysis, \trento, smoothly interpolates among various physically reasonable entropy deposition schemes, ranging from a wounded nucleon model to specific calculations in color glass condensate effective field theory.
+This flexibility is ideal for model-to-data comparison, since it allows the analysis framework to optimize the initial conditions without imposing the assumptions of a specific theoretical model.
 
-The heavy-ion collision transport dynamics were simulated using a modern event-by-event hydrodynamic model with temperature dependent shear and bulk viscous corrections, continuum extrapolated lattice equation of state and microscopic hadronic afterburner.
-We parameterized the QGP shear viscosity using a simple functional form \eqref{eq:etas} which assumes a minimal value at the pseudo-critical phase transition temperature and rises linearly with increasing temperature.
-For the QGP bulk viscosity, we used the temperature dependent parameterization constructed in Ref~\cite{Denicol:2009am, Ryu:2015vwa}, and varied the overall normalization factor to investigate different magnitudes of the bulk viscous curve normalization.
+The heavy-ion collision transport dynamics were simulated using an event-by-event hybrid model with viscous hydrodynamics for the early hot and dense stage and a microscopic hadronic afterburner for the later dilute stage.
+The hydrodynamic model uses a modern continuum extrapolated lattice equation of state and implements temperature-dependent shear and bulk viscous corrections.
+To constrain the viscosities, we parametrized their temperature dependence with several tunable model parameters for optimization.
 
-Typically, these model parameters would be tuned by hand which poses a serious challenge for the present event-by-event hybrid model which is both computationally intensive and embedded in a high-dimensional parameter space.
-In this work, we apply Bayesian methodology to explore the \emph{full} topology of the model's parameter space and simultaneously estimate QGP parameters with quantitative uncertainty.
+With the full evolution model in hand, we applied Bayesian methods to estimate its various input parameters.
+We evaluated the model at several hundred points in parameter space, calculated bulk observables at each point, and trained a Gaussian process emulator to interpolate the model calculations.
+Then, we used a Markov chain Monte Carlo (MCMC) algorithm to systematically explore parameter space---with the emulator acting as a stand-in for the complete model---and calibrate the model to optimally reproduce experimental data, thereby extracting posterior probability distributions for all parameters and their correlations.
 
-The primary result of this work is summarized by Fig.~\ref{fig:posterior} which shows the posterior marginal and joint distributions of each calibration parameter.
-These distributions contain a wealth of information about the event-by-event hybrid model used in this analysis--here we only summarize a few of the key features:
-\begin{enumerate}
-    \item The QGP initial conditions are well described by entropy deposition proportional to the geometric mean of local participant nucleon density \eqref{eq:means}.
-    \item We see very little sensitivity of the model to variations in the strength of proton-proton multiplicity fluctuations.
-    \item We find a preferred nucleon width $w\approx0.5$~fm that is in remarkable agreement with values extracted from experiment \ref{blah}.
-    \item The data is unable to individually constrain $(\eta/s)_\text{min}$ and $(\eta/s)_\text{slope}$ at a single beam energy, but it does constrain a linear combination of the two.
-    \item The simulation prefers a non-zero bulk viscosity which corroborates the findings in Ref.~\ref{}.
-    \item We find a tight constraint on the hydro-to-micro switching temperature ${T_\text{sw} \approx 149}$~MeV which vanishes if identified pion, kaon, and proton yields are replaced with species-blind charged particle yield.
+The primary results of this work are the posterior distributions, shown in Fig.~\ref{fig:posterior}, and the
+corresponding quantitative estimates of each parameter, presented in Table~\ref{tab:posterior}.
+These distributions contain a wealth of information about QGP initial condition and medium properties; here we summarize the key features:
+\begin{enumerate}[itemsep=0pt, leftmargin=2\parindent]
+  \item
+    Based on the \trento\ initial condition parametrization, we find that initial entropy deposition is approximately proportional to the geometric mean of local participant nuclear densities.
+    This scaling is functionally similar to the notably successful EKRT and IP-Glasma models.
+  \item
+    The preferred Gaussian nucleon width is roughly $0.5 \pm 0.1$~fm, consistent with values extracted from HERA deep inelastic scattering data.
+  \item
+    For the temperature-dependent specific shear viscosity $(\eta/s)(T)$, we asserted a linear parametrization reaching its minimum at the QCD phase transition temperature.
+    The data cannot individually constrain both the minimum value and the slope, but do constrain a linear combination, as shown in Fig.~\ref{fig:etas_estimate}.
+    The uncertainty on $\eta/s$ is smallest at intermediate temperatures, $T \sim {}$200--225 MeV;
+    we hypothesize that this is the most important temperature range at $\sqrts = 2.76$~TeV,
+    and that including data from additional beam energies would enable a more precise estimate of $(\eta/s)(T)$.
+  \item
+    We observe a clear signal for a finite bulk viscosity, which is necessary to simultaneously describe transverse momentum and flow data.
+    We refrain from making any quantitative statements given current limitations in the treatment of bulk viscosity.
+  \item
+    The result for the particlization temperature (when the model switches from hydrodynamics to hadronic afterburner) depends strongly on the observables used for calibration.
+    When fitting to identified pion, kaon, and proton yields, the temperature is tightly constrained just below the QCD transition temperature.
+    On the other hand, when the identified yields are replaced with total charged particle yields, there is essentially no preference within the considered range.
+    This implies that both stages of the hybrid model simulate the same medium evolution near the QGP transition, but not the same hadronic chemistry.
 \end{enumerate}
 
-Although one ultimately seeks a first principles description for QGP energy deposition and thermalization, the present study demonstrates that such an understanding is not required to determine QGP medium parameters with quantitative uncertainty.
+The aforementioned parameter estimates allow us to assess the performance of a systematically optimized model.
+To this end, we evaluated the full model using high-probability parameters based on the posterior distributions.
+The resulting charged particle yields, mean transverse momenta, and flow cumulants agree with experiment at the 10\% level, as shown in Fig.~\ref{fig:mode_observables}.
 
-\medskip
+% Although one ultimately seeks a first principles description for initial state entropy deposition and thermalization, the present study demonstrates that such an understanding is not required to extract QGP medium parameters.
+
+In future work, we plan to include data from multiple beam energies---we anticipate that a combined analysis of data at $\sqrts = 200$ GeV, 2.76 TeV, and 5.02 TeV will enable a precise extraction of temperature-dependent QGP transport coefficients.
+We will also consider new, sensitive observables such as correlations between flow harmonics of different order.
+
+We will implement several upgrades to the physical models, including a free streaming stage for pre-equilibrium dynamics and bulk viscous corrections at particlization.
+These changes will especially improve estimates of the specific bulk viscosity $\zeta/s$.
+
+Finally, we plan an improved treatment of experimental and model uncertainties, essential for meaningful quantitative uncertainties on estimated parameters.
+
+\bigskip
 
 \newcommand{\nicelink}[2][http]{\mbox{\href{#1://#2}{\nolinkurl{#2}}}}
 

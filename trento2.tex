@@ -358,7 +358,7 @@ At present, we thus assert scale invariance as a simplifying postulate, although
 \fig*{cgc_compare}{
   Profiles of the initial thermal distribution predicted by the KLN (left), EKRT (middle), and wounded nucleon (right) models (dashed black lines) compared to a generalized mean with different values of the parameter $p$ (solid blue lines).
   Staggered lines show different slices of the initial entropy density $dS/(d^2r_\perp dy)$ as a function of the participant nucleon density $\T_A$ for several values of $\T_B = 1, 2, 3$ [fm$^{-2}$].
-  The EKRT mapping is shown with model parameters $K=0.64$ and $\beta=0.8$ from Ref.~\cite{Niemi:2015qia}.
+  The EKRT mapping is shown with model parameters $K=0.64$ and $\beta=0.8$ \cite{Niemi:2015qia}.
   Entropy normalization is arbitrary.
 }
 
@@ -416,7 +416,7 @@ The figure illustrates the flexibility of the ansatz to reproduce different init
 The KLN model, for example, is described by $p\sim-0.67$ while the EKRT model corresponds to $p \sim 0$ and the wounded nucleon model $p=1$.
 Smaller, more negative values of $p$ pull the generalized mean toward a minimum function and hence correspond to models with more extreme gluon saturation effects.
 
-The three models shown in Fig.~\ref{fig:cgc_compare} are by no means an exhaustive list of initial condition models proposed in the literature.
+The three models shown in Fig.~\ref{fig:cgc_compare} are by no means an exhaustive list of proposed initial condition models, e.g.\ see Refs.~\cite{Eremin:2003qn, Broniowski:2007nz, Pierog:2013ria, Drescher:2000ec, Adler:2013aqf, Chatterjee:2015aja, Zhang:1999bd}.
 Notably absent, for instance, is the highly successful IP-Glasma model which combines IP-Sat CGC initial conditions with classical Yang-Mills dynamics to describe the full pre-equilibrium evolution of produced glasma fields \cite{Schenke:2012wb, Schenke:2012fw, Gale:2012rq}.
 The IP-Glasma model lacks a simple analytic form for initial energy (or entropy) deposition at the QGP thermalization time---so it cannot be directly compared to the generalized mean ansatz, Eq.~\eqref{eq:genmean}.
 In lieu of such a comparison, we calculate the IP-Glasma and \trento\ eccentricity harmonics $\varepsilon_n$, weighted by transverse energy density $e(x,y)$ at the QGP thermalization time 
@@ -426,19 +426,18 @@ In lieu of such a comparison, we calculate the IP-Glasma and \trento\ eccentrici
 \end{equation}
 to quantify geometric properties of the two initial condition models.
 
-We first generate a large number of \trento\ events using nucleon width {\color{red}$w=0.43$~fm}, entropy deposition parameter $p=0$, and fluctuation parameter $k=1.4$, which were previously shown to reproduce the ratio of ellipticity and triangularity in IP-Glasma \cite{Moreland:2014oya}.
+We first generate a large number of \trento\ events using nucleon width $w=0.4$~fm, entropy deposition parameter $p=0$, and fluctuation parameter $k=1.6$, which were previously shown to reproduce the ratio of ellipticity and triangularity in IP-Glasma \cite{Moreland:2014oya}.
 The events are then free streamed \cite{Liu:2015nwa, Broniowski:2008qk} for $\tau=0.4$~fm/c to mimic the weakly coupled pre-equilibrium dynamics of IP-Glasma and match the evolution time of both models.
-Finally, we calculate the eccentricity harmonics $\varepsilon_2$ and $\varepsilon_3$ from Eq.~\eqref{eq:eccentricity}, where the energy density is obtained from the $T^{00}$ component of the stress-energy tensor after the free streaming phase.
-The resulting eccentricities harmonics, pictured in Fig.~\ref{fig:ipglasma}, are in good agreement out to large values of the impact parameter $b$ where sub-nucleonic structure starts to become important.
+Finally, we calculate the eccentricity harmonics $\varepsilon_2$ and $\varepsilon_3$ from Eq.~\eqref{eq:eccentricity}, where the \trento\ energy density is obtained from the $T^{00}$ component of the stress-energy tensor after the free streaming phase.
+The resulting eccentricities harmonics, pictured in Fig.~\ref{fig:ipglasma}, are in good agreement out to large impact parameter $b$ where sub-nucleonic structure starts to become important.
 The similarity suggests that \trento\ with $p \sim 0$  can effectively reproduce the scaling behavior of the IP-Glasma model, although a more detailed comparison of the two models would be necessary to establish the strength of correspondence illustrated in Fig.~\ref{fig:cgc_compare}.
 
 
 \fig{ipglasma}{
-  Eccentricity harmonics $\varepsilon_2$ and $\varepsilon_3$ as a function of impact parameter $b$ for Pb+Pb collisions at ${\sqrts=2.76}$~TeV.
-  IP-Glasma events \cite{Schenke:2012wb} are evaluated after $\tau=0.4$~fm/c classical Yang-Mills evolution and \protect\trento\ events after $\tau=0.4$~fm/c free streaming.
-  \protect\trento\ specific parameters are $p=0$ and $k=1.4$.
-  Both models use nucleon width {\color{red} $w=0.43$~fm} \cite{Schenke:2013dpa} and identical Woods-Saxon parameters.
-  The eccentricity calculation is performed using the energy density of the IP-Glasma model and $T^{00}$ component of the \protect\trento\ stress energy tensor after free streaming.
+    Eccentricity harmonics $\varepsilon_2$ and $\varepsilon_3$ from Eq.~\ref{eq:eccentricity} as a function of impact parameter $b$ for Pb+Pb collisions at ${\sqrts=2.76}$~TeV calculated from IP-Glasma and \protect\trento\ initial conditions.
+  IP-Glasma events are evaluated after $\tau=0.4$~fm/c classical Yang-Mills evolution \cite{Schenke:2012wb} and \protect\trento\ events after $\tau=0.4$~fm/c free streaming \cite{Liu:2015nwa, Broniowski:2008qk}. 
+  The \protect\trento\ model is shown with parameters $p=0\pm0.1$, $k=1.6$ and nucleon width $w=0.4$~fm to match IP-Glasma \cite{Schenke:2013dpa}.
+  The \protect\trento\ energy density is determined from the $T^{00}$ component of the stress-energy tensor after free streaming.
 }
 
 \section{Parameter estimation}
@@ -752,7 +751,7 @@ The Gaussian nucleon width $w$ has fairly narrow distributions mostly within 0.4
 It appears we did not extend the initial range low enough and so the posteriors are truncated;
 however we still resolve peaks at ${\sim}0.43$ and ${\sim}0.49$ fm for the identified and charged particle calibrations, respectively.
 Since the distributions are asymmetric, the median values are somewhat higher than the modes.
-These preferred values are in good agreement with the gluonic width extracted from deep inelastic scattering data at HERA using the IP-Sat model \ref{?}, and are considerably smaller than the rms-width of the proton charge density $r_\text{rms} \approx 0.85$~fm \ref{?}.
+The quantitative estimates and uncertainties are in good agreement with the gluonic widths extracted from deep inelastic scattering data at HERA \cite{Chekanov:2004mw, Kowalski:2006hc, Rezaeian:2012ji} and support the values used in EKRT and IP-Glasma studies \cite{Niemi:2015qia, Schenke:2012wb}.
 We also observe striking correlations between the nucleon width and QGP viscosities---this is because decreasing the width leads to smaller scale structures and steeper gradients in the initial state.
 So e.g.\ as the nucleon width decreases, average transverse momentum increases, and bulk viscosity must increase to compensate.
 This explains the strong anti-correlation between $w$ and $\zeta/s$ norm.

@@ -964,9 +964,9 @@ def trento_events():
 
 @plot
 def ipglasma():
-    trento_low = 'data/ipglasma/trento-fs_-0.1.dat'
-    trento = 'data/ipglasma/trento-fs_0.0.dat'
-    trento_high = 'data/ipglasma/trento-fs_0.1.dat'
+    trento_low = 'data/ipglasma/trento_-0.1-fs.dat'
+    trento = 'data/ipglasma/trento_0.0-fs.dat'
+    trento_high = 'data/ipglasma/trento_0.1-fs.dat'
 
     ipglasma = 'data/ipglasma/ipglasma.dat'
 

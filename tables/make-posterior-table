@@ -68,6 +68,8 @@ def main():
             label += ' [GeV$^{-1}$]'
         elif 'sw' in label:
             label = label.replace('sw', 'switch')
+        elif label == 'norm':
+            label = 'Normalization'
 
         print(
             ' & '.join([label] + [format_ci(s) for s in samples]),

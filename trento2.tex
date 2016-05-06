@@ -414,6 +414,11 @@ The figure illustrates the ability of the ansatz to reproduce different initial 
 The KLN model, for example, is well-described by $p\sim-0.67$, the EKRT model corresponds to $p \sim 0$, and the wounded nucleon model is precisely $p=1$.
 Smaller, more negative values of $p$ pull the generalized mean toward a minimum function and hence correspond to models with more extreme gluon saturation effects.
 
+\fig{ipglasma}{
+    Eccentricity harmonics $\varepsilon_2$ and $\varepsilon_3$ as a function of impact parameter $b$ for Pb+Pb collisions at ${\sqrts=2.76}$~TeV calculated from IP-Glasma and \protect\trento\ initial conditions.
+  IP-Glasma events are evaluated after $\tau=0.4$~fm/c classical Yang-Mills evolution \cite{Schenke:2012wb}; \protect\trento\ events after $\tau=0.4$~fm/c free streaming \cite{Liu:2015nwa, Broniowski:2008qk} and using parameters $p = 0 \pm 0.1$, $k = 1.6$, and nucleon width $w=0.4$~fm to match IP-Glasma \cite{Schenke:2013dpa}.
+}
+
 The three models considered in Fig.~\ref{fig:cgc_compare} are by no means an exhaustive list of proposed initial condition models, see e.g.\ Refs.~\cite{Eremin:2003qn, Broniowski:2007nz, Pierog:2013ria, Drescher:2000ec, Adler:2013aqf, Chatterjee:2015aja, Zhang:1999bd}.
 Notably absent, for instance, is the highly successful IP-Glasma model which combines IP-Sat CGC initial conditions with classical Yang-Mills dynamics to describe the full pre-equilibrium evolution of produced glasma fields \cite{Schenke:2012wb, Schenke:2012fw, Gale:2012rq}.
 The IP-Glasma model lacks a simple analytic form for initial energy (or entropy) deposition at the QGP thermalization time and so cannot be directly compared to the generalized mean ansatz.
@@ -429,11 +434,6 @@ Finally, we calculated the eccentricity harmonics $\varepsilon_2$ and $\varepsil
 The resulting eccentricities harmonics, pictured in Fig.~\ref{fig:ipglasma}, are in good agreement out to large impact parameter, where sub-nucleonic structure becomes important.
 This similarity suggests that \trento\ with $p \sim 0$ can effectively reproduce the scaling behavior of the IP-Glasma model, although a more detailed comparison of the two models would be necessary to establish the strength of correspondence illustrated in Fig.~\ref{fig:cgc_compare}.
 
-
-\fig{ipglasma}{
-    Eccentricity harmonics $\varepsilon_2$ and $\varepsilon_3$ as a function of impact parameter $b$ for Pb+Pb collisions at ${\sqrts=2.76}$~TeV calculated from IP-Glasma and \protect\trento\ initial conditions.
-  IP-Glasma events are evaluated after $\tau=0.4$~fm/c classical Yang-Mills evolution \cite{Schenke:2012wb}; \protect\trento\ events after $\tau=0.4$~fm/c free streaming \cite{Liu:2015nwa, Broniowski:2008qk} and using parameters $p = 0 \pm 0.1$, $k = 1.6$, and nucleon width $w=0.4$~fm to match IP-Glasma \cite{Schenke:2013dpa}.
-}
 
 \section{Parameter estimation}
 
@@ -714,23 +714,6 @@ The normalization factor is not a physical parameter but nonetheless must be tun
 Both calibrations produced narrow posterior distributions, with the identified particle result located slightly lower to compromise between pion and kaon yields.
 There are some mild correlations between the normalization and other parameters that affect particle production.
 
-\begin{table}
-  \caption{
-    \label{tab:posterior}
-    Estimated parameter values (medians) and uncertainties (90\% credible intervals) from the posterior distributions calibrated to identified and charged particle yields (middle and right columns, respectively).
-    The distribution for \Tsw\ based on charged particles is essentially flat, so we do not report a quantitative estimate.
-  }
-  \begin{ruledtabular}
-    \begin{tabular}{lll}
-      & \multicolumn{2}{c}{Calibrated to:} \\
-      \noalign{\smallskip}\cline{2-3}\noalign{\smallskip}
-      Parameter & \multicolumn{1}{c}{Identified} & \multicolumn{1}{c}{Charged} \\
-      \paddedhline
-      \input{tables/posterior}
-    \end{tabular}
-  \end{ruledtabular}
-\end{table}
-
 The \trento\ entropy deposition parameter $p$ introduced in Eq.~\eqref{eq:genmean} has a remarkably narrow distribution, with the two calibrations in excellent agreement.
 The estimated value is essentially zero with approximate 90\% uncertainty $\pm0.2$, meaning that initial state entropy deposition is roughly proportional to the geometric mean of participant nuclear thickness functions, $s \sim \sqrt{\T_A\T_B}$.
 This confirms previous analysis of the \trento\ model which demonstrated that $p \approx 0$ simultaneously produces the correct ratio between initial state ellipticity and triangularity and fits multiplicity distributions for a variety of collision systems \cite{Moreland:2014oya}.
@@ -780,6 +763,23 @@ This result for $(\eta/s)(T)$ supports several recent findings using other model
 a detailed study using the EKRT model \cite{Niemi:2015qia} showed that a combination of RHIC and LHC data prefer a shallow high-temperature slope, while an analysis using a three-dimensional constituent quark model \cite{Denicol:2015nhu} demonstrated that a similar shallow slope best describes the rapidity dependence of elliptic flow at RHIC.
 In addition, the estimated temperature-averaged shear viscosity is consistent with the (constant) $\eta/s = 0.095$ reported \cite{Ryu:2015vwa} using the IP-Glasma model and the same bulk viscosity parametrization, Eq.~\eqref{eq:zetas}.
 Finally, the present result remains compatible (within uncertainty) with the KSS bound $\eta/s \geq 1/4\pi$ \cite{Danielewicz:1984ww, Policastro:2001yc, Kovtun:2004de}.
+
+\begin{table}[b]
+  \caption{
+    \label{tab:posterior}
+    Estimated parameter values (medians) and uncertainties (90\% credible intervals) from the posterior distributions calibrated to identified and charged particle yields (middle and right columns, respectively).
+    The distribution for \Tsw\ based on charged particles is essentially flat, so we do not report a quantitative estimate.
+  }
+  \begin{ruledtabular}
+    \begin{tabular}{lll}
+      & \multicolumn{2}{c}{Calibrated to:} \\
+      \noalign{\smallskip}\cline{2-3}\noalign{\smallskip}
+      Parameter & \multicolumn{1}{c}{Identified} & \multicolumn{1}{c}{Charged} \\
+      \paddedhline
+      \input{tables/posterior}
+    \end{tabular}
+  \end{ruledtabular}
+\end{table}
 
 \fig{etas_estimate}{
   Estimated temperature dependence of the shear viscosity $(\eta/s)(T)$ for $T > T_c = 0.154$ GeV.

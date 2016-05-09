@@ -54,11 +54,11 @@ plt.rcParams.update({
     'ytick.minor.size': 1.3,
     'xtick.major.pad': 1.8,
     'ytick.major.pad': 1.8,
-    'text.color': offblack,
-    'axes.edgecolor': offblack,
-    'axes.labelcolor': offblack,
-    'xtick.color': offblack,
-    'ytick.color': offblack,
+    'text.color': 'black',
+    'axes.edgecolor': 'black',
+    'axes.labelcolor': 'black',
+    'xtick.color': 'black',
+    'ytick.color': 'black',
     'legend.numpoints': 1,
     'legend.scatterpoints': 1,
     'legend.frameon': False,
@@ -290,7 +290,7 @@ def thickness():
     plt.legend(handles, labels, labelspacing=0.4,
                handletextpad=0.4, markerfirst=False,
                bbox_to_anchor=(1.03, 1.05))
-    plt.annotate('Pb+Pb 2.76 TeV', xy=(0.02, 0.985), va='top', color=offblack,
+    plt.annotate('Pb+Pb 2.76 TeV', xy=(0.02, 0.985), va='top',
                  xycoords='axes fraction')
 
     finish()
@@ -511,7 +511,7 @@ def observables_samples():
                             mew=0, zorder=1000)
 
                 ax.text(x[-1] + 2, y[-1], label, ha='left', va='center',
-                        color=offblack, size=texnormal)
+                        size=texnormal)
 
                 kwargs = dict(color=color, lw=0.4)
 

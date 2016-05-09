@@ -341,6 +341,13 @@ We set the entropy deposition parameter $p=0$, which was previously shown to pro
 However, this value and the other parameters used in Fig.~\ref{fig:nch_per_npart} have not yet been systematically optimized---they are for demonstration purposes only.
 While $p$ could depend on energy, we see in the figure that $p=0$ provides a good description of the data at all beam energies and self-consistently describes proton-lead and lead-lead multiplicities at the same collision energy.
 
+\fig*{cgc_compare}{
+  Profiles of the initial thermal distribution predicted by the KLN (left), EKRT (middle), and wounded nucleon (right) models (dashed black lines) compared to a generalized mean with different values of the parameter $p$ (solid blue lines).
+  Staggered lines show different slices of the initial entropy density $dS/(d^2r_\perp dy)$ as a function of the participant nucleon density $\T_A$ for several values of $\T_B = 1, 2, 3$ [fm$^{-2}$].
+  The EKRT mapping is shown with model parameters $K=0.64$ and $\beta=0.8$ \cite{Niemi:2015qia}.
+  Entropy normalization is arbitrary.
+}
+
 Note that, while the generalized mean parametrizes entropy deposition in asymmetric regions of the collision ($\T_A \neq \T_B$), it asserts a particular scaling in symmetric regions, namely
 \begin{equation}
   f(\alpha \T, \alpha \T) = \alpha \T,
@@ -352,13 +359,6 @@ For example, it was demonstrated that collisions of highly deformed uranium nucl
 Measurements of central copper-copper, gold-gold, and uranium-uranium particle production at RHIC also exhibit approximate participant scaling \cite{Adare:2015bua}.
 Moreover, the scale invariant constraint serves as a reasonable approximation for a number of calculations of the mapping $f$ in Eq.~\eqref{eq:mapping} derived from CGC effective field theory, as we show momentarily.
 At present, we thus assert scale invariance as a simplifying postulate, although relaxing this constraint may further reduce bias and could be considered in future work.
-
-\fig*{cgc_compare}{
-  Profiles of the initial thermal distribution predicted by the KLN (left), EKRT (middle), and wounded nucleon (right) models (dashed black lines) compared to a generalized mean with different values of the parameter $p$ (solid blue lines).
-  Staggered lines show different slices of the initial entropy density $dS/(d^2r_\perp dy)$ as a function of the participant nucleon density $\T_A$ for several values of $\T_B = 1, 2, 3$ [fm$^{-2}$].
-  The EKRT mapping is shown with model parameters $K=0.64$ and $\beta=0.8$ \cite{Niemi:2015qia}.
-  Entropy normalization is arbitrary.
-}
 
 \subsection{Reproducing existing I.C.\ models}
 
@@ -758,11 +758,6 @@ This visualization corroborates that the posterior for $(\eta/s)(T)$ is markedly
 We hypothesize that this is the most important temperature range at $\sqrts = 2.76$~TeV---perhaps it is where the system spends most of its time and hence where most anisotropic flow develops, for instance---and thus the data provide a ``handle'' for $\eta/s$ around 200 MeV.
 Data at other beam energies could provide additional handles at different temperatures, enabling a more precise estimate of the temperature dependence of $\eta/s$.
 
-This result for $(\eta/s)(T)$ supports several recent findings using other models:
-a detailed study using the EKRT model \cite{Niemi:2015qia} showed that a combination of RHIC and LHC data prefer a shallow high-temperature slope, while an analysis using a three-dimensional constituent quark model \cite{Denicol:2015nhu} demonstrated that a similar shallow slope best describes the rapidity dependence of elliptic flow at RHIC.
-In addition, the estimated temperature-averaged shear viscosity is consistent with the (constant) $\eta/s = 0.095$ reported \cite{Ryu:2015vwa} using the IP-Glasma model and the same bulk viscosity parametrization, Eq.~\eqref{eq:zetas}.
-Finally, the present result remains compatible (within uncertainty) with the KSS bound $\eta/s \geq 1/4\pi$ \cite{Danielewicz:1984ww, Policastro:2001yc, Kovtun:2004de}.
-
 \begin{table}[b]
   \caption{
     \label{tab:posterior}
@@ -779,6 +774,11 @@ Finally, the present result remains compatible (within uncertainty) with the KSS
     \end{tabular}
   \end{ruledtabular}
 \end{table}
+
+This result for $(\eta/s)(T)$ supports several recent findings using other models:
+a detailed study using the EKRT model \cite{Niemi:2015qia} showed that a combination of RHIC and LHC data prefer a shallow high-temperature slope, while an analysis using a three-dimensional constituent quark model \cite{Denicol:2015nhu} demonstrated that a similar shallow slope best describes the rapidity dependence of elliptic flow at RHIC.
+In addition, the estimated temperature-averaged shear viscosity is consistent with the (constant) $\eta/s = 0.095$ reported \cite{Ryu:2015vwa} using the IP-Glasma model and the same bulk viscosity parametrization, Eq.~\eqref{eq:zetas}.
+Finally, the present result remains compatible (within uncertainty) with the KSS bound $\eta/s \geq 1/4\pi$ \cite{Danielewicz:1984ww, Policastro:2001yc, Kovtun:2004de}.
 
 \fig{etas_estimate}{
   Estimated temperature dependence of the shear viscosity $(\eta/s)(T)$ for $T > T_c = 0.154$ GeV.

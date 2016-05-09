@@ -257,7 +257,7 @@ def cgc_compare():
 
     axes[0].set_ylabel(r'Entropy density [fm$^{-3}$]')
 
-    finish(pad=0)
+    finish(w_pad=.5)
 
 
 @plot

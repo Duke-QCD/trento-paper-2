@@ -133,20 +133,18 @@ for the energy-momentum tensor
 \end{equation}
 provided a set of initial conditions for the fluid flow velocity $u^\mu$, energy density $e$, pressure $P$, shear stress tensor $\pi^{\mu\nu}$, and bulk viscous pressure $\Pi$.
 We use VISH2+1 \cite{Song:2007ux}, a stable, extensively tested implementation of boost-invariant viscous hydrodynamics which has been updated to handle fluctuating event-by-event initial conditions \cite{Shen:2014vra} and incorporate bulk viscous corrections with shear-bulk coupling \cite{Liu:2015bik}.
-This implementation calculates the time evolution of the viscous corrections through the second-order Israel-Stewart equations \cite{Israel:1979wp, Israel:1976aa} in the 14-momentum approximation, which yields a set of relaxation-type equations \cite{Denicol:2014vaa}
+This implementation calculates the time evolution of the viscous corrections through the second-order Israel-Stewart equations \cite{Israel:1979wp, Israel:1976aa} in the 14-momentum approximation, which yields a set of relaxation-type equations \cite{Denicol:2014vaa, Ryu:2015vwa}
 \begin{subequations}
   \label{eq:relaxation}
   \begin{align}
     \tau_\Pi \Pi + \dot{\Pi} &=
-      -\zeta \theta - \delta_{\Pi\Pi} \Pi\theta + \phi_1 \Pi^2 \nonumber \\
-      &\qquad + \lambda_{\Pi\pi} \pi^{\mu\nu} \sigma_{\mu\nu}
-      + \phi_3 \pi^{\mu\nu}\pi_{\mu\nu}, \\
+      - \zeta \theta - \delta_{\Pi\Pi} \Pi\theta
+      + \lambda_{\Pi\pi} \pi^{\mu\nu} \sigma_{\mu\nu}, \\[1ex]
     \tau_\pi \dot{\pi}^{\langle \mu\nu \rangle} + \pi^{\mu\nu} &=
-      2\eta\sigma^{\mu\nu} + 2\pi_\alpha^{\langle \mu} w^{\nu \rangle \alpha}
-      - \delta_{\pi\pi} \pi^{\mu\nu} \theta \nonumber \\
-      &\qquad + \phi_7 \pi_\alpha^{\langle \mu} \pi^{\nu \rangle \alpha}
-      - \tau_{\pi\pi} \pi_\alpha^{\langle \mu}\sigma^{\nu \rangle \alpha} \nonumber \\
-      &\qquad + \lambda_{\pi\Pi} \Pi \sigma^{\mu\nu} + \phi_6 \Pi \pi^{\mu\nu}.
+      2\eta\sigma^{\mu\nu} - \delta_{\pi\pi} \pi^{\mu\nu} \theta
+      + \phi_7 \pi_\alpha^{\langle \mu} \pi^{\nu \rangle \alpha} \nonumber \\
+      &\qquad {} - \tau_{\pi\pi} \pi_\alpha^{\langle \mu}\sigma^{\nu \rangle \alpha}
+      + \lambda_{\pi\Pi} \Pi \sigma^{\mu\nu}.
   \end{align}
 \end{subequations}
 Here, $\eta$ and $\zeta$ are the shear and bulk viscosities, parametrized below.

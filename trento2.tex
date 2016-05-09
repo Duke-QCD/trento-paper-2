@@ -71,7 +71,7 @@
   We quantitatively estimate properties of the quark-gluon plasma created in ultra-relativistic heavy-ion collisions utilizing Bayesian statistics and a multi-parameter model-to-data comparison.
   The study is performed using \trento, a recently developed parametric initial condition model which interpolates among a general class of particle production schemes, and a modern hybrid model with viscous hydrodynamics and a hadronic cascade.
   We calibrate the model to multiplicity, transverse momentum, and flow data and report constraints on the parametrized initial conditions and the temperature-dependent transport coefficients of the quark-gluon plasma.
-  We show that initial entropy deposition is consistent with a saturation-based picture, extract a mild preference for a specific shear viscosity that increases slowly with temperature, and find a clear signal for a finite specific bulk viscosity.
+  We show that initial entropy deposition is consistent with a saturation-based picture, extract a relation between the minimum value and slope of the specific shear viscosity, and find a clear signal for a finite bulk viscosity.
 \end{abstract}
 
 \maketitle
@@ -290,7 +290,7 @@ The \trento\ model calculates local entropy density at midrapidity by applying a
   s(\tau_0, x, y)\vert_{\eta_s=0} = f(\T_A, \T_B).
   \label{eq:mapping}
 \end{equation}
-Based on basic physical constraints and phenomenological observations \cite{Moreland:2014oya}, we use a functional form known as the generalized mean,
+We use a functional form motivated by basic physical constraints and phenomenological observations \cite{Moreland:2014oya} known as the generalized mean:
 \begin{equation}
   s \propto \left( \frac{\T_A^p + \T_B^p}{2} \right)^{1/p}.
   \label{eq:genmean}
@@ -311,7 +311,7 @@ For ${p=(1, 0, -1)}$, the generalized mean reduces to arithmetic, geometric, and
   \label{eq:means}
 \end{equation}
 Perhaps the simplest explanation of this ansatz is to examine the effect of the mapping on realistic events:
-Fig.~\ref{fig:trento_events} shows examples of entropy density in the transverse plane for several typical lead-lead events at $\sqrts=2.76$~TeV,
+Fig.~\ref{fig:trento_events} shows examples of entropy density in the transverse plane for several typical Pb+Pb events at $\sqrts=2.76$~TeV,
 while Fig.~\ref{fig:thickness} shows a cross section of a single event along the direction of the impact parameter.
 At each point in the transverse plane there are two relevant scales of interest:
 the smaller of the two participant densities, $\T_\text{min} = \min(\T_A, \T_B)$, and the larger, $\T_\text{max}$.
@@ -325,9 +325,9 @@ We see that decreasing $p$ pulls the generalized mean towards the minimum of $\T
 }
 
 \fig[b]{nch_per_npart}{
-    Average charged particle density per participant pair $(d\nch/d\eta)/(\npart/2)$ at mid-rapidity as a function of participant number for Au+Au, Pb+Pb and p+Pb systems at various collision energies.
-    Lines are \protect\trento\ calculations with generalized mean parameter $p=0$, and symbols are experimental data from PHENIX and ALICE \cite{Adare:2015bua, Aamodt:2010cz, Adam:2015ptt}.
-    The average minimum bias participant number for the p+Pb system has been shifted for clarity.
+    Average charged particle density per participant pair $(d\nch/d\eta)/(\npart/2)$ at midrapidity as a function of participant number for Pb+Pb, p+Pb, and Au+Au systems at various collision energies.
+    Lines are \protect\trento\ calculations with generalized mean parameter $p=0$, and symbols are experimental data from PHENIX \cite{Adare:2015bua} and ALICE \cite{Aamodt:2010cz, Adam:2015ptt}.
+    The average minimum bias participant number for p+Pb is shifted for clarity.
 }
 
 These local modifications naturally become manifest in global quantities such as integrated particle yields.
@@ -335,10 +335,11 @@ When two heavy ions collide at fixed impact parameter $b$, their nuclear densiti
 This asymmetry grows with increasing impact parameter and is highly correlated with collision centrality.
 By varying the generalized mean parameter $p$, the \trento\ model directly modulates the attenuation of entropy deposition in peripheral collisions and provides a parametric handle on the centrality dependence of charged particle production---similar to the role of the binary collision fraction $\alpha$ in the two-component Glauber model.
 
-Figure~\ref{fig:nch_per_npart} plots the charged particle density per participant pair at midrapidity as a function of participant number using model calculations from \trento\ and experimental data from PHENIX and ALICE \cite{Adare:2015bua, Aamodt:2010cz, Adam:2015ptt}.
+Figure~\ref{fig:nch_per_npart} plots the charged particle density per participant pair at midrapidity as a function of participant number using model calculations from \trento\ and experimental data from PHENIX \cite{Adare:2015bua} and ALICE \cite{Aamodt:2010cz, Adam:2015ptt}.
 The model curves are calculated assuming that charged particle multiplicity is proportional to total initial entropy \cite{Song:2008si}, where the proportionality constant varies with beam energy but is constant for all collision systems at the same energy.
 We set the entropy deposition parameter $p=0$, which was previously shown to provide a good description of proton-proton, proton-lead, and lead-lead multiplicity distributions as well as lead-lead eccentricity harmonics at LHC energies \cite{Moreland:2014oya}.
-While $p$ could depend on energy, we see in the figure that $p=0$ provides a good description of the data at all beam energies and self consistently describes proton-lead and lead-lead multiplicities at the same collision energy.
+However, this value and the other parameters used in Fig.~\ref{fig:nch_per_npart} have not yet been systematically optimized---they are for demonstration purposes only.
+While $p$ could depend on energy, we see in the figure that $p=0$ provides a good description of the data at all beam energies and self-consistently describes proton-lead and lead-lead multiplicities at the same collision energy.
 
 Note that, while the generalized mean parametrizes entropy deposition in asymmetric regions of the collision ($\T_A \neq \T_B$), it asserts a particular scaling in symmetric regions, namely
 \begin{equation}
@@ -406,9 +407,9 @@ In order to express initial condition mappings as functions of a common variable
 The effect of this substitution on the EKRT model is small, as the mapping deposits zero entropy if nucleons are non-overlapping, effectively removing them from the participant thickness function.
 We thus replace $T$ with $\T$ in the EKRT model and note that similar results are obtained by recasting the wounded nucleon, KLN, and \trento\ models as functions of $T$ using standard Glauber relations.
 
-Figure~\ref{fig:cgc_compare} shows one-dimensional slices of the entropy deposition mapping predicted by the KLN, EKRT, and wounded nucleon models for typical values of the participant nucleon density sampled in lead-lead collisions at $\sqrts=2.76$~TeV.
+Figure~\ref{fig:cgc_compare} shows one-dimensional slices of the entropy deposition mapping predicted by the KLN, EKRT, and wounded nucleon models for typical values of the participant nucleon density sampled in Pb+Pb collisions at $\sqrts=2.76$~TeV.
 The vertically staggered lines in each panel show the change in deposited entropy density as a function of $\T_A$ for several constant values of $\T_B$, where the dashed lines are the entropy density calculated using the various models and the solid lines show the generalized mean ansatz tuned to fit each model.
-The figure illustrates the ability of the ansatz to reproduce different initial condition calculations and quantify differences between the models in terms of the generalized mean parameter $p$.
+The figure illustrates that the ansatz reproduces different initial condition calculations and quantifies differences among them in terms of the generalized mean parameter $p$.
 The KLN model, for example, is well-described by $p\sim-0.67$, the EKRT model corresponds to $p \sim 0$, and the wounded nucleon model is precisely $p=1$.
 Smaller, more negative values of $p$ pull the generalized mean toward a minimum function and hence correspond to models with more extreme gluon saturation effects.
 
@@ -420,27 +421,27 @@ Smaller, more negative values of $p$ pull the generalized mean toward a minimum 
 The three models considered in Fig.~\ref{fig:cgc_compare} are by no means an exhaustive list of proposed initial condition models, see e.g.\ Refs.~\cite{Eremin:2003qn, Broniowski:2007nz, Pierog:2013ria, Drescher:2000ec, Adler:2013aqf, Chatterjee:2015aja, Zhang:1999bd}.
 Notably absent, for instance, is the highly successful IP-Glasma model which combines IP-Sat CGC initial conditions with classical Yang-Mills dynamics to describe the full pre-equilibrium evolution of produced glasma fields \cite{Schenke:2012wb, Schenke:2012fw, Gale:2012rq}.
 The IP-Glasma model lacks a simple analytic form for initial energy (or entropy) deposition at the QGP thermalization time and so cannot be directly compared to the generalized mean ansatz.
-In lieu of such a comparison, we quantify geometric properties of the IP-Glasma and \trento\ through the eccentricity harmonics $\varepsilon_n$ weighted by transverse energy density $e(x,y)$ at the QGP thermalization time:
-\begin{equation}
-    \varepsilon_n e^{i n \phi} = -\frac{\int dx\, dy\, r^n e^{i n \phi} e(x,y)}{\int dx\, dy\, e(x,y)}.
-    \label{eq:eccentricity}
-\end{equation}
+In lieu of such a comparison, we examined the geometric properties of IP-Glasma and \trento\ through their eccentricity harmonics $\varepsilon_n$.
 
 We generated a large number of \trento\ events using entropy deposition parameter $p=0$, Gaussian nucleon width $w=0.4$~fm, and fluctuation parameter $k=1.6$, which were previously shown to reproduce the ratio of ellipticity and triangularity in IP-Glasma \cite{Moreland:2014oya}.
 We then free streamed \cite{Liu:2015nwa, Broniowski:2008qk} the events for $\tau=0.4$~fm/c to mimic the weakly coupled pre-equilibrium dynamics of IP-Glasma and match the evolution time of both models.
-Finally, we calculated the eccentricity harmonics $\varepsilon_2$ and $\varepsilon_3$ from Eq.~\eqref{eq:eccentricity}, using the $T^{00}$ component of the stress-energy tensor after the free streaming phase as the energy density.
-The resulting eccentricities harmonics, pictured in Fig.~\ref{fig:ipglasma}, are in good agreement out to large impact parameter, where sub-nucleonic structure becomes important.
-This similarity suggests that \trento\ with $p \sim 0$ can effectively reproduce the scaling behavior of the IP-Glasma model, although a more detailed comparison of the two models would be necessary to establish the strength of correspondence illustrated in Fig.~\ref{fig:cgc_compare}.
+Finally, we calculated the eccentricity harmonics $\varepsilon_2$ and $\varepsilon_3$ weighted by energy density $e(x, y)$ according to the definition
+\begin{equation}
+    \varepsilon_n e^{i n \phi} = -\frac{\int dx\, dy\, r^n e^{i n \phi} e(x,y)}{\int dx\, dy\, e(x,y)},
+\end{equation}
+where the energy density is the time-time component of the stress-energy tensor after the free streaming phase, $T^{00}$.
+The resulting eccentricities, pictured in Fig.~\ref{fig:ipglasma}, are in good agreement for all but the most peripheral collisions, where sub-nucleonic structure becomes important.
+This similarity suggests that \trento\ with $p \sim 0$ can effectively reproduce the scaling behavior of IP-Glasma, although a more detailed comparison would be necessary to establish the strength of correspondence illustrated in Fig.~\ref{fig:cgc_compare}.
 
 
 \section{Parameter estimation}
 
 With the full evolution model in hand, a number of important model parameters---related to both initial-state entropy deposition and the QGP medium---remain undetermined.
-These parameters typically correlate among each other and affect multiple observables, hence, if we wish to describe a wide variety of experimental observables, the only option is a simultaneous fit of all parameters.
+These parameters typically correlate among each other and affect multiple observables, hence, if we wish to describe a wide variety of experimental observables, the only option is a simultaneous fit to all parameters.
 However, it is not feasible to do this directly, since simulating observables at even a single set of parameter values requires thousands of individual events and significant computation time.
 
 To overcome this limitation, we employ a Bayesian method for parameter estimation with computationally expensive models \cite{OHagan:2006ba,Higdon:2008cmc,Higdon:2014tva,Wesolowski:2015fqa}.
-Briefly, the model is evaluated at a relatively small \order 2 number of parameter points, the output is interpolated by a Gaussian process emulator, and the emulator is used to systematically explore parameter space with Markov chain Monte Carlo.
+Briefly, the model is evaluated at a relatively small \order 2 number of parameter points, the output is interpolated by a Gaussian process emulator, and the emulator is used to systematically explore the parameter space with Markov chain Monte Carlo methods.
 This section summarizes the methodology; see Ref.~\cite{Bernhard:2015hxa} for a complete treatment.
 
 \subsection{Model parameters and observables}
@@ -495,7 +496,7 @@ Four control the parametric initial state:
 \begin{enumerate}[itemsep=0pt]
   \item the overall normalization factor,
   \item entropy deposition parameter $p$ from the generalized mean ansatz Eq.~\eqref{eq:genmean},
-  \item gamma shape parameter $k$, which sets nucleon multiplicity fluctuations, and
+  \item gamma shape parameter $k$, which sets nucleon multiplicity fluctuations in Eq.~\eqref{eq:participant}, and
   \item Gaussian nucleon width $w$ from Eq.~\eqref{eq:Tp}, which determines initial-state granularity;
 \end{enumerate}
 the remaining five are related to the QGP medium:
@@ -518,11 +519,11 @@ For example, bulk viscosity suppresses radial expansion, so a meaningful estimat
 Indeed, previous work has shown that finite bulk viscosity is necessary to simultaneously fit both mean transverse momentum and anisotropic flow \cite{Ryu:2015vwa}.
 
 For the present study we compare to the centrality dependence of identified particle yields $dN/dy$ and mean transverse momenta $\avg{p_T}$ for charged pions, kaons, and protons as well as two-particle anisotropic flow coefficients $\vnk n 2$ for $n = 2$, 3, 4.
-Table~\ref{tab:observables} summarizes the observables including kinematic cuts, centrality classes, and experimental data, which are all from the ALICE experiment, Pb+Pb collisions at 2.76 TeV \cite{Abelev:2013vea,ALICE:2011ab}.
+Table~\ref{tab:observables} summarizes the observables including kinematic cuts, centrality classes, and experimental data, which are all from the ALICE experiment, Pb+Pb collisions at $\sqrts = 2.76$ TeV \cite{Abelev:2013vea,ALICE:2011ab}.
 
 When computing simulated observables, we strive to replicate experimental methods as closely as possible.
-We selected the same centrality classes as the corresponding experimental data by sorting each design point's minimum-bias events by charged-particle multiplicity $d\nch/d\eta$ at mid-rapidity ($|\eta| < 0.5$) and dividing the events into the desired percentile bins.
-We computed identified $dN/dy$ and $\avg{p_T}$ by simple counting and averaging of the desired species at mid-rapidity ($|y| < 0.5$); no additional steps are necessary since the experimental data are corrected and extrapolated to zero $p_T$ \cite{Abelev:2013vea}.
+We selected the same centrality classes as the corresponding experimental data by sorting each design point's minimum-bias events by charged-particle multiplicity $d\nch/d\eta$ at midrapidity ($|\eta| < 0.5$) and dividing the events into the desired percentile bins.
+We computed identified $dN/dy$ and $\avg{p_T}$ by simple counting and averaging of the desired species at midrapidity ($|y| < 0.5$); no additional steps are necessary since the experimental data are corrected and extrapolated to zero $p_T$ \cite{Abelev:2013vea}.
 Finally, we calculated flow coefficients for charged particles within the kinematic range of the ALICE detector using the direct $Q$-cumulant method \cite{Bilandzic:2010jr}.
 
 The top row of Fig.~\ref{fig:observables_samples} (located later in Sec.~\ref{sec:results}) shows the final observables for each of the 300 design points;
@@ -699,7 +700,7 @@ The top row has explicit model calculations at each of the 300 design points;
 recall that all model parameters vary across their full ranges, leading to the large spread in computed observables.
 The bottom row shows emulator predictions of 100 random samples from the identified particle posterior distribution (these are visually indistinguishable for the charged particle posterior).
 Here, the model has been calibrated to experiment, so its calculations are clustered tightly around the data---although some uncertainty remains since the samples are drawn from a posterior distribution of finite width.
-Overall, the calibrated model provides an excellent simultaneous fit to all observables except the pion/kaon yield ratio, which (although it is difficult to see on a log scale) deviates by roughly 10--20\%.
+Overall, the calibrated model provides an excellent simultaneous fit to all observables except the pion/kaon yield ratio, which (although it is difficult to see on a log scale) deviates by roughly 10--30\%.
 We address this deficiency in the following subsections.
 
 
@@ -749,7 +750,7 @@ The full parametrization Eq.~\eqref{eq:etas} also includes a constant $(\eta/s)_
 This is not surprising, since hadronic viscosity is largely handled by UrQMD, not the hydrodynamic model.
 Therefore, we omit $(\eta/s)_\text{hrg}$ from the posterior distribution visualizations and tables.
 
-Examining the marginal distributions for $\eta/s$ min and slope, we see a clear preference for $(\eta/s)_\text{min} \lesssim 0.15$ and a mild preference for a shallow slope;
+Examining the marginal distributions for $\eta/s$ min and slope, we see a clear preference for $(\eta/s)_\text{min} \lesssim 0.15$ and little preference for any particular slope within the considered range;
 however, the marginal distributions do not paint a complete picture.
 The joint distribution shows a salient correlation between the two parameters, hence, while neither $\eta/s$ min nor slope are strongly constrained independently, a linear combination is quite strongly constrained.
 Figure~\ref{fig:etas_estimate} visualizes the complete estimate of the temperature dependence of $\eta/s$ via the median min and slope from the posterior (for identified particles) and a 90\% credible region.
@@ -800,7 +801,7 @@ One should interpret the estimate of $(\eta/s)(T)$ depicted in Fig.~\ref{fig:eta
 We asserted a somewhat restricted linear parametrization reaching a minimum at a fixed temperature, and evidently may not have extended the prior range for the slope high enough to bracket the posterior distribution;
 these assumptions, along with the flat 10\% uncertainty (see Eq.~\eqref{eq:uncertainty}), surely affect the precise result.
 And in general, a credible region is not a strict constraint---the true function may lie partially or completely (however improbably) outside the estimated region.
-Yet the overarching message holds: we estimate a shallow positive slope with the least uncertainty at intermediate temperatures.
+Yet the overarching message holds: we find the least uncertainty in $\eta/s$ at intermediate temperatures, and estimate that its temperature dependence has at most a shallow positive slope.
 
 For the $\zeta/s$ norm (the prefactor for the parametrization Eq.~\eqref{eq:zetas}), the calibrations yielded clearly peaked posterior distributions located slightly above one.
 Hence, the estimate is comfortably consistent with leaving the parametrization unscaled, as in \cite{Ryu:2015vwa}.
@@ -820,7 +821,7 @@ on the other hand, lacking these data there is little else to determine an optim
 This reinforces the original hybrid model postulate---that both hydro and Boltzmann transport models predict the same medium evolution within a temperature window \cite{Bass:2000ib,Nonaka:2006yn,Petersen:2008dd}.
 
 Note that, while we do see a narrow peak for $T_\text{switch}$, the model cannot simultaneously fit pion, kaon, and proton yields;
-in particular, the pion/kaon ratio is 10--20\% low.
+in particular, the pion/kaon ratio is 10--30\% low.
 The peak thus arises from a compromise between pions and kaons---not an ideal fit---so we do not consider the quantitative value of the peak to be particularly meaningful.
 This is a long-standing issue in hybrid models \cite{Song:2013qma} and therefore likely indicates a more fundamental problem with the particle production scheme rather than one with this specific model.
 
@@ -849,7 +850,7 @@ As a final verification of emulator predictions and the model's accuracy, we cal
 We chose two sets of parameters based on the peaks of the posterior distributions, listed in Table~\ref{tab:mode_params}.
 These values approximate the ``most probable'' parameters and the corresponding model calculations should optimally fit the data.
 
-We evaluated \order 5 minimum-bias events for each set of parameters and computed observables, shown along with experimental data in Fig.~\ref{fig:mode_observables}.
+We evaluated \order 5 minimum-bias events (no emulator) for each set of parameters and computed observables, shown along with experimental data in Fig.~\ref{fig:mode_observables}.
 Solid lines represent calculations using parameters based on the identified particle posterior while dashed lines are based on the charged particle posterior.
 Note that these calculations include a peripheral centrality bin (70--80\%) that was not used in parameter estimation.
 

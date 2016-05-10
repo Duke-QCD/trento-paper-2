@@ -158,7 +158,7 @@ The effect of these errors on mean $p_T$, elliptic flow $v_2$, and triangular fl
 
 In order to estimate the shear and bulk viscosities, we parametrize their temperature dependence and define several variable model inputs.
 The viscosities are typically expressed as dimensionless ratios $\eta/s$ and $\zeta/s$, where $s$ is the entropy density;
-for the specific shear viscosity $\eta/s$, we use a piecewise linear parametrization reaching its minimum at the QCD transition temperature $T_c$:
+for the specific shear viscosity $\eta/s$, we use a piecewise linear parametrization
 \begin{equation}
   (\eta/s)(T) =
   \begin{cases}
@@ -167,7 +167,8 @@ for the specific shear viscosity $\eta/s$, we use a piecewise linear parametriza
   \end{cases},
   \label{eq:etas}
 \end{equation}
-with $T_c = 0.154$~GeV to match the HotQCD EoS \cite{Bazavov:2014pvz}, and $(\eta/s)$ hrg, min, and slope are tunable parameters.
+motivated by calculations in low- and high-temperature limits which demonstrate that $\eta/s$ has a minimum near the QCD transition temperature \cite{Prakash:1993bt, Arnold:2003zc, Csernai:2006zz}.
+We fix the transition temperature $T_c = 0.154$~GeV to match the HotQCD EoS \cite{Bazavov:2014pvz} and leave $(\eta/s)$ hrg, min, and slope as tunable parameters, with the slope restricted to non-negative values.
 For the specific bulk viscosity $\zeta/s$, we use the parametrization \cite{Denicol:2009am, Ryu:2015vwa}
 \begin{equation}
   (\zeta/s)(T) =

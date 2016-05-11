@@ -625,6 +625,12 @@ The predictions need not agree perfectly at every point; ideally the residuals w
 
 \subsection{Bayesian calibration}
 
+\fig*{posterior}{
+  Posterior distributions for the model parameters from calibrating to identified particles yields (blue, lower triangle) and charged particles yields (red, upper triangle).
+  The diagonal has marginal distributions for each parameter, while the off-diagonal contains joint distributions showing correlations among pairs of parameters.
+  $^\dagger$The units for $\eta/s$ slope are [GeV$^{-1}$].
+}
+
 \newcommand{\z}{\mathbf z}
 \newcommand{\st}{_\star}
 \newcommand{\ex}{_\text{exp}}
@@ -668,12 +674,6 @@ We first run \order 6 steps to allow the chain to equilibrate, discard these ``b
 
 
 \section{\label{sec:results}Results}
-
-\fig*{posterior}{
-  Posterior distributions for the model parameters from calibrating to identified particles yields (blue, lower triangle) and charged particles yields (red, upper triangle).
-  The diagonal has marginal distributions for each parameter, while the off-diagonal contains joint distributions showing correlations among pairs of parameters.
-  $^\dagger$The units for $\eta/s$ slope are [GeV$^{-1}$].
-}
 
 \fig*{observables_samples}{
   Simulated observables compared to experimental data from the ALICE experiment \cite{Abelev:2013vea,ALICE:2011ab}.
@@ -757,14 +757,6 @@ The full parametrization Eq.~\eqref{eq:etas} also includes a constant $(\eta/s)_
 This is not surprising, since hadronic viscosity is largely handled by UrQMD, not the hydrodynamic model.
 Therefore, we omit $(\eta/s)_\text{hrg}$ from the posterior distribution visualizations and tables.
 
-Examining the marginal distributions for $\eta/s$ min and slope, we see a clear preference for $(\eta/s)_\text{min} \lesssim 0.15$ and a slight disfavor of steep slopes;
-however, the marginal distributions do not paint a complete picture.
-The joint distribution shows a salient correlation between the two parameters, hence, while neither $\eta/s$ min nor slope are strongly constrained independently, a linear combination is quite strongly constrained.
-Figure~\ref{fig:etas_estimate} visualizes the complete estimate of the temperature dependence of $\eta/s$ via the median min and slope from the posterior (for identified particles) and a 90\% credible region.
-This visualization corroborates that the posterior for $(\eta/s)(T)$ is markedly narrower than the prior and further reveals that the uncertainty is smallest at intermediate temperatures, $T \sim {}$200--225 MeV.
-We hypothesize that this is the most important temperature range for the present observables at $\sqrts = 2.76$~TeV---perhaps it is where the system spends most of its time and hence where most anisotropic flow develops, for instance---and thus the data provide a ``handle'' for $\eta/s$ around 200 MeV.
-Data at other beam energies and other, more sensitive observables could provide additional handles at different temperatures, enabling a more precise estimate of the temperature dependence of $\eta/s$.
-
 \begin{table}[b]
   \caption{
     \label{tab:posterior}
@@ -781,6 +773,14 @@ Data at other beam energies and other, more sensitive observables could provide 
     \end{tabular}
   \end{ruledtabular}
 \end{table}
+
+Examining the marginal distributions for $\eta/s$ min and slope, we see a clear preference for $(\eta/s)_\text{min} \lesssim 0.15$ and a slight disfavor of steep slopes;
+however, the marginal distributions do not paint a complete picture.
+The joint distribution shows a salient correlation between the two parameters, hence, while neither $\eta/s$ min nor slope are strongly constrained independently, a linear combination is quite strongly constrained.
+Figure~\ref{fig:etas_estimate} visualizes the complete estimate of the temperature dependence of $\eta/s$ via the median min and slope from the posterior (for identified particles) and a 90\% credible region.
+This visualization corroborates that the posterior for $(\eta/s)(T)$ is markedly narrower than the prior and further reveals that the uncertainty is smallest at intermediate temperatures, $T \sim {}$200--225 MeV.
+We hypothesize that this is the most important temperature range for the present observables at $\sqrts = 2.76$~TeV---perhaps it is where the system spends most of its time and hence where most anisotropic flow develops, for instance---and thus the data provide a ``handle'' for $\eta/s$ around 200 MeV.
+Data at other beam energies and other, more sensitive observables could provide additional handles at different temperatures, enabling a more precise estimate of the temperature dependence of $\eta/s$.
 
 This result for $(\eta/s)(T)$ supports several recent findings using other models:
 a detailed study using the EKRT model \cite{Niemi:2015qia} showed that a combination of RHIC and LHC data prefer a flat or shallow high-temperature slope, while an analysis using a three-dimensional constituent quark model \cite{Denicol:2015nhu} demonstrated that a similar flat or shallow slope best describes the rapidity dependence of elliptic flow at RHIC.
@@ -834,7 +834,11 @@ This is a long-standing issue in hybrid models \cite{Song:2013qma} and therefore
 
 \subsection{Verification of high-probability parameters}
 
-\begin{table}[b]
+As a final verification of emulator predictions and the model's accuracy, we calculated a large number of events using high-probability parameters and compared the resulting observables to experiment.
+We chose two sets of parameters based on the peaks of the posterior distributions, listed in Table~\ref{tab:mode_params}.
+These values approximate the ``most probable'' parameters and the corresponding model calculations should optimally fit the data.
+
+\begin{table}[t]
   \caption{
     \label{tab:mode_params}
     High-probability parameters chosen based on the posterior distributions and used to generate Fig.~\ref{fig:mode_observables}.
@@ -852,10 +856,6 @@ This is a long-standing issue in hybrid models \cite{Song:2013qma} and therefore
     \end{tabular}
   \end{ruledtabular}
 \end{table}
-
-As a final verification of emulator predictions and the model's accuracy, we calculated a large number of events using high-probability parameters and compared the resulting observables to experiment.
-We chose two sets of parameters based on the peaks of the posterior distributions, listed in Table~\ref{tab:mode_params}.
-These values approximate the ``most probable'' parameters and the corresponding model calculations should optimally fit the data.
 
 We evaluated \order 5 minimum-bias events (no emulator) for each set of parameters and computed observables, shown along with experimental data in Fig.~\ref{fig:mode_observables}.
 Solid lines represent calculations using parameters based on the identified particle posterior while dashed lines are based on the charged particle posterior.

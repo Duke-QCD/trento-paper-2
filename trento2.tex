@@ -1,5 +1,6 @@
 \documentclass[aps,prc,reprint,amsmath,nofootinbib]{revtex4-1}
 
+\usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{multirow}
@@ -71,7 +72,7 @@
   We quantitatively estimate properties of the quark-gluon plasma created in ultra-relativistic heavy-ion collisions utilizing Bayesian statistics and a multi-parameter model-to-data comparison.
   The study is performed using \trento, a recently developed parametric initial condition model which interpolates among a general class of particle production schemes, and a modern hybrid model with viscous hydrodynamics and a hadronic cascade.
   We calibrate the model to multiplicity, transverse momentum, and flow data and report constraints on the parametrized initial conditions and the temperature-dependent transport coefficients of the quark-gluon plasma.
-  We show that initial entropy deposition is consistent with a saturation-based picture, extract a relation between the minimum value and slope of the temperature-dependent specific shear viscosity, and find a clear signal for a finite bulk viscosity.
+  We show that initial entropy deposition is consistent with a saturation-based picture, extract a relation between the minimum value and slope of the temperature-dependent specific shear viscosity, and find a clear signal for a nonzero bulk viscosity.
 \end{abstract}
 
 \maketitle
@@ -103,7 +104,7 @@ One solution to the model optimization problem is the use of modern Bayesian met
 A given model is first evaluated at a relatively small number of parameter configurations and the results are interpolated by a Gaussian process emulator \cite{Rasmussen:2006gp}.
 Then, using the emulator as a stand-in for the full model, a standard Markov chain Monte Carlo (MCMC) algorithm exhaustively explores the parameter space and extracts probability distributions for the optimal values of each parameter.
 
-Bayesian methods have been applied to heavy-ion collisions in several previous studies \cite{Novak:2013bqa, Pratt:2015zsa, Sangaline:2015isa, Bernhard:2015hxa}, including simulations initialized with a two-component Monte Carlo Glauber (MC-Glb.) model \cite{Miller:2007ri} and the Kharzeev-Levin-Nardi (MC-KLN) model \cite{Drescher:2006pi}, an implementation of color glass condensate (CGC) effective field theory \cite{Gelis:2010nm, Gelis:2015gza}.
+Bayesian methods have been applied to heavy-ion collisions in several previous studies \cite{Novak:2013bqa, Pratt:2015zsa, Sangaline:2015isa, Bernhard:2015hxa, Heinz:2015arc}, including simulations initialized with a two-component Monte Carlo Glauber (MC-Glb.) model \cite{Miller:2007ri} and the Kharzeev-Levin-Nardi (MC-KLN) model \cite{Drescher:2006pi}, an implementation of color glass condensate (CGC) effective field theory \cite{Gelis:2010nm, Gelis:2015gza}.
 Future work could expand this coverage to additional calculations of QGP initial conditions in order to systematically constrain each model's parameters along with hydrodynamic transport coefficients.
 Once the models are appropriately optimized, the relative accuracy of the various theory calculations may be quantified using a model selection criterion such as Bayes factors.
 
@@ -227,7 +228,7 @@ We use a common form for the shear correction \cite{Teaney:2003kp}
 The bulk viscous correction has a variety of proposed forms, each of which predicts significantly different behavior when either the bulk pressure $\Pi$ or momentum $p$ are large \cite{Dusling:2011fd, Noronha-Hostler:2013gga}.
 Given this uncertainty and the small $\zeta/s$ at particlization (see Eq.~\eqref{eq:zetas}), we assume that bulk corrections will be small and neglect them for the present study, i.e.\ $\df_\text{bulk} = 0$.
 This precludes any quantitative conclusions on bulk viscosity, since we are only allowing bulk viscosity to affect the hydrodynamic evolution, not particlization.
-We will, however, be able to determine if $\zeta/s$ is zero or finite.
+We will, however, be able to determine whether $\zeta/s$ is nonzero.
 We plan to remedy this shortcoming in future work, enabling a quantitative estimate of the temperature dependence of bulk viscosity.
 
 Once the fluid is converted into hadrons, the subsequent microscopic dynamics are simulated using the Ultra-relativistic Quantum Molecular Dynamics (UrQMD) model as a hadronic afterburner \cite{Bass:1998ca, Bleicher:1999xi}.
@@ -247,10 +248,11 @@ Efforts to realistically model the pre-equilibrium stage include transport dynam
 
 The importance of pre-equilibrium dynamics was recently studied by initializing hydrodynamic simulations with a free streaming phase (zero coupling) and switching to hydrodynamics (strong coupling) after different periods of time \cite{Liu:2015nwa, Heinz:2015arc}.
 The authors showed that although free streaming never leads to thermalization, it can be used to bracket the influence of pre-equilibrium dynamics on the medium evolution as the pre-equilibrium coupling strength is expected to fall between the free streaming and hydrodynamic limits.
-The analysis found a preference for a brief free streaming phase ${\tau_\text{fs} \lesssim 1}$~fm/c, but the effect on hydrodynamic bulk observables was small and modifications to the preferred value of the QGP specific shear viscosity $\eta/s$ were less than 10\%.
-In reality, the magnitude of the effect is expected to be even smaller as the pre-equilibrium coupling strength is necessarily non-zero.
+When bulk viscous effects were neglected, the analysis found a preference for a brief free streaming phase $\tau_\text{fs} \lesssim 1$~fm/$c$, but the effect on hydrodynamic bulk observables was small and modifications to the preferred value of the QGP specific shear viscosity $\eta/s$ were less than 10\%.
+Including nonzero bulk viscosity opened a window for a longer free-streaming stage with $\tau_\mathrm{fs} \approx 2$~fm/$c$ and reduced the best-fit value for the specific shear viscosity by 20\%.
+In real situations where the pre-equilibrium coupling strength is necessarily nonzero, dynamical effects on the extracted transport coefficients are expected to be even smaller.
 
-We neglect pre-equilibrium dynamics in the present study, instead initializing the flow velocity to zero as well as the viscous terms, which quickly relax to their Navier-Stokes values \cite{Song:2009rh}.
+In the present study we neglect pre-equilibrium dynamics, instead initializing the flow velocity to zero as well as the viscous terms, which quickly relax to their Navier-Stokes values \cite{Song:2009rh}.
 This reduces the initial conditions to a thermal energy density, which may be provided as an entropy density and converted via the QCD EoS.
 We generate event-by-event initial conditions using the recently developed parametric model \trento\ \cite{Moreland:2014oya}.
 The model begins with a standard Monte Carlo Glauber formalism, summarized below, and parametrizes entropy deposition as a function of local participant nuclear density.
@@ -267,6 +269,7 @@ where $b$ is now the impact parameter between two nucleons, $T_p$ is the nucleon
 \begin{equation}
   \sigma_\text{NN}^\text{inel} = \int 2 \pi b\, db\, P_\text{coll}(b).
 \end{equation}
+The energy-dependent cross section $\sigma^\text{inel}_\text{NN} = 4.0$, 4.2, 6.4, 7.0~fm$^2$ at $\sqrts=130$, 200, 2760, 5020~GeV, respectively \cite{Adare:2015bua, ATLAS:2011ag, ALICE:2012xs}.
 For the nucleon thickness function we use a Gaussian
 \begin{equation}
   T_p(x, y) = \frac{1}{2\pi w^2} \exp\bigg(\!-\frac{x^2 + y^2}{2 w^2}\bigg),
@@ -416,7 +419,7 @@ Smaller, more negative values of $p$ pull the generalized mean toward a minimum 
 
 \fig{ipglasma}{
     Eccentricity harmonics $\varepsilon_2$ and $\varepsilon_3$ as a function of impact parameter $b$ for Pb+Pb collisions at ${\sqrts=2.76}$~TeV calculated from IP-Glasma and \protect\trento\ initial conditions.
-  IP-Glasma events are evaluated after $\tau=0.4$~fm/c classical Yang-Mills evolution \cite{Schenke:2012wb}; \protect\trento\ events after $\tau=0.4$~fm/c free streaming \cite{Liu:2015nwa, Broniowski:2008qk} and using parameters $p = 0 \pm 0.1$, $k = 1.6$, and nucleon width $w=0.4$~fm to match IP-Glasma \cite{Schenke:2013dpa}.
+  IP-Glasma events are evaluated after $\tau=0.4$~fm/$c$ classical Yang-Mills evolution \cite{Schenke:2012wb}; \protect\trento\ events after $\tau=0.4$~fm/$c$ free streaming \cite{Liu:2015nwa, Broniowski:2008qk} and using parameters $p = 0 \pm 0.1$, $k = 1.6$, and nucleon width $w=0.4$~fm to match IP-Glasma \cite{Schenke:2013dpa}.
 }
 
 The three models considered in Fig.~\ref{fig:cgc_compare} are by no means an exhaustive list of proposed initial condition models, see e.g.\ Refs.~\cite{Eremin:2003qn, Broniowski:2007nz, Pierog:2013ria, Drescher:2000ec, Adler:2013aqf, Chatterjee:2015aja, Zhang:1999bd}.
@@ -425,7 +428,7 @@ The IP-Glasma model lacks a simple analytic form for initial energy (or entropy)
 In lieu of such a comparison, we examined the geometric properties of IP-Glasma and \trento\ through their eccentricity harmonics $\varepsilon_n$.
 
 We generated a large number of \trento\ events using entropy deposition parameter $p=0$, Gaussian nucleon width $w=0.4$~fm, and fluctuation parameter $k=1.6$, which were previously shown to reproduce the ratio of ellipticity and triangularity in IP-Glasma \cite{Moreland:2014oya}.
-We then free streamed \cite{Liu:2015nwa, Broniowski:2008qk} the events for $\tau=0.4$~fm/c to mimic the weakly coupled pre-equilibrium dynamics of IP-Glasma and match the evolution time of both models.
+We then free streamed \cite{Liu:2015nwa, Broniowski:2008qk} the events for $\tau=0.4$~fm/$c$ to mimic the weakly coupled pre-equilibrium dynamics of IP-Glasma and match the evolution time of both models.
 Finally, we calculated the eccentricity harmonics $\varepsilon_2$ and $\varepsilon_3$ weighted by energy density $e(x, y)$ according to the definition
 \begin{equation}
     \varepsilon_n e^{i n \phi} = -\frac{\int dx\, dy\, r^n e^{i n \phi} e(x,y)}{\int dx\, dy\, e(x,y)},
@@ -510,8 +513,8 @@ the remaining five are related to the QGP medium:
 This parameter set will enable simultaneous characterization of the initial state and medium, including any correlations.
 Table~\ref{tab:design} summarizes the parameters and their corresponding ranges, which are intentionally wide to ensure that the optimal values are bracketed.
 
-Having designated the model parameters and ranges, we generated a 300 point maximin\footnote{A ``maximin'' design \emph{maximizes} the \emph{minimum} distance between points, thereby reducing large gaps and tight clusters.} Latin hypercube design \cite{Morris:1995lh} in the nine-dimensional space and executed \order 4 minimum-bias Pb+Pb events at each of the 300 points.
-Each event consists of a single initial condition and hydro simulation followed by multiple samples of the freeze-out hypersurface.
+Having designated the model parameters and ranges, we generated a 300 point maximin\footnote{A ``maximin'' design \emph{maximizes} the \emph{minimum} distance between points, thereby reducing large gaps and tight clusters.} Latin hypercube design \cite{Morris:1995lh} in the nine-dimensional parameter space and executed \order 4 minimum-bias Pb+Pb events at each of the 300 points.
+Each event consists of a single ``bumpy'' (i.e.\ Monte Carlo sampled) initial condition and hydro simulation followed by multiple samples of the freeze-out hypersurface.
 The number of samples is roughly inversely proportional to the event's particle multiplicity so that total particle production is constant across all events---typically ${\sim}$5 samples for central events and up to 100 for peripheral events.
 This strategy leads to consistent statistical uncertainties across all parameter points and centrality classes.
 
@@ -812,7 +815,7 @@ We also observe a positive correlation with $\eta/s$ min, which initially seems 
 This dependence arises via the nucleon width:
 increasing bulk viscosity requires decreasing the nucleon width, which in turn necessitates increasing shear viscosity to damp out the excess anisotropy.
 Given the previously mentioned shortcomings in the current treatment of bulk viscosity (neglecting bulk corrections at particlization, lack of a dynamical pre-equilibrium phase), we refrain from making any quantitative statements.
-What is clear, however, is that a finite bulk viscosity is necessary to simultaneously describe transverse momentum and flow data.
+What is clear, however, is that a nonzero bulk viscosity is necessary to simultaneously describe transverse momentum and flow data.
 
 The distributions for the particlization temperature $T_\text{switch}$ have by far the most dramatic difference between the two calibrations.
 The posterior from identified particle yields shows a sharp peak centered at $T \approx 148$~MeV, just below $T_c = 154$~MeV;
@@ -864,7 +867,7 @@ The $v_2$ mismatch in the most central bin is a manifestation of the experimenta
 \section{Summary and conclusions}
 
 We have used Bayesian methodology to quantitatively estimate initial condition and transport properties of the QGP medium produced in relativistic heavy-ion collisions.
-We coupled a parametric initial condition model to viscous hydrodynamics and a hadronic afterburner, calibrated the full model to a variety of bulk observables, and established a number of salient constraints on model parameters, including a shear viscosity that increases slowly with temperature, a clear signal for a finite bulk viscosity, and a robust constraint on initial state entropy deposition.
+We coupled a parametric initial condition model to viscous hydrodynamics and a hadronic afterburner, calibrated the full model to a variety of bulk observables, and established a number of salient constraints on model parameters, including a shear viscosity that increases slowly with temperature, a clear signal for a nonzero bulk viscosity, and a robust constraint on initial state entropy deposition.
 
 The parametric initial condition model used in this analysis, \trento, smoothly interpolates among various physically reasonable entropy deposition schemes, ranging from a wounded nucleon model to specific calculations in color glass condensate effective field theory.
 This flexibility is ideal for model-to-data comparison, since it allows the analysis framework to optimize the initial conditions with minimal theoretical assumptions.
@@ -893,7 +896,7 @@ These distributions contain a wealth of information about QGP initial condition 
     we hypothesize that this is the most important temperature range at $\sqrts = 2.76$~TeV,
     and that including data from additional beam energies would enable a more precise estimate of $(\eta/s)(T)$.
   \item
-    We observe a clear signal for a finite bulk viscosity, which is necessary to simultaneously describe transverse momentum and flow data.
+    We observe a clear preference for a nonzero bulk viscosity, which is necessary to simultaneously describe transverse momentum and flow data.
     We refrain from making any quantitative statements given current limitations in the treatment of bulk viscosity.
   \item
     The result for the particlization temperature (when the model switches from hydrodynamics to hadronic afterburner) depends strongly on the observables used for calibration.

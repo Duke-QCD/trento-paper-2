@@ -390,9 +390,7 @@ A common implementation of a CGC based saturation picture is the KLN model \cite
 and $\Qs{max}$ and $\Qs{min}$ denote the larger and smaller values of the two saturation scales in opposite nuclei at any fixed position in the transverse plane \cite{Drescher:2006ca}.
 In the original formulation of the KLN model, the two saturation scales are proportional to the local participant nucleon density in each nucleus, $Q^2_{s,A} \propto \T_A$, and the gluon density can be recast as
 \begin{equation}
-  s \sim \min(\T_A, \T_B) \biggl[
-    2 + \log \biggl(\frac{\max(\T_A,\T_B)}{\min(\T_A,\T_B)}\biggr)
-  \biggr]
+  s \sim \T_\text{min} \bigl[ 2 + \log(\T_\text{max}/\T_\text{min}) \bigr]
 \end{equation}
 to put it in a form which can be directly compared with the wounded nucleon model.
 

@@ -1,3 +1,3 @@
 # T<sub>R</sub>ENTo paper II
 
-Follow-up paper to the rapid communication https://inspirehep.net/record/1334386.
+_Applying Bayesian parameter estimation to relativistic heavy-ion collisions: simultaneous characterization of the initial state and quark-gluon plasma medium_

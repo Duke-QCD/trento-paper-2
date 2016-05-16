@@ -771,7 +771,7 @@ def mode_observables(**kwargs):
                          multialignment='left', xycoords='axes fraction', fontsize=textiny)
     #fig.axes[2].annotate('dashed: integrated', xy=(0.1,0.1),
     #                     xycoords='axes fraction', fontsize=textiny)
-    finish(pad=0.0, h_pad=0, w_pad=0.3)
+    finish(pad=.1, w_pad=.3)
 
 
 @plot

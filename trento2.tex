@@ -1,4 +1,4 @@
-\documentclass[aps,prc,reprint,amsmath,nofootinbib]{revtex4-1}
+\documentclass[aps,prc,reprint,amsmath,nofootinbib,noeprint]{revtex4-1}
 
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
@@ -19,6 +19,9 @@
 
 \usepackage{graphicx}
 \graphicspath{{fig/}}
+
+\usepackage{newtxtext}
+\usepackage[cmintegrals]{newtxmath}
 
 \newcommand{\trento}{T\raisebox{-0.5ex}{R}ENTo}
 \newcommand{\avg}[1]{\langle #1 \rangle}
@@ -44,7 +47,7 @@
 \NewDocumentCommand\fig{sO{t}mm}{
   \begin{figure\IfBooleanT{#1}{*}}[#2]
     \includegraphics{#3}
-    \caption{\label{fig:#3}#4}
+    \caption{\label{fig:#3}(Color online) #4}
   \end{figure\IfBooleanT{#1}{*}}
 }
 
@@ -595,7 +598,7 @@ This expression consists of a least-squares fit to the data (first term), a comp
   Left: charged pion yields $dN_{\pi^\pm}/dy$,
   middle: mean pion transverse momenta $\avg{p_T}_{\pi^\pm}$,
   right: flow cumulant $\vnk 2 2$;
-  each in centrality bins 0--5\% (blue) and 30--40\% (orange).
+  each in centrality bins 0--5\% (blue circles) and 30--40\% (orange squares).
 }
 
 To this point we have considered only a single output.
@@ -624,7 +627,7 @@ The predictions need not agree perfectly at every point; ideally the residuals w
 \subsection{Bayesian calibration}
 
 \fig*{posterior}{
-  Posterior distributions for the model parameters from calibrating to identified particles yields (blue, lower triangle) and charged particles yields (red, upper triangle).
+  Posterior distributions for the model parameters from calibrating to identified particles yields (blue, solid lines, lower triangle) and charged particles yields (red, dashed lines, upper triangle).
   The diagonal has marginal distributions for each parameter, while the off-diagonal contains joint distributions showing correlations among pairs of parameters.
   $^\dagger$The units for $\eta/s$ slope are [GeV$^{-1}$].
 }

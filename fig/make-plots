@@ -29,7 +29,7 @@ inner_line = dict(color=plt.cm.Blues(.77))
 plt.rcdefaults()
 plt.rcParams.update({
     'font.family': 'serif',
-    'font.serif': ['CMU Serif'],
+    'font.serif': ['Times'],
     'font.size': texsmall,
     'legend.fontsize': texsmall,
     'axes.labelsize': texsmall,
@@ -63,7 +63,8 @@ plt.rcParams.update({
     'legend.scatterpoints': 1,
     'legend.frameon': False,
     'image.interpolation': 'none',
-    'pdf.fonttype': 42,
+    # 'pdf.fonttype': 42,
+    'text.usetex': True,
 })
 
 
@@ -441,15 +442,18 @@ def validation():
             h5py.File(calibration, 'r') as cal, \
             h5py.File(batch_obs_validation, 'r') as vld:
         for (key, label, lim), ax in zip(observables, axes):
-            for i, cmap in (0, 'Blues'), (4, 'Oranges'):
+            for i, cmap, fmt, ms in [
+                    (0, 'Blues', 'o', 4),
+                    (4, 'Oranges', 's', 3.3)
+            ]:
                 x = cal['validation'][key]['Y'][:, i]
                 xerr = cal['validation'][key]['Yerr'][:, i]
                 y = vld[key]['Y'][:, i]
                 yerr = vld[key]['Yerr'][:, i]
                 ax.errorbar(
-                    x, y, xerr=xerr, yerr=yerr, fmt='o', ms=4, capsize=0,
+                    x, y, xerr=xerr, yerr=yerr, fmt=fmt, ms=ms, capsize=0,
                     color=getattr(plt.cm, cmap)(0.8), mec='white', mew=0.3,
-                    label='–'.join(map(str, cent_bins[i])) + '%'
+                    label='--'.join(map(str, cent_bins[i])) + r'\%'
                 )
             ax.plot(lim, lim, lw=1, color='.7', zorder=-10)
             ax.set_xlim(lim)
@@ -532,7 +536,7 @@ def observables_samples():
             #              va='baseline', labelpad=5)
 
             if posterior:
-                ax.set_xlabel('Centrality %')
+                ax.set_xlabel(r'Centrality \%')
             else:
                 ax.set_title(title)
                 ax.xaxis.set_ticklabels([])
@@ -605,9 +609,9 @@ def posterior():
 
         cmax = max(c.max() for c in counts)
 
-        for c, cmap in zip(counts, cmaps):
+        for c, cmap, dashes in zip(counts, cmaps, [[], [4, 2]]):
             y = .84 * (lim[1] - lim[0]) * c / cmax + lim[0]
-            ax.plot(x, y, lw=0.8, color=cmap(.8))
+            ax.plot(x, y, lw=0.8, color=cmap(.8), dashes=dashes)
             ax.fill_between(
                 x, lim[0], y, color=cmap(.5, alpha=0.2), zorder=-10
             )
@@ -761,7 +765,7 @@ def mode_observables(**kwargs):
                 ratio_ax.axhline(1, color='0.4', lw=0.5, zorder=-100)
                 ratio_ax.axhspan(0.9, 1.1, color=grey, alpha=0.7, zorder=-200)
 
-                ratio_ax.set_xlabel('Centrality %')
+                ratio_ax.set_xlabel(r'Centrality \%')
                 ratio_ax.set_ylim(0.8, 1.2)
                 ratio_ax.set_yticks([0.8, 1, 1.2])
                 ratio_ax.set_ylabel('Model/Exp' if n is 0 else '', labelpad=4)
@@ -918,7 +922,7 @@ def etas_estimate(calibration='data/bayesian/calibration/results_err10.hdf'):
     ax.legend(*zip(*[
         (prior, 'Prior range'),
         (median, 'Posterior median'),
-        (band, '90% CR'),
+        (band, r'90\% CR'),
     ]), loc='upper left', bbox_to_anchor=[0, 1.06])
 
     finish()
@@ -945,12 +949,14 @@ def trento_events():
             profile = np.array(ev)
             cs = ax.pcolorfast(x, x, profile, zorder=-100, cmap=my_cmap)
             cs.set_clim(0.0, np.max(profile))
-            properties = \
-                '$N_{}$$=${}\n$b$$=${:.1f} fm'.format(r'\mathrm{part}',
-                                                      ev.attrs['npart'],
-                                                      ev.attrs['b'])
-            ax.annotate(properties, xy=(0.99, 0.99), xycoords='axes fraction',
-                        ha='right', va='top', fontsize=textiny)
+            ax.annotate(
+                '\n'.join([
+                    '$N_\mathrm{{part}} = {}$'.format(ev.attrs['npart']),
+                    '$b = {:.1f}$ fm'.format(ev.attrs['b'])
+                ]),
+                xy=(0.99, 0.99), xycoords='axes fraction',
+                ha='right', va='top'
+            )
 
         for xy in ['x', 'y']:
             getattr(ax, 'set_{}lim'.format(xy))(lim)

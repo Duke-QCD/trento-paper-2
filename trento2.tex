@@ -136,7 +136,10 @@ for the energy-momentum tensor
   T^{\mu\nu} = e \, u^\mu u^\nu  - \Delta^{\mu\nu} (P + \Pi) + \pi^{\mu\nu},
 \end{equation}
 provided a set of initial conditions for the fluid flow velocity $u^\mu$, energy density $e$, pressure $P$, shear stress tensor $\pi^{\mu\nu}$, and bulk viscous pressure $\Pi$.
-We use VISH2+1 \cite{Song:2007ux}, a stable, extensively tested implementation of boost-invariant viscous hydrodynamics which has been updated to handle fluctuating event-by-event initial conditions \cite{Shen:2014vra} and incorporate bulk viscous corrections with shear-bulk coupling \cite{Liu:2015bik}.
+We use VISH2+1 \cite{Song:2007ux}, a stable, extensively tested implementation of boost-invariant viscous hydrodynamics which has been updated to handle fluctuating event-by-event initial conditions \cite{Shen:2014vra} and incorporate bulk viscous corrections with shear-bulk coupling.\footnote{
+  Bulk viscous corrections and shear-bulk coupling were implemented in VISH2+1 by J.\ Liu and U.\ Heinz.
+  A first preliminary study involving a much more restricted set of fit parameters including bulk viscosity was presented at the {\em Quark Matter 2015} conference \cite{Heinz:2015arc}.
+}
 This implementation calculates the time evolution of the viscous corrections through the second-order Israel-Stewart equations \cite{Israel:1979wp, Israel:1976aa} in the 14-momentum approximation, which yields a set of relaxation-type equations \cite{Denicol:2014vaa, Ryu:2015vwa}
 \begin{subequations}
   \label{eq:relaxation}

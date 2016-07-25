@@ -536,7 +536,7 @@ def observables_samples():
             #              va='baseline', labelpad=5)
 
             if posterior:
-                ax.set_xlabel(r'Centrality \%')
+                ax.set_xlabel(r'Centrality [\%]')
             else:
                 ax.set_title(title)
                 ax.xaxis.set_ticklabels([])
@@ -765,7 +765,7 @@ def mode_observables(**kwargs):
                 ratio_ax.axhline(1, color='0.4', lw=0.5, zorder=-100)
                 ratio_ax.axhspan(0.9, 1.1, color=grey, alpha=0.7, zorder=-200)
 
-                ratio_ax.set_xlabel(r'Centrality \%')
+                ratio_ax.set_xlabel(r'Centrality [\%]')
                 ratio_ax.set_ylim(0.8, 1.2)
                 ratio_ax.set_yticks([0.8, 1, 1.2])
                 ratio_ax.set_ylabel('Model/Exp' if n is 0 else '', labelpad=4)

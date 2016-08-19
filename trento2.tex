@@ -452,6 +452,24 @@ This section summarizes the methodology; see Ref.~\cite{Bernhard:2015hxa} for a 
 
 \subsection{Model parameters and observables}
 
+We choose a set of nine model parameters for estimation.
+Four control the parametric initial state:
+\begin{enumerate}[itemsep=0pt]
+  \item the overall normalization factor,
+  \item entropy deposition parameter $p$ from the generalized mean ansatz Eq.~\eqref{eq:genmean},
+  \item gamma shape parameter $k$, which sets nucleon multiplicity fluctuations in Eq.~\eqref{eq:participant}, and
+  \item Gaussian nucleon width $w$ from Eq.~\eqref{eq:Tp}, which determines initial-state granularity;
+\end{enumerate}
+the remaining five are related to the QGP medium:
+\begin{enumerate}[itemsep=0pt]
+  \item[5--7.] the three parameters ($\eta/s$ hrg, min, and slope) in Eq.~\eqref{eq:etas} that set the temperature dependence of the specific shear viscosity,
+  \setcounter{enumi}{7}
+  \item normalization prefactor for the temperature dependence of bulk viscosity Eq.~\eqref{eq:zetas}, and
+  \item particlization temperature $T_\text{switch}$.
+\end{enumerate}
+This parameter set will enable simultaneous characterization of the initial state and medium, including any correlations.
+Table~\ref{tab:design} summarizes the parameters and their corresponding ranges, which are intentionally wide to ensure that the optimal values are bracketed.
+
 \begin{table}
   \caption{
     \label{tab:design}
@@ -496,24 +514,6 @@ This section summarizes the methodology; see Ref.~\cite{Bernhard:2015hxa} for a 
   \end{tabular}
   \end{ruledtabular}
 \end{table*}
-
-We choose a set of nine model parameters for estimation.
-Four control the parametric initial state:
-\begin{enumerate}[itemsep=0pt]
-  \item the overall normalization factor,
-  \item entropy deposition parameter $p$ from the generalized mean ansatz Eq.~\eqref{eq:genmean},
-  \item gamma shape parameter $k$, which sets nucleon multiplicity fluctuations in Eq.~\eqref{eq:participant}, and
-  \item Gaussian nucleon width $w$ from Eq.~\eqref{eq:Tp}, which determines initial-state granularity;
-\end{enumerate}
-the remaining five are related to the QGP medium:
-\begin{enumerate}[itemsep=0pt]
-  \item[5--7.] the three parameters ($\eta/s$ hrg, min, and slope) in Eq.~\eqref{eq:etas} that set the temperature dependence of the specific shear viscosity,
-  \setcounter{enumi}{7}
-  \item normalization prefactor for the temperature dependence of bulk viscosity Eq.~\eqref{eq:zetas}, and
-  \item particlization temperature $T_\text{switch}$.
-\end{enumerate}
-This parameter set will enable simultaneous characterization of the initial state and medium, including any correlations.
-Table~\ref{tab:design} summarizes the parameters and their corresponding ranges, which are intentionally wide to ensure that the optimal values are bracketed.
 
 Having designated the model parameters and ranges, we generated a 300 point maximin\footnote{A ``maximin'' design \emph{maximizes} the \emph{minimum} distance between points, thereby reducing large gaps and tight clusters.} Latin hypercube design \cite{Morris:1995lh} in the nine-dimensional parameter space and executed \order 4 minimum-bias Pb+Pb events at each of the 300 points.
 Each event consists of a single ``bumpy'' (i.e.\ Monte Carlo sampled) initial condition and hydro simulation followed by multiple samples of the freeze-out hypersurface.
@@ -633,6 +633,15 @@ The predictions need not agree perfectly at every point; ideally the residuals w
   $^\dagger$The units for $\eta/s$ slope are [GeV$^{-1}$].
 }
 
+\fig*{observables_samples}{
+  Simulated observables compared to experimental data from the ALICE experiment \cite{Abelev:2013vea,ALICE:2011ab}.
+  Top row: explicit model calculations for each of the 300 design points,
+  bottom: emulator predictions of 100 random samples drawn from the posterior distribution.
+  Left column: identified particle yields $dN/dy$,
+  middle: mean transverse momenta $\avg{p_T}$,
+  right: flow cumulants $v_n\{2\}$.
+}
+
 \newcommand{\z}{\mathbf z}
 \newcommand{\st}{_\star}
 \newcommand{\ex}{_\text{exp}}
@@ -668,24 +677,18 @@ It certainly limits the meaning of quantitative uncertainties in the final estim
 We place a uniform prior on the model parameters, i.e.\ the prior is constant within the design range and zero outside.
 Combined with the likelihood \eqref{eq:likelihood} and Bayes' theorem \eqref{eq:bayes}, we can easily evaluate the posterior probability at any point in parameter space.
 
+\enlargethispage{.5\baselineskip}
+
 Posterior distributions are typically constructed using Markov chain Monte Carlo (MCMC) methods.
 MCMC algorithms generate random walks through parameter space by accepting or rejecting proposal points based on the posterior probability; after many steps the chain converges to the desired posterior.
 
 We use the affine-invariant ensemble sampler \cite{Goodman:2010en,FM:2013mc}, an efficient MCMC algorithm that uses a large ensemble of interdependent walkers.
 We first run \order 6 steps to allow the chain to equilibrate, discard these ``burn-in'' samples, then generate \order 7 posterior samples.
 
+\vfill
+
 
 \section{\label{sec:results}Results}
-
-\fig*{observables_samples}{
-  Simulated observables compared to experimental data from the ALICE experiment \cite{Abelev:2013vea,ALICE:2011ab}.
-  Top row: explicit model calculations for each of the 300 design points,
-  bottom: emulator predictions of 100 random samples drawn from the posterior distribution.
-  Left column: identified particle yields $dN/dy$,
-  middle: mean transverse momenta $\avg{p_T}$,
-  right: flow cumulants $v_n\{2\}$.
-}
-
 
 The primary result of this study is the posterior distribution for the model parameters, Fig.~\ref{fig:posterior}.
 In fact, this figure contains two posterior distributions:
@@ -714,6 +717,11 @@ We address this deficiency in the following subsections.
 
 \subsection{Initial condition parameters}
 
+\fig{posterior_p_arrows}{
+  Posterior distribution of the \protect\trento\ entropy deposition parameter $p$ introduced in Eq.~\eqref{eq:genmean}.
+  Approximate $p$-values are annotated for the KLN ($p~\approx~0.67~\pm~0.01$), EKRT ($p~\approx~0.0~\pm~0.1$), and wounded nucleon ($p = 1$) models.
+}
+
 The first four parameters are related to the initial condition model.
 Proceeding in order:
 
@@ -741,11 +749,6 @@ The quantitative estimates and uncertainties are in good agreement with the gluo
 We also observe striking correlations between the nucleon width and QGP viscosities---this is because decreasing the width leads to smaller scale structures and steeper gradients in the initial state.
 So e.g.\ as the nucleon width decreases, average transverse momentum increases, and bulk viscosity must increase to compensate.
 This explains the strong anti-correlation between $w$ and $\zeta/s$ norm.
-
-\fig{posterior_p_arrows}{
-  Posterior distribution of the \protect\trento\ entropy deposition parameter $p$ introduced in Eq.~\eqref{eq:genmean}.
-  Approximate $p$-values are annotated for the KLN ($p~\approx~0.67~\pm~0.01$), EKRT ($p~\approx~0.0~\pm~0.1$), and wounded nucleon ($p = 1$) models.
-}
 
 \subsection{QGP medium parameters}
 
